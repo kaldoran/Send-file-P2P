@@ -14,7 +14,7 @@ int main(int argc, char const *argv[]) {
     (void)(argc);
     (void)(argv);
 
-    pintf("Welcome to this awesome new project");
+    printf("[[INFO] Server] Welcome to this awesome new project\n");
     
     exit(EXIT_SUCCESS);
 }
