@@ -8,8 +8,8 @@ OBJ_DIR = OBJ
 BIN_DIR = BIN
 
 CC = gcc
-CFLAGS = -W -Wall -Wextra -O2 -lm -lrt
-BIN = Generator
+CFLAGS = -W -Wall -Wextra -O2 -lm -lssl -lcrypto
+BIN = generator
 
 ifeq ($(DEBUG), yes) 
 	CFLAGS += -g -DDEBUG
@@ -35,7 +35,7 @@ else
 	@$(CC) $(OBJ) -o $@ -I $(INC_DIR) $(CFLAGS)
 
 endif
-	@echo "$(BIN) well created !"
+	@echo "./"$(BIN_DIR)"/"$(BIN)" well created !"
 
 #
 # Object files creation.
@@ -57,12 +57,12 @@ endif
 clean:
 ifeq ($(DEBUG), yes) 
 	rm -rf ./$(OBJ_DIR);
-	rm -rf ./$(BIN);
+	rm -rf ./$(BIN_DIR);
 else
 	@rm -rf ./$(OBJ_DIR);
 	@echo -e "Remove object file and directory"
 	@rm -rf ./$(BIN_DIR);
-	@echo -e "Remove executable and remove bin directory"
+	@echo -e "Remove executable and executable directory"
 endif
 
 

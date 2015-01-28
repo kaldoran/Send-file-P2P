@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 /** If Debug Flag is on, create a maccro to print debug information
  *  %param MSG : String to print 
@@ -34,8 +35,9 @@
 #define QUIT_MSG(MSG, ...)                                                                                                  \
     do {                                                                                                                    \
         DEBUG_PRINTF(MSG, ##__VA_ARGS__)                                                                                    \
-        fprintf(stderr, "[FATAL ERROR] : ");                                                                                \
+        fprintf(stderr, "[FATAL ERROR] ");                                                                                \
         fprintf(stderr, MSG, ## __VA_ARGS__);                                                                               \
+        perror(NULL);                                                                                                       \
         exit(EXIT_FAILURE);                                                                                                 \
     }while(0);
 
