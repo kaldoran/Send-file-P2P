@@ -9,7 +9,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <openssl/sha.h>
- 
+
+#include "file.h"
 #include "error.h"
 
 void createNDex(char* ip, int port, long long packSize, char* fileName) {
