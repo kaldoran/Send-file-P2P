@@ -8,7 +8,7 @@ echo -e "\nClient : \n";
 echo -e "\nServer : \n";
 (cd ./Server && make $1);
 
-if ( [ $1 != "clean" ] ); then 
+if ( [ "$1" != "clean" ] ); then 
 	if ( [ -e "./Server/BIN/Server" ] && [ -e "./Client/BIN/Client" ] ); then
 		./Server/BIN/Server
 		./Client/BIN/Client
