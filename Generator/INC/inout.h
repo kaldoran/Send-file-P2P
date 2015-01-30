@@ -19,3 +19,8 @@ int askPortBoss();
  * 
  */
 int askSizePack();
+
+/** Function to empty the stdin buffer.
+ * 
+ */
+void emptyBuffer();

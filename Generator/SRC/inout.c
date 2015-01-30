@@ -8,16 +8,29 @@
 #include "verification.h"
 
 
-char* askIpBoss(){	
-	
+char* askIpBoss() {
+    char* ip;
+
+    do {
+        printf("What is the IP adress of the boss ?");
+        scanf("%15s",&ip);
+        emptyBuffer();
+    } while(verifIpBoss(ip));
 }
 
 
-int askPortBoss(){	
-	
+int askPortBoss() {	
+
 }
 
 
-int askSizePack(){	
-	
+int askSizePack() {	
+
+}
+
+void emptyBuffer() {
+    int c = 0;
+    while (c != '\n' && c != EOF) {
+        c = getchar();
+    }
 }
