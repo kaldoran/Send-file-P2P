@@ -6,19 +6,19 @@
 
 
 /** Function to ask the boss' ip for an index.
- * 
+ *  %return : Boss' IP adress.
  */
-char* askIpBoss();
+char* askBossIp();
 
 /** Function to ask the boss' port for an index.
- * 
+ *  %return : Boss' port.
  */
-int askPortBoss();
+int askBossPort();
 
-/** Function to ask the packet size for an index.
- * 
+/** Function to ask the volumes' size for an index.
+ *  %return : Volumes' size.
  */
-int askSizePack();
+int askVolSize();
 
 /** Function to empty the stdin buffer.
  * 

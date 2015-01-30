@@ -8,23 +8,36 @@
 #include "verification.h"
 
 
-char* askIpBoss() {
+char* askBossIp() {
     char* ip;
 
     do {
-        printf("What is the IP adress of the boss ?");
+        printf("What is the IP adress of the boss ?\n");
         scanf("%15s",&ip);
         emptyBuffer();
-    } while(verifIpBoss(ip));
+    } while(verifBossIp(ip));
 }
 
 
-int askPortBoss() {	
+int askBossPort() {
+	int port;
 
+	do {
+		printf("What is the port to connect to ?\n");
+        scanf("%d",&port);
+        emptyBuffer();
+    } while(verifBossPort(port));
 }
 
 
-int askSizePack() {	
+int askVolSize() {
+	int size;
+
+	do {
+		printf("What size do you want the volumes to be ?\n");
+        scanf("%d",&size);
+        emptyBuffer();
+    } while(verifVolSize(size));
 
 }
 
