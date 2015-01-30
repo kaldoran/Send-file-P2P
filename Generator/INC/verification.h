@@ -4,7 +4,7 @@
 // DATE : 30/01/15                                           |
 //----------------------------------------------------------
 
-#import "boolean.h"
+#include "boolean.h"
 
 
 /**	Funtion to verify the user imput for the boss' IP.

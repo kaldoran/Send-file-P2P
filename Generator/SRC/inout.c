@@ -6,39 +6,48 @@
 
 #include <stdio.h>
 #include "verification.h"
+#include "inout.h"
 
 
 char* askBossIp() {
-    char* ip;
+    char* ip = "";
+    int verif;
 
     do {
         printf("What is the IP adress of the boss ?\n");
-        scanf("%15s",&ip);
+        verif = scanf("%s",ip);
         emptyBuffer();
-    } while(verifBossIp(ip));
+    } while(verif != 1 || !verifBossIp(ip));
+
+	return ip;
 }
 
 
 int askBossPort() {
-	int port;
+	int port ,verif;
 
 	do {
 		printf("What is the port to connect to ?\n");
-        scanf("%d",&port);
+		printf("(From 1024 to 65536)\n");
+        verif = scanf("%d",&port);
         emptyBuffer();
-    } while(verifBossPort(port));
+    } while(verif != 1 || !verifBossPort(port));
+
+    return port;
 }
 
 
 int askVolSize() {
-	int size;
+	int size ,verif;
 
 	do {
 		printf("What size do you want the volumes to be ?\n");
-        scanf("%d",&size);
+		printf("(Size in ko from 8 to 64)\n");
+        verif = scanf("%d",&size);
         emptyBuffer();
-    } while(verifVolSize(size));
+    } while(verif != 1 || !verifVolSize(size));
 
+	return size;
 }
 
 void emptyBuffer() {
