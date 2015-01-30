@@ -1,6 +1,6 @@
 //----------------------------------------------------------
-// AUTEUR : REYNAUD Nicolas                                 |
-// FICHIER : error.h                                        |
+// AUTHOR : REYNAUD Nicolas                                 |
+// FILE : error.h                                           |
 // DATE : 27/01/15                                          |
 //                                                          |
 // - Debug Maccro [C99 Convention]                          |
