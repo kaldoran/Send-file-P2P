@@ -13,7 +13,7 @@
 #include "file.h"
 #include "error.h"
 
-void createNDex(char* ip, int port, long long packSize, char* fileName) {
+void createNDex(char* ip, int port, int packSize, char* fileName) {
 	struct stat buf;
 	int i, j;
 	int nbVolume;
@@ -41,15 +41,15 @@ void createNDex(char* ip, int port, long long packSize, char* fileName) {
 	DEBUG_PRINTF("Boss:%s\n", ip);
 	DEBUG_PRINTF("Port:%d\n", port);
 	DEBUG_PRINTF("File:%s\n", baseName);
-	DEBUG_PRINTF("Size:%lld\n", (long long)buf.st_size);
-	DEBUG_PRINTF("PackSize:%lld\n", packSize);
+	DEBUG_PRINTF("Size:%ld\n", buf.st_size);
+	DEBUG_PRINTF("PackSize:%d\n", packSize);
 	DEBUG_PRINTF("NbVolume:%d\n", nbVolume);
 	
 	fprintf(outputFile, "Boss:%s\n", ip);
 	fprintf(outputFile, "Port:%d\n", port);
 	fprintf(outputFile, "File:%s\n", baseName);
-	fprintf(outputFile, "Size:%lld\n", (long long)buf.st_size);
-	fprintf(outputFile, "PackSize:%lld\n", packSize);
+	fprintf(outputFile, "Size:%ld\n", buf.st_size);
+	fprintf(outputFile, "PackSize:%d\n", packSize);
 	fprintf(outputFile, "NbVolume:%d\n", nbVolume);
 	
 	for ( i = 1; i <= nbVolume; i++ ) {
