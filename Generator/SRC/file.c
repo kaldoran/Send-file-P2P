@@ -38,12 +38,12 @@ void createNDex(char* ip, int port, long long packSize, char* fileName) {
 	
 	nbVolume = floor(buf.st_size / packSize) + 1;
 
-	DEBUG_PRINTF("Boss:%s\n", ip);
-	DEBUG_PRINTF("Port:%d\n", port);
-	DEBUG_PRINTF("File:%s\n", baseName);
-	DEBUG_PRINTF("Size:%lld\n", (long long)buf.st_size);
-	DEBUG_PRINTF("PackSize:%lld\n", packSize);
-	DEBUG_PRINTF("NbVolume:%d\n", nbVolume);
+	printf("Boss:%s\n", ip);
+	printf("Port:%d\n", port);
+	printf("File:%s\n", baseName);
+	printf("Size:%lld\n", (long long)buf.st_size);
+	printf("PackSize:%lld\n", packSize);
+	printf("NbVolume:%d\n", nbVolume);
 	
 	fprintf(outputFile, "Boss:%s\n", ip);
 	fprintf(outputFile, "Port:%d\n", port);
@@ -56,16 +56,16 @@ void createNDex(char* ip, int port, long long packSize, char* fileName) {
 	 	if ( fgets ((char*)inbuf, packSize, intputFile) != NULL ) {
 			SHA1(inbuf, sizeof(inbuf), outbuf);
 
-			DEBUG_PRINTF("%d:", i);
+			printf("%d:", i);
 			fprintf(outputFile, "%d:", i);
 			
 			for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
-				DEBUG_PRINTF("%02x", outbuf[j]);
+				printf("%02x", outbuf[j]);
 				fprintf(outputFile, "%02x", outbuf[j]);
 			}
 
+			printf("\n");
 			if ( i != nbVolume ) {
-				DEBUG_PRINTF("\n");
 				fprintf(outputFile, "\n");
 			}
 		}
@@ -75,7 +75,7 @@ void createNDex(char* ip, int port, long long packSize, char* fileName) {
 	fclose(outputFile);
 	
 	
-	printf("File '.ndex' add been generated\n");
+	printf("\n[INFO] : File '.ndex' add been generated\n");
 	
 	
 	return;
