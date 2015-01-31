@@ -4,6 +4,8 @@
 // DATE : 30/01/15                                           |
 //----------------------------------------------------------
 
+#ifndef INOUT_H
+#define INOUT_H
 
 /** Function to ask the boss' ip for an index.
  *  %return : Boss' IP adress.
@@ -24,3 +26,5 @@ int askVolSize();
  * 
  */
 void emptyBuffer();
+
+#endif /* INOUT_H included */

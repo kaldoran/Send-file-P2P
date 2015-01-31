@@ -4,6 +4,9 @@
 // DATE : 30/01/15                                           |
 //----------------------------------------------------------
 
+#ifndef VERIFICATION_H
+#define VERIFICATION_H
+
 #include "boolean.h"
 
 
@@ -30,3 +33,5 @@ bool verifVolSize(int size);
  *  %param string : String to test.
  */
 bool testRegex(char* regex, char* string);
+
+#endif /* VERIFICATION_H included */

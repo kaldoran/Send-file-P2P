@@ -5,17 +5,18 @@
 //----------------------------------------------------------
 
 #include <stdio.h>
+
 #include "verification.h"
 #include "inout.h"
 
 
 char* askBossIp() {
-    char* ip = "";
+    char* ip = NULL;
     int verif;
 
     do {
         printf("What is the IP adress of the boss ?\n");
-        verif = scanf("%s",ip);
+        verif = scanf("%15c",ip);
         emptyBuffer();
     } while(verif != 1 || !verifBossIp(ip));
 
