@@ -10,15 +10,15 @@
 #include "verification.h"
 
 bool verifBossIp(char* ip){
-    return testRegex("^([0-9]{1,3}.){3}[0-9]{1,3}$", ip);
+    return testRegex("((2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(2[0-4][0-9]|[01]?[0-9][0-9])", ip);
 }
 
 bool verifBossPort(int port) {
 	if(port <= 1024){
-		printf("The port must be greater than 1024\n");
+		printf("[ERROR ] : The port must be greater than 1024\n");
 	}
 	else if(port > 65536) {
-		printf("The port must be lower than 65536\n");
+		printf("[ERROR ] : The port must be lower than 65536\n");
 	}
 	else {
 		return TRUE;
@@ -28,10 +28,10 @@ bool verifBossPort(int port) {
 
 bool verifVolSize(int size){
 	if(size < 8){
-		printf("The volumes' size must be greater than 8ko\n");
+		printf("[ERROR ] : The volumes' size must be greater than 8ko\n");
 	}
 	else if(size > 64) {
-		printf("The volumes' size must be lower than 64ko\n");
+		printf("[ERROR ] : The volumes' size must be lower than 64ko\n");
 	}
 	else {
 		return TRUE;
@@ -48,7 +48,7 @@ bool testRegex(char* regex, char* string) {
             valid = TRUE;
         }
     }
-    
+    printf("Valide : %d", valid);
     regfree(&preg);
     return valid;
 }

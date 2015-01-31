@@ -5,18 +5,24 @@
 //----------------------------------------------------------
 
 #include <stdio.h>
+#include <stdlib.h>
 
+#include "error.h"
 #include "verification.h"
 #include "inout.h"
 
 
 char* askBossIp() {
-    char* ip = NULL;
+    char* ip;
     int verif;
+    
+    if ( (ip = calloc(15, sizeof(char))) == NULL ) {
+    	QUIT_MSG("Can't alloc ip");
+    } 
 
     do {
         printf("What is the IP adress of the boss ?\n");
-        verif = scanf("%15c",ip);
+        verif = scanf("%15[^\n]",ip);
         emptyBuffer();
     } while(verif != 1 || !verifBossIp(ip));
 
