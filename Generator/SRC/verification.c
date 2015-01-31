@@ -10,7 +10,7 @@
 #include "verification.h"
 
 bool verifBossIp(char* ip){
-    return testRegex("((2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(2[0-4][0-9]|[01]?[0-9][0-9])", ip);
+    return testRegex("(((2[0-4][0-9])|([01]?[0-9][0-9]?))\\.){3}((2[0-4][0-9])|([01]?[0-9][0-9]?))", ip);
 }
 
 bool verifBossPort(int port) {
@@ -48,7 +48,7 @@ bool testRegex(char* regex, char* string) {
             valid = TRUE;
         }
     }
-    printf("Valide : %d", valid);
+
     regfree(&preg);
     return valid;
 }
