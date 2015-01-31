@@ -1,6 +1,6 @@
 //----------------------------------------------------------
-// AUTEUR : REYNAUD Nicolas                                 |
-// FICHIER : file.c                                         |
+// AUTHOR : REYNAUD Nicolas                                 |
+// FILE : file.c                                            |
 // DATE : 28/01/15                                          |
 //----------------------------------------------------------
 
@@ -13,7 +13,7 @@
 #include "file.h"
 #include "error.h"
 
-void createNDex(char* ip, int port, long long packSize, char* fileName) {
+void createNDex(char* ip, int port, int packSize, char* fileName) {
 	struct stat buf;
 	int i, j;
 	int nbVolume;
@@ -38,18 +38,19 @@ void createNDex(char* ip, int port, long long packSize, char* fileName) {
 	
 	nbVolume = floor(buf.st_size / packSize) + 1;
 
+	packSize *= 1024;
 	printf("Boss:%s\n", ip);
 	printf("Port:%d\n", port);
 	printf("File:%s\n", baseName);
-	printf("Size:%lld\n", (long long)buf.st_size);
-	printf("PackSize:%lld\n", packSize);
+	printf("Size:%ld\n", buf.st_size);
+	printf("PackSize:%d\n", packSize);
 	printf("NbVolume:%d\n", nbVolume);
 	
 	fprintf(outputFile, "Boss:%s\n", ip);
 	fprintf(outputFile, "Port:%d\n", port);
 	fprintf(outputFile, "File:%s\n", baseName);
-	fprintf(outputFile, "Size:%lld\n", (long long)buf.st_size);
-	fprintf(outputFile, "PackSize:%lld\n", packSize);
+	fprintf(outputFile, "Size:%ld\n", buf.st_size);
+	fprintf(outputFile, "PackSize:%d\n", packSize);
 	fprintf(outputFile, "NbVolume:%d\n", nbVolume);
 	
 	for ( i = 1; i <= nbVolume; i++ ) {
