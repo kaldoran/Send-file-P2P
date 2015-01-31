@@ -30,11 +30,14 @@ int main(int argc, char const *argv[]) {
 		usage(argv[0]);
 		exit(EXIT_SUCCESS);
 	}
+	
 	ip = askBossIp();
 	port = askBossPort();
 	volSize = askVolSize();
 	
     createNDex(ip, port, volSize, (char *)argv[1]);
+    
+    free(ip);
    
     exit(EXIT_SUCCESS);
 }

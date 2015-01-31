@@ -36,9 +36,10 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
 		QUIT_MSG("Opening file '.ndex'");
 	}
 	
+	packSize *= 1024;
 	nbVolume = floor(buf.st_size / packSize) + 1;
 
-	packSize *= 1024;
+
 	printf("Boss:%s\n", ip);
 	printf("Port:%d\n", port);
 	printf("File:%s\n", baseName);
