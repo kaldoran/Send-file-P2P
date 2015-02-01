@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include "error.h"
 
@@ -27,6 +28,7 @@ int main(int argc, char const *argv[]) {
     char Rep[80];
     int i, total = 0, n = 0;
     int serveur_socket;
+    char *ret;
 
     int max_socket;
 
@@ -76,7 +78,9 @@ int main(int argc, char const *argv[]) {
 			
 			max_socket = ((sock_client[total] > max_socket) ? sock_client[total] : max_socket);
 			
-			printf("New client [%d]\n", sock_client[total]);
+			printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));
+			printf("port is: %d\n", (int) ntohs(s_client.sin_port));
+			printf("New client [%d]\n\n", sock_client[total]);
 			
 			++total;
 		}
@@ -84,10 +88,20 @@ int main(int argc, char const *argv[]) {
 			for(i = 0; i < total; i++) {
 				if(FD_ISSET(sock_client[i], &rdfs)) {
 					n = read(sock_client[i], Rep, 80);
-				
-					printf("[[INFO] Server] (%d): message recu <%s> [Socket : %d]\n", n, Rep, sock_client[i]);
-					memset(Rep, ' ', 80);
-					FD_CLR(sock_client[i], &rdfs);
+					
+					if ( n == 0 ) {
+						close(sock_client[i]);
+					}
+					else {
+						/* Remove \r and \n */
+						if((ret = strchr(Rep, '\r')) != NULL) *ret = '\0'; 
+						if((ret = strchr(Rep, '\n')) != NULL) *ret = '\0';
+					
+
+					
+						printf("[[INFO] Server] (%d): message recu <%s> [Socket : %d]\n", n, Rep, sock_client[i]);
+					}
+					memset(Rep, '\0', 80);
 				}
 			}
 		}
