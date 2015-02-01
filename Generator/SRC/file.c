@@ -17,7 +17,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
 	struct stat buf;
 	int i, j;
 	int nbVolume;
-	FILE *intputFile = NULL;
+	FILE *inputFile = NULL;
 	FILE *outputFile = NULL;
 	unsigned char inbuf[packSize];
 	unsigned char outbuf[SHA_DIGEST_LENGTH];
@@ -28,7 +28,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
 		QUIT_MSG("Can't stats %s", fileName);
 	}
 	
-	if ( (intputFile = fopen(fileName , "r")) == NULL) {
+	if ( (inputFile = fopen(fileName , "r")) == NULL) {
 		QUIT_MSG("Opening file '%s'", fileName);
 	}
 	
@@ -36,7 +36,6 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
 		QUIT_MSG("Opening file '.ndex'");
 	}
 	
-	packSize *= 1024;
 	nbVolume = floor(buf.st_size / packSize) + 1;
 
 
@@ -55,7 +54,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
 	fprintf(outputFile, "NbVolume:%d\n", nbVolume);
 	
 	for ( i = 1; i <= nbVolume; i++ ) {
-	 	if ( fgets ((char*)inbuf, packSize, intputFile) != NULL ) {
+	 	if ( fgets ((char*)inbuf, packSize, inputFile) != NULL ) {
 			SHA1(inbuf, sizeof(inbuf), outbuf);
 
 			printf("%d:", i);
@@ -72,8 +71,8 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
 			}
 		}
 	}
-	
-	fclose(intputFile);
+
+	fclose(inputFile);
 	fclose(outputFile);
 	
 	

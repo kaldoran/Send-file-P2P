@@ -34,7 +34,7 @@ int main(int argc, char const *argv[]) {
 	ip = askBossIp();
 	port = askBossPort();
 	volSize = askVolSize();
-	
+	volSize *= 1024;
     createNDex(ip, port, volSize, (char *)argv[1]);
     
     free(ip);
