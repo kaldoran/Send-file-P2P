@@ -13,16 +13,18 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <signal.h>
 
 #include "error.h"
 
 #define MAX_CONNEXION 3
 #define PORT 42000
 
+
 int main(int argc, char const *argv[]) {
     (void)(argc);
     (void)(argv);
-
+    
     fd_set rdfs;
 
     char Rep[80];
@@ -57,10 +59,13 @@ int main(int argc, char const *argv[]) {
     
     max_socket = serveur_socket;
         
+    printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");
     for ( ;; ) {
     
         FD_ZERO(&rdfs);
     
+        /* Add stdin for stop server */
+        FD_SET(STDIN_FILENO, &rdfs);
         /* Add the socket f the server */
         FD_SET(serveur_socket, &rdfs);
         
@@ -73,11 +78,15 @@ int main(int argc, char const *argv[]) {
             QUIT_MSG("Can't select\n");
         }
         
-        if(FD_ISSET(serveur_socket, &rdfs)) {
+        if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
+            break;            
+        }
+        else if( FD_ISSET(serveur_socket, &rdfs) ) {
             sock_client[total] = accept(serveur_socket, (struct sockaddr*) &s_client, (socklen_t *) &struct_size);
             
             max_socket = ((sock_client[total] > max_socket) ? sock_client[total] : max_socket);
             
+            send(sock_client[total], "999", 3, 0);
             printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));
             printf("port is: %d\n", (int) ntohs(s_client.sin_port));
             printf("New client [%d]\n\n", sock_client[total]);
@@ -90,15 +99,17 @@ int main(int argc, char const *argv[]) {
                     n = read(sock_client[i], Rep, 80);
                     
                     if ( n == 0 ) {
+                        if ( max_socket == sock_client[i] ) {
+                            max_socket = serveur_socket;
+                        }
                         close(sock_client[i]);
+                        
                     }
                     else {
                         /* Remove \r and \n */
                         if((ret = strchr(Rep, '\r')) != NULL) *ret = '\0'; 
                         if((ret = strchr(Rep, '\n')) != NULL) *ret = '\0';
-                    
-
-                    
+                                      
                         printf("[[INFO] Server] (%d): message recu <%s> [Socket : %d]\n", n, Rep, sock_client[i]);
                     }
                     memset(Rep, '\0', 80);
@@ -112,7 +123,7 @@ int main(int argc, char const *argv[]) {
         close(serveur_socket);
     }
     
-    printf("[[INFO] Server] Welcome to this awesome new project\n");
+    printf("[[INFO] Boss] Welcome to this awesome new project\n");
     
     exit(EXIT_SUCCESS);
 }
