@@ -34,16 +34,16 @@ Index *new_index() {
     return index;
 }
 
-unsigned char **new_sha(int nbPackage) {
+char **new_sha(int nbPackage) {
     int i;
     unsigned char** sha;
     
-    if ( (sha = calloc(nbPackage, sizeof(unsigned char *))) == NULL ) {
+    if ( (sha = calloc(nbPackage, sizeof(char *))) == NULL ) {
         QUIT_MSG("Can't Allocate index->sha");
     }
     
     for ( i = 0; i < nbPackage; i++ ) {
-        if ( (sha[i] = calloc(40, sizeof(unsigned char))) == NULL ) {
+        if ( (sha[i] = calloc(40, sizeof(char))) == NULL ) {
             QUIT_MSG("Can't Allocate index->sha[%d]", i);
         }
     }

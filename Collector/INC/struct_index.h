@@ -17,7 +17,7 @@ typedef struct Index {
     long int fileSize;
     int  packSize;  /* Port pour la connection */
     int nbPackage;
-    unsigned char **sha; /* N package got N Sha1 of 40 length */
+    char **sha; /* N package got N Sha1 of 40 length */
 } Index;
 
 #endif

@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> // For fork and kill
+#include <openssl/sha.h>
+#include <string.h>
 
 #include "boolean.h"
 #include "struct_index.h"
@@ -18,6 +20,24 @@ void usage(const char *name) {
     
     printf("Usage : %s file\n", name);
     
+    return;
+}
+
+void checkFile(FILE* file, Index* index) {
+    
+    unsigned char inbuf[index->packSize];
+    unsigned char outbuf[SHA_DIGEST_LENGTH];
+        
+    for ( i = 1; i <= index->nbPackage; i++ ) {
+        if ( fgets ((char*)inbuf, index->packSize, file) != NULL ) {
+            SHA1(inbuf, sizeof(inbuf), outbuf);
+            
+            if ( strcmp(outbuf, index->sha[i]) == 0 ) {
+                printf("Same\n");
+            }
+        }
+    }
+
     return;
 }
 
@@ -50,9 +70,10 @@ int main(int argc, char const *argv[]) {
     }
     if( access( index->file, R_OK|W_OK ) != -1 ) {
         printf("File exist\n Check integrity\n");   
+        checkFile(file, index);
     }
     else {
-        file = fopen(index->file, "a");
+        file = fopen(index->file, "a+");
         for ( i = 0; i < index->fileSize; i++ ) {
             fprintf(file, "#");
         }        

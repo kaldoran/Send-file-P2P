@@ -16,7 +16,7 @@ char * startWith(char *s1, char *s2);
 
 Index *new_index();
 
-unsigned char **new_sha(int nbPackage);
+char **new_sha(int nbPackage);
 
 void free_index(Index *index);
 
