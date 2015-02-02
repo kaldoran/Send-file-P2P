@@ -5,28 +5,28 @@
 trap control_c SIGINT
 PID=0;
 control_c() {
-	echo -e "\nBye Bye";
-	kill -9 $PID;
-	exit $?;
+    echo -e "\nBye Bye";
+    kill -9 $PID;
+    exit $?;
 }
 
 echo -e "\nClient : \n";
-(cd ./Client && make $1);
+(cd ./Collector && make $1);
 
 echo -e "\nBoss : \n";
 (cd ./Boss && make $1);
 
 if ( [ "$1" != "clean" ] ); then 
-	if ( [ -e "./Boss/BIN/Server" ] && [ -e "./Client/BIN/Client" ] ); then
-		./Boss/BIN/Server &
-		PID=$!;
+    if ( [ -e "./Boss/BIN/Server" ] && [ -e "./Collector/BIN/Client" ] ); then
+        ./Boss/BIN/Server &
+        PID=$!;
 
-	else 
-		echo "Can't launch the Bittorrent program, please re-run 'run.sh' or 'run.sh all'";
-	fi;
+    else 
+        echo "Can't launch the Bittorrent program, please re-run 'run.sh' or 'run.sh all'";
+    fi;
 fi;
 
 while :; do
-	echo -n ".";
-	sleep 5;
+    echo -n ".";
+    sleep 5;
 done;
