@@ -17,7 +17,7 @@ char* askBossIp() {
     int verif;
     
     if ( (ip = calloc(15, sizeof(char))) == NULL ) {
-    	QUIT_MSG("Can't alloc ip");
+        QUIT_MSG("Can't alloc ip");
     } 
 
     do {
@@ -26,16 +26,16 @@ char* askBossIp() {
         emptyBuffer();
     } while(verif != 1 || !verifBossIp(ip));
 
-	return ip;
+    return ip;
 }
 
 
 int askBossPort() {
-	int port ,verif;
+    int port ,verif;
 
-	do {
-		printf("What is the port to connect to ?\n");
-		printf("(From 1024 to 65536)\n");
+    do {
+        printf("What is the port to connect to ?\n");
+        printf("(From 1024 to 65536)\n");
         verif = scanf("%d",&port);
         emptyBuffer();
     } while(verif != 1 || !verifBossPort(port));
@@ -45,16 +45,16 @@ int askBossPort() {
 
 
 int askVolSize() {
-	int size ,verif;
+    int size ,verif;
 
-	do {
-		printf("What size do you want the volumes to be ?\n");
-		printf("(Size in ko from 8 to 64)\n");
+    do {
+        printf("What size do you want the volumes to be ?\n");
+        printf("(Size in ko from 8 to 64)\n");
         verif = scanf("%d",&size);
         emptyBuffer();
     } while(verif != 1 || !verifVolSize(size));
 
-	return size;
+    return size;
 }
 
 void emptyBuffer() {

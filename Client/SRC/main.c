@@ -14,10 +14,10 @@
 #include "index_loader.h"
 
 void usage(const char *name) {
-	
-	printf("Usage : %s file\n", name);
-	
-	return;
+    
+    printf("Usage : %s file\n", name);
+    
+    return;
 }
 
 
@@ -25,14 +25,14 @@ int main(int argc, char const *argv[]) {
 
     
     if ( argc < 2 ) {
-		usage(argv[0]);
-		exit(EXIT_SUCCESS);
-	}
+        usage(argv[0]);
+        exit(EXIT_SUCCESS);
+    }
 
     Index *index = new_index();
-	if ( charger_index(argv[1], index) == FALSE ) {
-		printf("[ERROR] : Can't connect to boss serveur\n" );
-	}
+    if ( charger_index(argv[1], index) == FALSE ) {
+        printf("[ERROR] : Can't connect to boss serveur\n" );
+    }
     printf("[[INFO] Client] Welcome to this awesome new project\n");
     
     free_index(index);

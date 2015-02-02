@@ -11,9 +11,9 @@
 #define RECEIVED 1
 
 #if DEBUG
-	#define AFFICHE(DATA) printf("Recu : %s.\n", (char *)DATA);
+    #define AFFICHE(DATA) printf("Recu : %s.\n", (char *)DATA);
 #else 
-	#define AFFICHE(DATA) ;
+    #define AFFICHE(DATA) ;
 #endif
 
 #include "boolean.h"
