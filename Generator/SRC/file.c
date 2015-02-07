@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 #include <openssl/sha.h>
 
 #include "file.h"
@@ -54,6 +55,9 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
     fprintf(outputFile, "NbVolume:%d\n", nbVolume);
     
     for ( i = 1; i <= nbVolume; i++ ) {
+        
+        memset(inbuf, '\0', packSize); 
+        memset(outbuf, '\0', SHA_DIGEST_LENGTH);
         
         fread ((char*)inbuf, packSize, 1, inputFile);
 

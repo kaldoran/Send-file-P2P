@@ -27,7 +27,8 @@ void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]) {
     int i;
     
     for ( i = 0; i < SHA_DIGEST_LENGTH; i++) {
-         sprintf(outsha + i*2, "%02x", outbuf[i]);
+         sprintf( outsha + i * 2, "%02x", outbuf[i]);
+           
     }
 }
 
@@ -37,18 +38,22 @@ void checkFile(FILE* file, Index* index) {
     int i , j;
     unsigned char inbuf[index->packSize];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
-        
+    
+
     for ( i = 1; i <= index->nbPackage; i++ ) {
-        fread ((char*)inbuf, packSize, 1, file);
+        memset(outbuf, '\0', SHA_DIGEST_LENGTH);
+        memset(inbuf, '\0', index->packSize); 
+        
+        fread ((char*)inbuf, index->packSize, 1, file);
         SHA1(inbuf, sizeof(inbuf), outbuf);
-        
+
         hexToString(outbuf, outsha);
-        for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
-            printf("%02x", outsha[j]);
-        }
+
+        printf("%s\n", outsha);
+        printf("%s\n", index->sha[i-1]);
+        if ( strcmp(outsha, index->sha[i-1]) == 0 ) {
+            printf("Yes !!! \n");
         
-        if ( strcmp(outsha, index->sha[i]) == 0 ) {
-            printf("Same\n");
         }
     }
 

@@ -36,17 +36,19 @@ Index *new_index() {
 
 char **new_sha(int nbPackage) {
     int i;
-    unsigned char** sha;
+    char** sha;
     
     if ( (sha = calloc(nbPackage, sizeof(char *))) == NULL ) {
         QUIT_MSG("Can't Allocate index->sha");
     }
     
     for ( i = 0; i < nbPackage; i++ ) {
-        if ( (sha[i] = calloc(40, sizeof(char))) == NULL ) {
+        if ( (sha[i] = calloc(41, sizeof(char))) == NULL ) {
             QUIT_MSG("Can't Allocate index->sha[%d]", i);
         }
+        memset(sha[i], '\0', 41);
     }
+   
     return sha;
 
 }
@@ -62,16 +64,17 @@ void free_index(Index *index) {
 }
 
 bool charger_index(const char *file, Index *index) {
-    char i[2] = "1:";
+    char i[3] = "1:\0";
     int j = 0;
     char *ret;
-    
+        
     struct hostent *h;
     char ligne_lue[TAILLE_LIGNE];
 
     FILE* fichier = fopen(file, "r");
+    
     while(fgets(ligne_lue, TAILLE_LIGNE, fichier) != NULL){
-
+        
         /* Remove /r and /n */
         if((ret = strchr(ligne_lue, '\r')) != NULL) *ret = '\0'; 
         if((ret = strchr(ligne_lue, '\n')) != NULL) *ret = '\0';
@@ -107,9 +110,10 @@ bool charger_index(const char *file, Index *index) {
             }
         } 
         else {
+           
             if ( (ret = startWith(i, ligne_lue)) != NULL) {
                 j = i[0] - '0';
-                memcpy(index->sha[--j], ret, 40);
+                memcpy(index->sha[--j], ret, 41);
                 i[0]++;
             }
         }
