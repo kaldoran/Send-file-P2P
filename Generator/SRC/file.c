@@ -56,7 +56,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
     for ( i = 1; i <= nbVolume; i++ ) {
         
         fread ((char*)inbuf, packSize, 1, inputFile);
-        printf("%s\n", inbuf);
+
         SHA1(inbuf, sizeof(inbuf), outbuf);
 
         printf("%d:", i);
