@@ -8,7 +8,7 @@ OBJ_DIR = OBJ
 BIN_DIR = BIN
 
 CC = gcc
-CFLAGS = -W -Wall -Wextra -O2 -lm -lrt
+CFLAGS = -W -Wall -Wextra -O2 -lm -lrt -lssl -lcrypto
 BIN = Client
 
 ifeq ($(DEBUG), yes) 

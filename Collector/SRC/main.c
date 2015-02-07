@@ -23,16 +23,30 @@ void usage(const char *name) {
     return;
 }
 
+void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]) {
+    int i;
+    
+    for ( i = 0; i < SHA_DIGEST_LENGTH; i++) {
+         sprintf(outsha + i*2, "%02x", outbuf[i]);
+    }
+}
+
 void checkFile(FILE* file, Index* index) {
     
+    char outsha[40];
+    int i , j;
     unsigned char inbuf[index->packSize];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
         
     for ( i = 1; i <= index->nbPackage; i++ ) {
         if ( fgets ((char*)inbuf, index->packSize, file) != NULL ) {
             SHA1(inbuf, sizeof(inbuf), outbuf);
+            hexToString(outbuf, outsha);
+            for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
+                printf("%02x", outsha[j]);
+            }
             
-            if ( strcmp(outbuf, index->sha[i]) == 0 ) {
+            if ( strcmp(outsha, index->sha[i]) == 0 ) {
                 printf("Same\n");
             }
         }
@@ -69,6 +83,7 @@ int main(int argc, char const *argv[]) {
         printf("Read %d collector information and connect to them, add this to select\n", i);
     }
     if( access( index->file, R_OK|W_OK ) != -1 ) {
+        file = fopen(index->file, "r");
         printf("File exist\n Check integrity\n");   
         checkFile(file, index);
     }
