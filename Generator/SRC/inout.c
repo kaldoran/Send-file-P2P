@@ -49,7 +49,7 @@ int askVolSize() {
 
     do {
         printf("What size do you want the volumes to be ?\n");
-        printf("(Size in ko from 8 to 64)\n");
+        printf("(Size in ko from 8 to 64, both included)\n");
         verif = scanf("%d",&size);
         emptyBuffer();
     } while(verif != 1 || !verifVolSize(size));

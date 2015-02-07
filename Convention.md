@@ -17,7 +17,6 @@
 - Checksum: SHA1 partagé via la version humainement lisible.
 
 ##Connexions
-
 ###Ports
 - Établissement d'une connexion sur un collecteur:
 - Établissement d'une connexion sur un boss:

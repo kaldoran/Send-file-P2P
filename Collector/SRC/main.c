@@ -13,6 +13,7 @@
 
 #include "boolean.h"
 #include "struct_index.h"
+#include "struct_collect.h"
 #include "index_loader.h"
 #include "tcp.h"
 
@@ -58,6 +59,23 @@ void checkFile(FILE* file, Index* index) {
 
     return;
 }
+/*
+ * Structure used to discuss...
+ * */
+void getVolume(int vol_num, int vol_size, Collector* collectors, FILE file){
+    char read[volSize];
+    int i =0;
+    int collector; /* Collector with searched volume's socket id */
+    recv(collector, read, vol_size, 0)
+    fseek(file, (vol_size*vol_num-1), SEEK_SET);
+        
+    fprintf(file, "%s", read);
+}
+
+void getListColl(int nb_coll, char** collectors, Collector* list_coll){
+    /* Allocate the list
+       Ask the volumes of all collectors */
+}
 
 int main(int argc, char const *argv[]) {
 
@@ -95,8 +113,14 @@ int main(int argc, char const *argv[]) {
         file = fopen(index->file, "a+");
         for ( i = 0; i < index->fileSize; i++ ) {
             fprintf(file, "#");
-        }        
+        }
+        
+        for(i = 1; i < index->nbPackage ; ++i){
+            
+        }
     }
+    
+    
     /** 
      * Same code as Boss but before we need to connect to the N other collecteur 
      *  and ask which part they've got 

@@ -105,8 +105,11 @@ bool charger_index(const char *file, Index *index) {
                     memcpy(&index->ip, h->h_addr, h->h_length);
                 }
             }    
-            if ( (ret = startWith("Port:",ligne_lue)) != NULL) {
+            else if ( (ret = startWith("Port:",ligne_lue)) != NULL) {
                 index->port = htons((in_port_t)atoi(ret));
+            }
+            else {
+                QUIT_MSG("[Error] Incorrect Index.");
             }
         } 
         else {
