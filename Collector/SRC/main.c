@@ -28,14 +28,13 @@ void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]) {
     
     for ( i = 0; i < SHA_DIGEST_LENGTH; i++) {
          sprintf( outsha + i * 2, "%02x", outbuf[i]);
-           
     }
 }
 
 void checkFile(FILE* file, Index* index) {
     
+    int i;
     char outsha[40];
-    int i , j;
     unsigned char inbuf[index->packSize];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
     
@@ -52,7 +51,7 @@ void checkFile(FILE* file, Index* index) {
         printf("%s\n", outsha);
         printf("%s\n", index->sha[i-1]);
         if ( strcmp(outsha, index->sha[i-1]) == 0 ) {
-            printf("Yes !!! \n");
+            printf("Index %i is the same.\n");
         
         }
     }
