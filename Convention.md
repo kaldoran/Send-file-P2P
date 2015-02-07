@@ -7,6 +7,7 @@
 ###Messages
 - Demande de connexion à un collecteur:
 - Demande de connexion à un boss:
+- Vérification qu'un collecteur ait toujours le fichier:
 - Demande d'un volume à un collecteur:
 - Demande d'une nouvelle liste à un boss:
 
@@ -18,10 +19,8 @@
 
 ##Connexions
 ###Ports
-- Établissement d'une connexion sur un collecteur:
-- Établissement d'une connexion sur un boss:
-- Réception sur les collecteurs:
-- Réception sur les boss:
+- Établissement d'une connexion sur un collecteur: 47777.
+- Établissement d'une connexion sur un boss: Définit dans l'Index.
 
 ###Limites
 - Nombre de connexions sur un collecteur:
