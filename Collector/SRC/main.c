@@ -39,16 +39,16 @@ void checkFile(FILE* file, Index* index) {
     unsigned char outbuf[SHA_DIGEST_LENGTH];
         
     for ( i = 1; i <= index->nbPackage; i++ ) {
-        if ( fgets ((char*)inbuf, index->packSize, file) != NULL ) {
-            SHA1(inbuf, sizeof(inbuf), outbuf);
-            hexToString(outbuf, outsha);
-            for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
-                printf("%02x", outsha[j]);
-            }
-            
-            if ( strcmp(outsha, index->sha[i]) == 0 ) {
-                printf("Same\n");
-            }
+        fread ((char*)inbuf, packSize, 1, file);
+        SHA1(inbuf, sizeof(inbuf), outbuf);
+        
+        hexToString(outbuf, outsha);
+        for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
+            printf("%02x", outsha[j]);
+        }
+        
+        if ( strcmp(outsha, index->sha[i]) == 0 ) {
+            printf("Same\n");
         }
     }
 

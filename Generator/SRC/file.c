@@ -54,21 +54,22 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
     fprintf(outputFile, "NbVolume:%d\n", nbVolume);
     
     for ( i = 1; i <= nbVolume; i++ ) {
-         if ( fgets ((char*)inbuf, packSize, inputFile) != NULL ) {
-            SHA1(inbuf, sizeof(inbuf), outbuf);
+        
+        fread ((char*)inbuf, packSize, 1, inputFile);
+        printf("%s\n", inbuf);
+        SHA1(inbuf, sizeof(inbuf), outbuf);
 
-            printf("%d:", i);
-            fprintf(outputFile, "%d:", i);
-            
-            for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
-                printf("%02x", outbuf[j]);
-                fprintf(outputFile, "%02x", outbuf[j]);
-            }
+        printf("%d:", i);
+        fprintf(outputFile, "%d:", i);
+        
+        for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
+            printf("%02x", outbuf[j]);
+            fprintf(outputFile, "%02x", outbuf[j]);
+        }
 
-            printf("\n");
-            if ( i != nbVolume ) {
-                fprintf(outputFile, "\n");
-            }
+        printf("\n");
+        if ( i != nbVolume ) {
+            fprintf(outputFile, "\n");
         }
     }
 
