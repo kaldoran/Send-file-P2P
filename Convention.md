@@ -40,22 +40,22 @@
 
 Exemple de conversation : 
 
-( Connexion au boss ) 
+### ( Connexion au boss ) 
 - ListOfCollector
 - 2127.0.0.1            ( Collecteur 1 ) 
 - 1154.454.15.1         ( Collecteur 2 ) 
 - 0157.125.125.125      ( Collecteur 3 ) 
-( Connexion aux collecteurs ) 
-    ( Connexion au collecteur 1 )
+### ( Connexion aux collecteurs ) 
+#### ( Connexion au collecteur 1 )
     - 1,5,15 ( Ici le collecteur 1 à les volumes 1 - 5 et 15 )
     - 2,4,13 (Ici le collecteur local à les volumes 2 - 4 et 13 )
-    ( Connexion au collecteur 2 )
+#### ( Connexion au collecteur 2 )
     - 8,13,15 ( Ici le collecteur 2 à les volumes 8 - 13 et 15)
     - 2,4,13 (Ici le collecteur local à les volumes 2 - 4 et 13 )
-    ( Connexion au collecteur 3 )
+#### ( Connexion au collecteur 3 )
     - Message d'erreur
 ---
-( Echange de volume ) 
+### ( Echange de volume ) 
     ( Collecteur local au collecteur 1 ) 
     - Vol1
     ( Envoi / reception du volume 1 )
@@ -63,7 +63,7 @@ Exemple de conversation :
     - Vol2
     ( Envoi / reception du volume 2 )
 ---
-( Arret ) 
+### ( Arret ) 
     (Collecteur local au collecteur 1 )
     - Stop
     ( Deconnexion du collecteur 1 )
