@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> // For fork and kill
-
+#include <string.h>
 #include "boolean.h"
 #include "struct_index.h"
 #include "struct_collect.h"
@@ -55,7 +55,6 @@ int main(int argc, char const *argv[]) {
         QUIT_MSG("Can't connect to boss : ");
     }
     
-    tcp_action(index->sock, "List", 4, SEND);
     
     tcp_action(index->sock, read, 50, RECEIVED);
     
@@ -73,10 +72,6 @@ int main(int argc, char const *argv[]) {
         file = fopen(index->file, "a+");
         for ( i = 0; i < index->fileSize; i++ ) {
             fprintf(file, "#");
-        }
-        
-        for(i = 1; i < index->nbPackage ; ++i){
-            
         }
     }
     

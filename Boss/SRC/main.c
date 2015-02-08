@@ -86,7 +86,7 @@ int main(int argc, char const *argv[]) {
             
             max_socket = ((sock_client[total] > max_socket) ? sock_client[total] : max_socket);
             
-            send(sock_client[total], "999", 3, 0);
+            send(sock_client[total], "9", 1, 0);
             printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));
             printf("port is: %d\n", (int) ntohs(s_client.sin_port));
             printf("New client [%d]\n\n", sock_client[total]);
@@ -98,6 +98,7 @@ int main(int argc, char const *argv[]) {
                 if(FD_ISSET(sock_client[i], &rdfs)) {
                     n = read(sock_client[i], Rep, 80);
                     
+
                     if ( n == 0 ) {
                         if ( max_socket == sock_client[i] ) {
                             max_socket = serveur_socket;

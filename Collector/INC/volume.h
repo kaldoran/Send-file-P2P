@@ -10,4 +10,4 @@
 
 void getVolume(int volNum, int volSize, Collector* collectors, FILE* file);
 
-void sendVolume(Socket *s, int volNum);
+void sendVolume(Socket *s, int volNum, int volSize, FILE* file) ;
