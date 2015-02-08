@@ -6,6 +6,8 @@
 #ifndef STRUCT_SOCKET_H
 #define STRUCT_SOCKET_H
 
+#include <netdb.h>
+
 typedef struct Socket {
     int id_socket; 
     in_addr_t ip;
