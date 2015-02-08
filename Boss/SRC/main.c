@@ -17,7 +17,7 @@
 
 #include "error.h"
 
-#define MAX_CONNEXION 3
+#define MAX_CONNEXION 1
 #define PORT 42000
 
 
