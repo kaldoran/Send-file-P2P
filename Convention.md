@@ -45,6 +45,7 @@ Exemple de conversation :
 - 2127.0.0.1            ( Collecteur 1 ) 
 - 1154.454.15.1         ( Collecteur 2 ) 
 - 0157.125.125.125      ( Collecteur 3 ) 
+
 ### ( Connexion aux collecteurs ) 
 #### ( Connexion au collecteur 1 )
     - 1,5,15 ( Ici le collecteur 1 à les volumes 1 - 5 et 15 )
