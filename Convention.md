@@ -54,7 +54,7 @@ Exemple de conversation :
     - 2,4,13 (Ici le collecteur local à les volumes 2 - 4 et 13 )
     ( Connexion au collecteur 3 )
     - Message d'erreur
-
+---
 ( Echange de volume ) 
     ( Collecteur local au collecteur 1 ) 
     - Vol1
@@ -62,7 +62,7 @@ Exemple de conversation :
     ( Collecteur 1 au collecteur local ) 
     - Vol2
     ( Envoi / reception du volume 2 )
-
+---
 ( Arret ) 
     (Collecteur local au collecteur 1 )
     - Stop
