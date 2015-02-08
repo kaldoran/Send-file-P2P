@@ -14,6 +14,7 @@
 #include "file.h"
 #include "error.h"
 
+
 void createNDex(char* ip, int port, int packSize, char* fileName) {
     struct stat buf;
     int i, j;
@@ -29,11 +30,11 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
         QUIT_MSG("Can't stats %s", fileName);
     }
     
-    if ( (inputFile = fopen(fileName , "r")) == NULL) {
+    if ( (inputFile = fopen(fileName, "r")) == NULL) {
         QUIT_MSG("Opening file '%s'", fileName);
     }
     
-    if ( (outputFile = fopen(".ndex", "w+")) == NULL ) {
+    if ( (outputFile = fopen("output.ndex", "w+")) == NULL ) {
         QUIT_MSG("Opening file '.ndex'");
     }
     

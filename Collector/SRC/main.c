@@ -52,7 +52,7 @@ void checkFile(FILE* file, Index* index) {
         printf("%s\n", outsha);
         printf("%s\n", index->sha[i-1]);
         if ( strcmp(outsha, index->sha[i-1]) == 0 ) {
-            printf("Index %i is the same.\n");
+            printf("Index %i is the same.\n", i);
         
         }
     }
@@ -62,17 +62,22 @@ void checkFile(FILE* file, Index* index) {
 /*
  * Structure used to discuss...
  * */
-void getVolume(int vol_num, int vol_size, Collector* collectors, FILE file){
+void getVolume(int volNum, int volSize, Collector* collectors, FILE* file){
+    (void) collectors; 
     char read[volSize];
-    int i =0;
+
     int collector; /* Collector with searched volume's socket id */
-    recv(collector, read, vol_size, 0)
-    fseek(file, (vol_size*vol_num-1), SEEK_SET);
+    recv(collector, read, volSize, 0);
+    
+    fseek(file, (volSize*volNum-1), SEEK_SET);
         
     fprintf(file, "%s", read);
 }
 
-void getListColl(int nb_coll, char** collectors, Collector* list_coll){
+void getListColl(int nbColl, char** collectors, Collector* listColl){
+    (void) nbColl;
+    (void) collectors;
+    (void) listColl;
     /* Allocate the list
        Ask the volumes of all collectors */
 }
@@ -93,17 +98,17 @@ int main(int argc, char const *argv[]) {
         printf("[ERROR] : Can't connect to boss serveur\n" );
     }
     
-    new_socket(index);
-    tcp_start(index);
+    tcp_start(index->sock);
     
-    tcp_action(index, "List", 4, SEND);
+    tcp_action(index->sock, "List", 4, SEND);
     
-    tcp_action(index, read, 50, RECEIVED);
+    tcp_action(index->sock, read, 50, RECEIVED);
     
     nbCollector = atoi(read);
     for ( i = 0; i < nbCollector; i++ ) {
         printf("Read %d collector information and connect to them, add this to select\n", i);
     }
+    
     if( access( index->file, R_OK|W_OK ) != -1 ) {
         file = fopen(index->file, "r");
         printf("File exist\n Check integrity\n");   

@@ -10,6 +10,7 @@
 
 #include "boolean.h"
 #include "index_loader.h"
+#include "tcp.h"
 #include "error.h"
 
 char *startWith(char *s1, char *s2) {
@@ -28,7 +29,7 @@ Index *new_index() {
     if ((index = calloc(1, sizeof *index)) == NULL) {
         QUIT_MSG("Can't Allocate index");
     }
-    
+    index->sock = new_socket();
     index->nbPackage = -1;
     
     return index;
@@ -55,6 +56,8 @@ char **new_sha(int nbPackage) {
 
 void free_index(Index *index) {
     int i;
+    
+    free_socket(index->sock);
     
     for ( i = 0; i < index->nbPackage; i++ ) {
         free(index->sha[i]);
@@ -102,11 +105,11 @@ bool charger_index(const char *file, Index *index) {
                     return FALSE; /* Can't connect */
                 }
                 else {
-                    memcpy(&index->ip, h->h_addr, h->h_length);
+                    memcpy(&index->sock->ip, h->h_addr, h->h_length);
                 }
             }    
             else if ( (ret = startWith("Port:",ligne_lue)) != NULL) {
-                index->port = htons((in_port_t)atoi(ret));
+                index->sock->port = htons((in_port_t)atoi(ret));
             }
             else {
                 QUIT_MSG("[Error] Incorrect Index.");
