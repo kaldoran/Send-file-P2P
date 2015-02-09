@@ -10,7 +10,7 @@
 typedef struct Collector {
     int id_socket;
     int nb_volumes;
-    int* volumes;
+    char* volumes;
 } Collector;
 
 #endif

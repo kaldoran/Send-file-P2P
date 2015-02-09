@@ -13,7 +13,7 @@
 
 #include "boolean.h"
 #include "struct_index.h"
-#include "struct_collect.h"
+#include "collectors.h"
 #include "index_loader.h"
 #include "tcp.h"
 
@@ -67,7 +67,7 @@ void getVolume(int vol_num, int vol_size, Collector* collectors, FILE file){
     int i =0;
     int collector; /* Collector with searched volume's socket id */
     recv(collector, read, vol_size, 0)
-    fseek(file, (vol_size*vol_num-1), SEEK_SET);
+    fseek(file, (vol_size*vol_num), SEEK_SET);
         
     fprintf(file, "%s", read);
 }
