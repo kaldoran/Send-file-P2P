@@ -11,7 +11,7 @@
 #include <string.h>
 #include "boolean.h"
 #include "struct_index.h"
-#include "struct_collect.h"
+#include "collectors.h"
 #include "index_loader.h"
 #include "verification.h"
 #include "tcp.h"

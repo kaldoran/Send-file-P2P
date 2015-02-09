@@ -11,6 +11,7 @@ typedef struct Collector {
     Socket sock;
     int nb_volumes;
     char* volumes; /* Finally a boolean array but in char, as char is on 1 octet */
+
 } Collector;
 
 #endif
