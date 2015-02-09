@@ -6,7 +6,7 @@
 #ifndef STRUCT_CLIENT_H
 #define STRUCT_CLIENT_H
 
-#define MAX_CONNEXION 1
+#define MAX_CONNEXION 2
 
 typedef struct Client {
     int id_socket; 
