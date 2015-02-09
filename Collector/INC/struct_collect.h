@@ -8,9 +8,10 @@
 #define STRUCT_COLLECT_H
 
 typedef struct Collector {
-    int id_socket;
+    Socket sock;
     int nb_volumes;
-    char* volumes;
+    char* volumes; /* Finally a boolean array but in char, as char is on 1 octet */
+
 } Collector;
 
 #endif

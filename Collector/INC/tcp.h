@@ -17,13 +17,15 @@
 #endif
 
 #include "boolean.h"
-#include "struct_index.h"
+#include "struct_socket.h"
 
 
-void new_socket(Index *index);
+Socket* new_socket();
 
-bool tcp_start(Index *index);
+void free_socket(Socket *s);
 
-int tcp_action(Index *index, void *data, int data_length, int type);
+bool tcp_start(Socket *s);
+
+int tcp_action(Socket *s, void *data, int data_length, int type);
 
 #endif /* TCP_H included */

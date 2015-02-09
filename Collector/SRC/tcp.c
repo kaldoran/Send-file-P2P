@@ -17,38 +17,45 @@
 #include "error.h"
 
     
-void new_socket(Index *index) {
-
-    index->id_socket = socket(AF_INET,SOCK_STREAM,0); 
+Socket* new_socket() {
+    Socket* s = calloc(1 , sizeof(*s));
     
-    if (index->id_socket == -1) {
+    s->id_socket = socket(AF_INET,SOCK_STREAM,0); 
+    
+    if (s->id_socket == -1) {
         QUIT_MSG("Can't create the socket");
     }
+    
+    return s;
 }
 
-bool tcp_start(Index *index) {
+void free_socket(Socket *s) {
+    free(s);
+}
+
+bool tcp_start(Socket *s) {
     struct sockaddr_in serv;
     size_t serv_length = sizeof(serv);
     
     memset(&serv, 0, serv_length);
     serv.sin_family = AF_INET;
-    serv.sin_port = index->port;
-    serv.sin_addr.s_addr = index->ip;
+    serv.sin_port = s->port;
+    serv.sin_addr.s_addr = s->ip;
 
-    if (connect(index->id_socket, (struct sockaddr *)&serv, serv_length) < 0){
-        close(index->id_socket);
+    if (connect(s->id_socket, (struct sockaddr *)&serv, serv_length) < 0){
+        close(s->id_socket);
         return FALSE;
     }
     
     return TRUE;
 }
 
-int tcp_action(Index *index, void *data, int data_length, int type) {
+int tcp_action(Socket *s, void *data, int data_length, int type) {
     
     if ( type == SEND ) 
-        return send(index->id_socket, data, data_length, 0);
+        return send(s->id_socket, data, data_length, 0);
     else if ( type == RECEIVED ) {
-        return recv(index->id_socket, data, data_length, 0);
+        return recv(s->id_socket, data, data_length, 0);
     }
     else 
         return -1;
