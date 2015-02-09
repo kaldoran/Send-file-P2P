@@ -15,11 +15,7 @@ Collector* new_collect(int nb_vol, char* ip_coll){
         QUIT_MSG("Can't Allocate Collector");
     }
     
-    collect->id_socket = socket(AF_INET,SOCK_STREAM,0); 
-    
-    if (index->id_socket == -1) {
-        QUIT_MSG("Can't create the socket");
-    }
+    collect->sock = new_socket();
     
     if ((collect->volumes = calloc(nb_vol, sizeof char)) == NULL) {
         QUIT_MSG("Can't Allocate Collector's volume list");
