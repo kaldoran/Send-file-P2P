@@ -9,77 +9,74 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 #include <signal.h>
 
 #include "error.h"
-#include "struct_socket.h"
+#include "client.h"
+#include "server.h"
+#include "struct_client.h"
 
-#define MAX_CONNEXION 1
-#define PORT 42000
-#define NB_MAX_COLLECTOR 10
+#define NB_MAX_COLLECTOR 9
 
-int initServerSocket() {
-    int struct_size, serveur_socket;
-    struct sockaddr_in s_serveur;
-    struct_size = sizeof(struct sockaddr_in);
-        
-    s_serveur.sin_family = AF_INET;
-    s_serveur.sin_addr.s_addr = INADDR_ANY;
-    s_serveur.sin_port = htons(PORT);    
+void removeEndCarac(char *input) {
+    char *ret;
     
-    if ( (serveur_socket = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-        QUIT_MSG("Can't create the socket : ");
-    }
-
-    if ( bind(serveur_socket, (struct sockaddr *)&s_serveur, struct_size) == -1){
-        QUIT_MSG("Can't bind the socket : ");
-    }
-    
-    /* Hey listen */
-    if ( listen(serveur_socket,MAX_CONNEXION) == -1 ){
-        QUIT_MSG("Socket listen trouble : ");
-    }
-    
-    return serveur_socket;
+    if((ret = strchr(input, '\r')) != NULL) *ret = '\0'; 
+    if((ret = strchr(input, '\n')) != NULL) *ret = '\0';
 }
 
-Client *allocClient(int number) {
-    Client *client;
-    
-    if ( (client = calloc(number, sizeof(client))) == NULL ) {
-        QUIT_MSG("Can't allocate memory for client");
-    }
+void sendCollector(Client *client, int number, int total) {
+    int i, j, pourcent;
+    char outBuf[16];
+    i = 0; j = 0;
 
-    return client;
+    pourcent = (int)((float)number / (float)total * 100.);
+    printf("Random : %d - Val : %d\n", number, pourcent);
+    
+    while( j != number ) {
+        if ( rand() % 100 <= pourcent ) {
+            memset(outBuf, '\0', 16);
+            
+            printf("Send the : %d", i);
+            
+            sprintf(outBuf, " %s", client[i].ip);
+            outBuf[0] = (char)( ((int) '0') + i );
+            
+            send(client[i].id_socket, outBuf, 16, 0);
+            ++j;
+        }
+        
+        if ( ++i > total ) { i = 0; }
+    }
+    
+    return;
 }
 
 int main(int argc, char const *argv[]) {
     (void)(argc);
     (void)(argv);
-    
+    srand(time(NULL));
     fd_set rdfs;
     int random;
     
-    char *ret;
     char inBuf[20];
     Client *client;
-    struct sockaddr_in s_client;
-    int struct_size = sizeof(struct sockaddr_in);
-    int i, j, total = 0;
-    
+
+    int i, total = 0;
+
     struct timeval tval;
-    int serveur_socket, max_socket;
+    int server_socket, max_socket;
     
     tval.tv_sec  = 60;
     tval.tv_usec = 0; 
 
-    serveur_socket = initServerSocket();
+    server_socket = initServer();
     client = allocClient(MAX_CONNEXION);
-    max_socket = serveur_socket;
+    max_socket = server_socket;
         
     printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");
     for ( ;; ) {
@@ -89,7 +86,7 @@ int main(int argc, char const *argv[]) {
         /* Add stdin for stop server */
         FD_SET(STDIN_FILENO, &rdfs);
         /* Add the socket f the server */
-        FD_SET(serveur_socket, &rdfs);
+        FD_SET(server_socket, &rdfs);
         
         /* Add socket of each client */
         for(i = 0; i < total; i++) {
@@ -108,60 +105,32 @@ int main(int argc, char const *argv[]) {
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;            
         }
-        else if( FD_ISSET(serveur_socket, &rdfs) ) {
-            client[total].id_socket = accept(serveur_socket, (struct sockaddr*) &s_client, (socklen_t *)&struct_size);
-            
-            max_socket = ((client[total].id_socket > max_socket) ? client[total].id_socket : max_socket);
-            strcpy(client[total].ip, inet_ntoa(s_client.sin_addr));
-            
-            printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));
-            printf("port is: %d\n", (int) ntohs(s_client.sin_port));
-            printf("New client [%d]\n\n", client[total].id_socket);
-            
-            ++total;
+        else if( FD_ISSET(server_socket, &rdfs) ) {
+            if ( total == MAX_CONNEXION ) {
+                printf("I'm So full\n");
+            } 
+            else {
+                max_socket = acceptClient(client, server_socket, &total, max_socket);
+            }
         }
         else {    /* A client wrote something */    
             for(i = 0; i < total; i++) {
                 if(FD_ISSET(client[i].id_socket, &rdfs)) {                   
 
                     if ( read(client[i].id_socket, inBuf, 80) == 0 ) {
-                        if ( max_socket == client[i].id_socket ) {
-                            max_socket = serveur_socket;
-                        }
-                        
-                        printf("Close : %d\n", client[i].id_socket);
-                        close(client[i].id_socket);
-                        memmove(client + i, client + i + 1, (total - i - 1) * sizeof(Client));
-                        
+                        max_socket = removeClient(client, i, &total, max_socket );
                     }
                     else {
                         /* Remove \r and \n */
-                        if((ret = strchr(inBuf, '\r')) != NULL) *ret = '\0'; 
-                        if((ret = strchr(inBuf, '\n')) != NULL) *ret = '\0';
+                        removeEndCarac(inBuf);
                                       
                         printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, client[i].id_socket);
                         
                         if ( strcmp(inBuf, "ListOfCollector") == 0 ) {
-                            random = rand() % NB_MAX_COLLECTOR ;
-                            if ( random > total ) {
-                                random = total;
-                            }
-
-                            i = 0; j = 0;
-                            printf("Random : %d\n", random);
-                            while( j != random ) {
-                                if ( rand() % 100 < (random / total * 100) ) {
-                                    printf("Value : %d", i);
-                                    ++j;
-                                    send(client[i].id_socket, client[i].ip, 15, 0);
-                                }
-                                
-                                if ( ++i > total ) {
-                                    i = 0;
-                                }
-                            }
-
-                        
+                            random = (rand() % NB_MAX_COLLECTOR) + 1;
+                            if ( random > total ) { random = total; }
+                            
+                            sendCollector(client, random, total);              
                         }
                     }
                     memset(inBuf, '\0', 80);
@@ -170,11 +139,7 @@ int main(int argc, char const *argv[]) {
         }
     }
     
-    for(i = 0; i < total; i++) {
-        close(client[i].id_socket);
-    }
-    close(serveur_socket);
-    free(client);
+    closeServer(client, server_socket, total);
     
     printf("[[INFO] Boss] Welcome to this awesome new project\n");
     
