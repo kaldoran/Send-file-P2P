@@ -18,6 +18,7 @@
 #include "error.h"
 #include "client.h"
 #include "server.h"
+#include "boolean.h"
 #include "struct_client.h"
 
 #define NB_MAX_COLLECTOR 9
@@ -35,6 +36,8 @@ int main(int argc, char const *argv[]) {
     (void)(argv);
     srand(time(NULL));
     fd_set rdfs;
+    bool flag;
+
     int random;
     
     char inBuf[20];
@@ -45,9 +48,10 @@ int main(int argc, char const *argv[]) {
     struct timeval tval;
     int server_socket, max_socket;
     
-    tval.tv_sec  = 60;
+    tval.tv_sec  = 10;
     tval.tv_usec = 0; 
 
+    flag = FALSE;
     server_socket = initServer();
     client = allocClient(MAX_CONNEXION);
     max_socket = server_socket;
@@ -57,14 +61,11 @@ int main(int argc, char const *argv[]) {
     
         FD_ZERO(&rdfs);
     
-        /* Add stdin for stop server */
-        FD_SET(STDIN_FILENO, &rdfs);
-        /* Add the socket f the server */
-        FD_SET(server_socket, &rdfs);
+        FD_SET(STDIN_FILENO, &rdfs);                    /* Add stdin for stop server */
+        FD_SET(server_socket, &rdfs);                   /* Add the socket f the server */
         
-        /* Add socket of each client */
         for(i = 0; i < total; i++) {
-             FD_SET(client[i].id_socket, &rdfs);
+             FD_SET(client[i].id_socket, &rdfs);        /* Add socket of each client */
         }
         
         if( (i = select(max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
@@ -73,7 +74,20 @@ int main(int argc, char const *argv[]) {
         
         if ( i == 0 ) {
             printf("Time Reach\n");
-            tval.tv_sec  = 60;
+            tval.tv_sec  = 10;
+            if ( total != 0 ) {
+                if ( flag == FALSE ) {
+                    flag = TRUE;
+                    for ( i = 0; i < total; i++ ) {
+                        send(client[i].id_socket, "ping", 4, 0);
+                    }
+                    tval.tv_sec  = 1;
+                }
+                else {
+                    printf("Check which of them as answer !\n");
+                    flag = FALSE;
+                }
+            }
         }
         
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
@@ -99,7 +113,10 @@ int main(int argc, char const *argv[]) {
                             random = (rand() % NB_MAX_COLLECTOR) + 1;
                             if ( random > total ) { random = total; }
                             
-                            sendClient(client, random, total);              
+                            sendClient(client, random, total, i);              
+                        }
+                        else if ( strcmp(inBuf, "Pong") == 0 ) {
+                            printf("Pong received !\n");
                         }
                     }
                     memset(inBuf, '\0', 80);
