@@ -57,25 +57,25 @@ int acceptClient(Client *client, int const server_socket, int *total, int const 
     return new_max_socket;
 }
 
-void sendClient(Client *client, int number, int total) {
-    int i, j, pourcent;
+void sendClient(Client *client, int number, int total, int to) {
+    int i, pourcent;
     char outBuf[16];
-    i = 0; j = 0;
+    i = 0;
 
     pourcent = (int)((float)number / (float)total * 100.);
     printf("Random : %d - Val : %d\n", number, pourcent);
-    
-    while( j != number ) {
+    --number;
+    while( number >= 0) {
         if ( rand() % 100 <= pourcent ) {
             memset(outBuf, '\0', 16);
             
             printf("Send the : %d\n", i);
             
             sprintf(outBuf, " %s", client[i].ip);
-            outBuf[0] = (char)( ((int) '0') + i );
+            outBuf[0] = (char)( ((int) '0') + number );
             
-            send(client[i].id_socket, outBuf, 16, 0);
-            ++j;
+            send(client[to].id_socket, outBuf, 16, 0);
+            --number;
         }
         
         if ( ++i > total ) { i = 0; }
