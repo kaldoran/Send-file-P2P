@@ -6,6 +6,8 @@
 #ifndef STRUCT_CLIENT_H
 #define STRUCT_CLIENT_H
 
+#define MAX_CONNEXION 1
+
 typedef struct Client {
     int id_socket; 
     char ip[15];

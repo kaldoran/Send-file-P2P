@@ -9,8 +9,6 @@
 
 #include "struct_client.h"
 
-#define MAX_CONNEXION 1
-
 int initServer();
 
 void closeServer(Client *client, int server_socket, int const total);

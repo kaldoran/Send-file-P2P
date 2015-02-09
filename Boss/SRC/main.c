@@ -29,32 +29,6 @@ void removeEndCarac(char *input) {
     if((ret = strchr(input, '\n')) != NULL) *ret = '\0';
 }
 
-void sendCollector(Client *client, int number, int total) {
-    int i, j, pourcent;
-    char outBuf[16];
-    i = 0; j = 0;
-
-    pourcent = (int)((float)number / (float)total * 100.);
-    printf("Random : %d - Val : %d\n", number, pourcent);
-    
-    while( j != number ) {
-        if ( rand() % 100 <= pourcent ) {
-            memset(outBuf, '\0', 16);
-            
-            printf("Send the : %d", i);
-            
-            sprintf(outBuf, " %s", client[i].ip);
-            outBuf[0] = (char)( ((int) '0') + i );
-            
-            send(client[i].id_socket, outBuf, 16, 0);
-            ++j;
-        }
-        
-        if ( ++i > total ) { i = 0; }
-    }
-    
-    return;
-}
 
 int main(int argc, char const *argv[]) {
     (void)(argc);
@@ -106,12 +80,7 @@ int main(int argc, char const *argv[]) {
             break;            
         }
         else if( FD_ISSET(server_socket, &rdfs) ) {
-            if ( total == MAX_CONNEXION ) {
-                printf("I'm So full\n");
-            } 
-            else {
-                max_socket = acceptClient(client, server_socket, &total, max_socket);
-            }
+            max_socket = acceptClient(client, server_socket, &total, max_socket );
         }
         else {    /* A client wrote something */    
             for(i = 0; i < total; i++) {
@@ -130,7 +99,7 @@ int main(int argc, char const *argv[]) {
                             random = (rand() % NB_MAX_COLLECTOR) + 1;
                             if ( random > total ) { random = total; }
                             
-                            sendCollector(client, random, total);              
+                            sendClient(client, random, total);              
                         }
                     }
                     memset(inBuf, '\0', 80);
