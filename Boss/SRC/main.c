@@ -74,7 +74,7 @@ int main(int argc, char const *argv[]) {
     struct timeval tval;
     int serveur_socket, max_socket;
     
-    tval.tv_sec  = 1;
+    tval.tv_sec  = 60;
     tval.tv_usec = 0; 
 
     serveur_socket = initServerSocket();
@@ -102,7 +102,7 @@ int main(int argc, char const *argv[]) {
         
         if ( i == 0 ) {
             printf("Time Reach\n");
-            tval.tv_sec  = 1;
+            tval.tv_sec  = 60;
         }
         
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
