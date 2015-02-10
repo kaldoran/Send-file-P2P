@@ -51,7 +51,7 @@ int main(int argc, char const *argv[]) {
     struct timeval tval;
 
     
-    tval.tv_sec  = 10;
+    tval.tv_sec  = 300;
     tval.tv_usec = 0; 
     
     block_group = newBlockGroup();
@@ -78,7 +78,7 @@ int main(int argc, char const *argv[]) {
         
         if ( i == 0 ) {
             printf("Time Reach\n");
-            tval.tv_sec  = 10;
+            tval.tv_sec  = 300;
             if ( block_group->total != 0 ) {
                 for(i = 0; i < block_group->total; i++) {
                     if ( block_group->groups[i]->flag == FALSE ) {

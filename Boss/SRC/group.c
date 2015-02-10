@@ -62,7 +62,7 @@ int existGroup( blockGroup* block_group, char* const filename ) {
     int i; 
     
     for ( i = 0; i < block_group->total; i++ ) {
-        if ( strcmp(block_group->groups[i]->name, filename) ) {
+        if ( strcmp(block_group->groups[i]->name, filename) == 0 ) {
             return i;
         }
     }
