@@ -113,7 +113,7 @@ int main(int argc, char const *argv[]) {
                             random = (rand() % NB_MAX_COLLECTOR) + 1;
                             if ( random > total ) { random = total; }
                             
-                            sendClient(client, random, total, i);              
+                            sendClient(client, --random, total, i);              
                         }
                         else if ( strcmp(inBuf, "Pong") == 0 ) {
                             printf("Pong received !\n");

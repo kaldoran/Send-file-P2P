@@ -55,7 +55,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
     fprintf(outputFile, "PackSize:%d\n", packSize);
     fprintf(outputFile, "NbVolume:%d\n", nbVolume);
     
-    for ( i = 1; i <= nbVolume; i++ ) {
+    for ( i = 0; i < nbVolume; ) {
         
         memset(inbuf, '\0', packSize); 
         memset(outbuf, '\0', SHA_DIGEST_LENGTH);
@@ -73,7 +73,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
         }
 
         printf("\n");
-        if ( i != nbVolume ) {
+        if ( ++i != nbVolume ) {
             fprintf(outputFile, "\n");
         }
     }

@@ -64,7 +64,7 @@ void sendClient(Client *client, int number, int total, int to) {
 
     pourcent = (int)((float)number / (float)total * 100.);
     printf("Random : %d - Val : %d\n", number, pourcent);
-    --number;
+
     while( number >= 0) {
         if ( rand() % 100 <= pourcent ) {
             memset(outBuf, '\0', 16);
