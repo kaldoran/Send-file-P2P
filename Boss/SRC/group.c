@@ -14,7 +14,7 @@
 Group* newGroup(char* const filename) {
     Group* group;
     
-    if ( (group = calloc(1, sizeof(group))) == NULL ) {
+    if ( (group = calloc(1, sizeof(*group))) == NULL ) {
         QUIT_MSG("Can't allocate memory for group : ");
     }
     
@@ -46,6 +46,8 @@ int addGroup( blockGroup* block_group, char* const filename ) {
             printf("Can't Create another group \n");
             return -1;
         } 
+        
+        DEBUG_MSG("Add another group for %s\n", filename);
         
         pos = block_group->total;
         block_group->groups[block_group->total] = newGroup(filename);

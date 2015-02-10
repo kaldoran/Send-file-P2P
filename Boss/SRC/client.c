@@ -18,7 +18,7 @@
 Client *newClient(int const number) {
     Client *client;
     
-    if ( (client = calloc(number, sizeof(client))) == NULL ) {
+    if ( (client = calloc(number, sizeof(*client))) == NULL ) {
         QUIT_MSG("Can't allocate memory for client");
     }
 

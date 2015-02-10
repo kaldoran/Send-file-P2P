@@ -7,6 +7,8 @@
 #ifndef STRUCT_COLLECT_H
 #define STRUCT_COLLECT_H
 
+#include "struct_socket.h"
+
 typedef struct Collector {
     Socket *sock;
     int nb_volumes;

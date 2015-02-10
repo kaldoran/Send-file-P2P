@@ -4,21 +4,24 @@
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
 
+#include <stdlib.h>
+#include <string.h>
 
+#include "error.h"
 #include "collectors.h"
 #include "tcp.h"
 
 
-Collector* new_collect(int nb_vol){
+Collector* new_collect(int nb_vol) {
     Collector* collect;
     
-    if ((collect = calloc(1, sizeof *collect)) == NULL) {
+    if ( (collect = calloc(1, sizeof(*collect))) == NULL) {
         QUIT_MSG("Can't Allocate Collector");
     }
     
     collect->sock = new_socket();
     
-    if ((collect->volumes = calloc(nb_vol, sizeof char)) == NULL) {
+    if ((collect->volumes = calloc(nb_vol, sizeof(char))) == NULL) {
         QUIT_MSG("Can't Allocate Collector's volume list");
     }
     
@@ -30,7 +33,7 @@ Collector* new_collect(int nb_vol){
 void free_collect(Collector *coll) {
     free_socket(coll->sock);
     free(coll->volumes);
-    free(index);
+
 }
 
 Collector** CollectorsFromIps(int nb_coll, char** ips){
@@ -53,12 +56,14 @@ Collector** CollectorsFromIps(int nb_coll, char** ips){
         }
         (coll_list[i]->sock)->port = COLLECT_PORT;
         tcp_start(coll_list[i]->sock);
-        ask_vol_list(coll_list)
+        ask_vol_list(coll_list[i]);
     }
+    
+    return NULL;
 }
 
-void ask_vol_list(Collector* collect){
+void ask_vol_list(Collector* collect) {
     char data[50];
-    
+    (void) data;
     tcp_action(collect->sock, "ListOfVolumes", 13, SEND);
 }

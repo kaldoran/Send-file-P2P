@@ -12,4 +12,12 @@
 
 #define COLLECT_PORT 47777
 
+Collector* new_collect(int nb_vol);
+
+void free_collect(Collector *coll);
+
+Collector** CollectorsFromIps(int nb_coll, char** ips);
+
+void ask_vol_list(Collector* collect);
+
 #endif

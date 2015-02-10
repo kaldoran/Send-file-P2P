@@ -19,12 +19,12 @@
  *  %param ... : List of param [ for example if want to print variable value ]
  */
 #ifdef DEBUG
-    #define DEBUG_PRINTF(MSG, ...)                                                                                          \
+    #define DEBUG_MSG(MSG, ...)                                                                                          \
     do {                                                                                                                    \
         fprintf(stderr, "\t[DEBUG] File : %s - Line : %d - Function : %s() : " MSG "\n", __FILE__, __LINE__, __func__, ## __VA_ARGS__);    \
     } while(0);
 #else
-    #define DEBUG_PRINTF(MSG, ...)
+    #define DEBUG_MSG(MSG, ...)
 #endif
 
 
@@ -34,7 +34,7 @@
  */
 #define QUIT_MSG(MSG, ...)                                                                                                  \
     do {                                                                                                                    \
-        DEBUG_PRINTF(MSG, ##__VA_ARGS__)                                                                                    \
+        DEBUG_MSG(MSG, ##__VA_ARGS__)                                                                                    \
         fprintf(stderr, "[FATAL ERROR] ");                                                                                \
         fprintf(stderr, MSG, ## __VA_ARGS__);                                                                               \
         perror(NULL);                                                                                                       \

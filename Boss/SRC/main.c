@@ -35,7 +35,7 @@ void removeEndCarac(char *input) {
 int main(int argc, char const *argv[]) {
     (void)(argc);
     (void)(argv);
-    
+
     srand(time(NULL));
     
     fd_set rdfs;
@@ -56,8 +56,7 @@ int main(int argc, char const *argv[]) {
     
     block_group = newBlockGroup();
     block_group->server_socket = initServer();
-    // client = allocClient(MAX_CONNEXION);
-    // max_socket = server_socket;
+    block_group->max_socket = block_group->server_socket;
         
     printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");
     for ( ;; ) {
@@ -68,7 +67,7 @@ int main(int argc, char const *argv[]) {
         FD_SET(block_group->server_socket, &rdfs);                   /* Add the socket f the server */
         
         for(i = 0; i < block_group->total; i++) {
-            for ( j = 0; block_group->groups[i]; j++ ) {
+            for ( j = 0; j < block_group->groups[i]->total; j++ ) {
                 FD_SET(block_group->groups[i]->client[j].id_socket, &rdfs);        /* Add socket of each client */
             }
         }
@@ -105,6 +104,8 @@ int main(int argc, char const *argv[]) {
             tmp = acceptClient(block_group->server_socket );
             
             read(tmp.id_socket, inBuf, 80);
+            removeEndCarac(inBuf);
+            fprintf(stderr, "Read : %s", inBuf);
             
             
             if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
@@ -112,11 +113,15 @@ int main(int argc, char const *argv[]) {
                 /* Can't create groupe */
                 close(tmp.id_socket);
             }
-                        
+            else {
+                if ( block_group->max_socket < tmp.id_socket ) {
+                    block_group->max_socket = tmp.id_socket;
+                }
+            }                        
         }
         else {    /* A client wrote something */    
             for(i = 0; i < block_group->total; i++) {
-                for ( j = 0; block_group->groups[i]; j++ ) {
+                for ( j = 0; j < block_group->groups[i]->total; j++ ) {
                     if(FD_ISSET(block_group->groups[i]->client[j].id_socket, &rdfs)) {                   
 
                         if ( read(block_group->groups[i]->client[j].id_socket, inBuf, 80) == 0 ) {
@@ -148,6 +153,7 @@ int main(int argc, char const *argv[]) {
     for(i = 0; i < block_group->total; i++) {
         closeClient(block_group->groups[i]->client, block_group->groups[i]->total);
     }
+    freeBlockGroup(block_group);
     closeServer(block_group->server_socket);
     
     printf("[[INFO] Boss] Welcome to this awesome new project\n");
