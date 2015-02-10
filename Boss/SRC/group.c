@@ -38,19 +38,22 @@ void freeGroup(Group* group) {
     free(group);
 }
 
-bool addGroup( blockGroup* block_group, char* const filename ) {
+int addGroup( blockGroup* block_group, char* const filename ) {
     int pos;
     
     if ( (pos = existGroup( block_group, filename )) == -1 ) {
         if ( block_group->total == MAX_GROUP ) {
-            return FALSE;
+            printf("Can't Create another group \n");
+            return -1;
         } 
         
-        ++block_group->total;
+        pos = block_group->total;
         block_group->groups[block_group->total] = newGroup(filename);
+        ++block_group->total;
+
     }
     
-    return addClient(block_group->groups[pos]->client, block_group->max_socket, &block_group->total );
+    return pos;
 }
 
 int existGroup( blockGroup* block_group, char* const filename ) {

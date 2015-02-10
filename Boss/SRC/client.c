@@ -38,21 +38,20 @@ void freeClient(Client *client) {
 }
 
 
-Client* acceptClient( int const server_socket ) {
-    Client *new_client;
+Client acceptClient( int const server_socket ) {
+    Client new_client;
     struct sockaddr_in s_client;
     int struct_size;
-    
-    new_client = newClient(1);
+
     struct_size = sizeof(struct sockaddr_in);
     
-    new_client->id_socket = accept(server_socket, (struct sockaddr*) &s_client, (socklen_t *)&struct_size);
+    new_client.id_socket = accept(server_socket, (struct sockaddr*) &s_client, (socklen_t *)&struct_size);
 
-    printf("New client [%d]\n\n", new_client->id_socket);
+    printf("New client [%d]\n\n", new_client.id_socket);
     printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));
     printf("port is: %d\n", (int) ntohs(s_client.sin_port));
 
-    strcpy(new_client->ip, inet_ntoa(s_client.sin_addr));
+    strcpy(new_client.ip, inet_ntoa(s_client.sin_addr));
 
     return new_client;
 }

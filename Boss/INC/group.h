@@ -15,7 +15,7 @@ Group* newGroup(char* const filename);
 
 void freeGroup(Group* group);
 
-bool addGroup( blockGroup* block_group, char* const filename );
+int addGroup( blockGroup* block_group, char* const filename );
 
 int existGroup( blockGroup* block_group, char* const filename );
 

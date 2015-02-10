@@ -16,6 +16,7 @@
 #include <signal.h>
 
 #include "error.h"
+#include "group.h"
 #include "client.h"
 #include "server.h"
 #include "boolean.h"
@@ -39,10 +40,10 @@ int main(int argc, char const *argv[]) {
     
     fd_set rdfs;
 
-    int random;
+    int tmpVal;
     
     char inBuf[20];
-    Client *tmp;
+    Client tmp;
     
     int i, j;
     blockGroup* block_group;
@@ -103,8 +104,15 @@ int main(int argc, char const *argv[]) {
         else if( FD_ISSET(block_group->server_socket, &rdfs) ) {
             tmp = acceptClient(block_group->server_socket );
             
-            read(tmp->id_socket, inBuf, 80);
+            read(tmp.id_socket, inBuf, 80);
             
+            
+            if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
+               || addClient(block_group->groups[tmpVal]->client, tmp, &block_group->groups[tmpVal]->total) == FALSE ) {
+                /* Can't create groupe */
+                close(tmp.id_socket);
+            }
+                        
         }
         else {    /* A client wrote something */    
             for(i = 0; i < block_group->total; i++) {
@@ -121,10 +129,10 @@ int main(int argc, char const *argv[]) {
                             printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, block_group->groups[i]->client[j].id_socket);
                             
                             if ( strcmp(inBuf, "ListOfCollector") == 0 ) {
-                                random = (rand() % NB_MAX_COLLECTOR) + 1;
-                                if ( random > block_group->groups[i]->total ) { random = block_group->groups[i]->total; }
+                                tmpVal = (rand() % NB_MAX_COLLECTOR) + 1;
+                                if ( tmpVal > block_group->groups[i]->total ) { tmpVal = block_group->groups[i]->total; }
                                 
-                                sendClient(block_group->groups[i]->client, --random, block_group->groups[i]->total, i);              
+                                sendClient(block_group->groups[i]->client, --tmpVal, block_group->groups[i]->total, i);              
                             }
                             else if ( strcmp(inBuf, "Pong") == 0 ) {
                                 printf("Pong received !\n");
