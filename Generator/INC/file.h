@@ -7,6 +7,6 @@
 #ifndef FILE_H
 #define FILE_H
 
-void createNDex(char* ip, int port, int packSize, char* fileName);
+void createNDex(char* ip, int port, int packSize, char* fileName, struct stat buf);
 
 #endif /* FILE_H included */

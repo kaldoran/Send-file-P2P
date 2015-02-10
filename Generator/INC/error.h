@@ -21,7 +21,7 @@
 #ifdef DEBUG
     #define DEBUG_PRINTF(MSG, ...)                                                                                          \
     do {                                                                                                                    \
-        fprintf(stderr, "\n\t[DEBUG] File : %s - Line : %d - Function : %s() : " MSG "\n", __FILE__, __LINE__, __func__, ## __VA_ARGS__);    \
+        fprintf(stderr, "\t[DEBUG] File : %s - Line : %d - Function : %s() : " MSG "\n", __FILE__, __LINE__, __func__, ## __VA_ARGS__);    \
     } while(0);
 #else
     #define DEBUG_PRINTF(MSG, ...)

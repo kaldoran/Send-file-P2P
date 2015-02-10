@@ -15,8 +15,8 @@
 #include "error.h"
 
 
-void createNDex(char* ip, int port, int packSize, char* fileName) {
-    struct stat buf;
+void createNDex(char* ip, int port, int packSize, char* fileName, struct stat buf) {
+
     int i, j;
     int nbVolume;
     FILE *inputFile = NULL;
@@ -24,12 +24,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
     unsigned char inbuf[packSize];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
     char *baseName = basename(fileName);
-    
-    
-    if ( stat(fileName, &buf) == -1 ) {
-        QUIT_MSG("Can't stats %s", fileName);
-    }
-    
+        
     if ( (inputFile = fopen(fileName, "r")) == NULL) {
         QUIT_MSG("Opening file '%s'", fileName);
     }
@@ -58,7 +53,6 @@ void createNDex(char* ip, int port, int packSize, char* fileName) {
     for ( i = 0; i < nbVolume; ) {
         
         memset(inbuf, '\0', packSize); 
-        memset(outbuf, '\0', SHA_DIGEST_LENGTH);
         
         fread ((char*)inbuf, packSize, 1, inputFile);
 
