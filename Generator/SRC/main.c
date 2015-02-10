@@ -20,7 +20,6 @@ void usage(const char *name) {
     return;
 }
 
-
 int main(int argc, char const *argv[]) {
     char* ip;
     int port;

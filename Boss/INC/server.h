@@ -11,6 +11,6 @@
 
 int initServer();
 
-void closeServer(Client *client, int server_socket, int const total);
+void closeServer(int server_socket);
 
 #endif /* SERVER_H included */

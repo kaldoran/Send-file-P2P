@@ -9,9 +9,13 @@
 
 #include "struct_client.h"
 
-Client *allocClient(int number);
+Client *newClient(int const number);
 
-int acceptClient(Client *client, int const server_socket, int *total, int const max_socket );
+void closeClient(Client *client,int const total);
+
+void freeClient(Client *client);
+
+Client* acceptClient( int const server_socket );
 
 void sendClient(Client *client, int number, int total, int to);
 

@@ -36,11 +36,8 @@ int initServer() {
     return serveur_socket;
 }
 
-void closeServer(Client *client, int server_socket, int const total) {
-    int i;
-    for(i = 0; i < total; i++) {
-        close(client[i].id_socket);
-    }
+void closeServer(int server_socket) {
+
     close(server_socket);
     
     return;

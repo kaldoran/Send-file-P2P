@@ -19,7 +19,7 @@
 #include "client.h"
 #include "server.h"
 #include "boolean.h"
-#include "struct_client.h"
+#include "block_group.h"
 
 #define NB_MAX_COLLECTOR 9
 
@@ -34,27 +34,29 @@ void removeEndCarac(char *input) {
 int main(int argc, char const *argv[]) {
     (void)(argc);
     (void)(argv);
+    
     srand(time(NULL));
+    
     fd_set rdfs;
-    bool flag;
 
     int random;
     
     char inBuf[20];
-    Client *client;
-
-    int i, total = 0;
+    Client *tmp;
+    
+    int i, j;
+    blockGroup* block_group;
 
     struct timeval tval;
-    int server_socket, max_socket;
+
     
     tval.tv_sec  = 10;
     tval.tv_usec = 0; 
-
-    flag = FALSE;
-    server_socket = initServer();
-    client = allocClient(MAX_CONNEXION);
-    max_socket = server_socket;
+    
+    block_group = newBlockGroup();
+    block_group->server_socket = initServer();
+    // client = allocClient(MAX_CONNEXION);
+    // max_socket = server_socket;
         
     printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");
     for ( ;; ) {
@@ -62,70 +64,83 @@ int main(int argc, char const *argv[]) {
         FD_ZERO(&rdfs);
     
         FD_SET(STDIN_FILENO, &rdfs);                    /* Add stdin for stop server */
-        FD_SET(server_socket, &rdfs);                   /* Add the socket f the server */
+        FD_SET(block_group->server_socket, &rdfs);                   /* Add the socket f the server */
         
-        for(i = 0; i < total; i++) {
-             FD_SET(client[i].id_socket, &rdfs);        /* Add socket of each client */
+        for(i = 0; i < block_group->total; i++) {
+            for ( j = 0; block_group->groups[i]; j++ ) {
+                FD_SET(block_group->groups[i]->client[j].id_socket, &rdfs);        /* Add socket of each client */
+            }
         }
         
-        if( (i = select(max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
+        if( (i = select(block_group->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
         }
         
         if ( i == 0 ) {
             printf("Time Reach\n");
             tval.tv_sec  = 10;
-            if ( total != 0 ) {
-                if ( flag == FALSE ) {
-                    flag = TRUE;
-                    for ( i = 0; i < total; i++ ) {
-                        send(client[i].id_socket, "ping", 4, 0);
+            if ( block_group->total != 0 ) {
+                for(i = 0; i < block_group->total; i++) {
+                    if ( block_group->groups[i]->flag == FALSE ) {
+                        block_group->groups[i]->flag = TRUE;
+                        
+                        for ( j = 0; j < block_group->groups[i]->total; j++ ) {
+                            send(block_group->groups[i]->client[j].id_socket, "ping", 4, 0);
+                        }
+                        tval.tv_sec  = 1;
                     }
-                    tval.tv_sec  = 1;
-                }
-                else {
-                    printf("Check which of them as answer !\n");
-                    flag = FALSE;
-                }
-            }
+                    else {
+                        printf("Check which of them as answer !\n");
+                        block_group->groups[i]->flag = FALSE;
+                    }
+                }        
+            }   
         }
         
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;            
         }
-        else if( FD_ISSET(server_socket, &rdfs) ) {
-            max_socket = acceptClient(client, server_socket, &total, max_socket );
+        else if( FD_ISSET(block_group->server_socket, &rdfs) ) {
+            tmp = acceptClient(block_group->server_socket );
+            
+            read(tmp->id_socket, inBuf, 80);
+            
         }
         else {    /* A client wrote something */    
-            for(i = 0; i < total; i++) {
-                if(FD_ISSET(client[i].id_socket, &rdfs)) {                   
+            for(i = 0; i < block_group->total; i++) {
+                for ( j = 0; block_group->groups[i]; j++ ) {
+                    if(FD_ISSET(block_group->groups[i]->client[j].id_socket, &rdfs)) {                   
 
-                    if ( read(client[i].id_socket, inBuf, 80) == 0 ) {
-                        max_socket = removeClient(client, i, &total, max_socket );
-                    }
-                    else {
-                        /* Remove \r and \n */
-                        removeEndCarac(inBuf);
-                                      
-                        printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, client[i].id_socket);
-                        
-                        if ( strcmp(inBuf, "ListOfCollector") == 0 ) {
-                            random = (rand() % NB_MAX_COLLECTOR) + 1;
-                            if ( random > total ) { random = total; }
+                        if ( read(block_group->groups[i]->client[j].id_socket, inBuf, 80) == 0 ) {
+                            block_group->max_socket = removeClient(block_group->groups[i]->client, i, &block_group->groups[i]->total, block_group->max_socket );
+                        }
+                        else {
+                            /* Remove \r and \n */
+                            removeEndCarac(inBuf);
+                                          
+                            printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, block_group->groups[i]->client[j].id_socket);
                             
-                            sendClient(client, --random, total, i);              
+                            if ( strcmp(inBuf, "ListOfCollector") == 0 ) {
+                                random = (rand() % NB_MAX_COLLECTOR) + 1;
+                                if ( random > block_group->groups[i]->total ) { random = block_group->groups[i]->total; }
+                                
+                                sendClient(block_group->groups[i]->client, --random, block_group->groups[i]->total, i);              
+                            }
+                            else if ( strcmp(inBuf, "Pong") == 0 ) {
+                                printf("Pong received !\n");
+                            }
                         }
-                        else if ( strcmp(inBuf, "Pong") == 0 ) {
-                            printf("Pong received !\n");
-                        }
+                        memset(inBuf, '\0', 80);
                     }
-                    memset(inBuf, '\0', 80);
                 }
             }
         }
     }
     
-    closeServer(client, server_socket, total);
+    for(i = 0; i < block_group->total; i++) {
+        closeClient(block_group->groups[i]->client, block_group->groups[i]->total);
+    }
+    closeServer(block_group->server_socket);
     
     printf("[[INFO] Boss] Welcome to this awesome new project\n");
     

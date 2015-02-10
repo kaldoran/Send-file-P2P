@@ -12,9 +12,10 @@
 
 #include "error.h"
 #include "client.h"
+#include "boolean.h"
 
 
-Client *allocClient(int number) {
+Client *newClient(int const number) {
     Client *client;
     
     if ( (client = calloc(number, sizeof(client))) == NULL ) {
@@ -24,37 +25,36 @@ Client *allocClient(int number) {
     return client;
 }
 
-int acceptClient(Client *client, int const server_socket, int *total, int const max_socket ) {
-    int new_client;
-    
+
+void closeClient(Client *client,int const total) {
+    int i;
+    for(i = 0; i < total; i++) {
+        close(client[i].id_socket);
+    }
+}
+
+void freeClient(Client *client) {
+    free(client);
+}
+
+
+Client* acceptClient( int const server_socket ) {
+    Client *new_client;
     struct sockaddr_in s_client;
-    int struct_size , new_max_socket;
+    int struct_size;
+    
+    new_client = newClient(1);
     struct_size = sizeof(struct sockaddr_in);
     
-    new_max_socket = max_socket;
+    new_client->id_socket = accept(server_socket, (struct sockaddr*) &s_client, (socklen_t *)&struct_size);
 
-    new_client = accept(server_socket, (struct sockaddr*) &s_client, (socklen_t *)&struct_size);
-
-    printf("New client [%d]\n\n", new_client);
+    printf("New client [%d]\n\n", new_client->id_socket);
     printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));
     printf("port is: %d\n", (int) ntohs(s_client.sin_port));
 
-    if ( *total == MAX_CONNEXION ) {
-        fprintf(stderr, "I'm too full, reject connexion");
-        close( new_client );
-    }
-    else {
-        client[*total].id_socket = new_client;
-        strcpy(client[*total].ip, inet_ntoa(s_client.sin_addr));
-        
-        if ( client[*total].id_socket > max_socket) {
-            new_max_socket = client[*total].id_socket;
-        }
-        
-        ++(*total);
-    }
-    
-    return new_max_socket;
+    strcpy(new_client->ip, inet_ntoa(s_client.sin_addr));
+
+    return new_client;
 }
 
 void sendClient(Client *client, int number, int total, int to) {
@@ -82,6 +82,19 @@ void sendClient(Client *client, int number, int total, int to) {
     }
     
     return;
+}
+
+bool addClient(Client *client, Client new, int *total) {
+    if ( *total != MAX_CONNEXION ) {
+        
+        client[*total] = new;
+        ++(*total);
+        
+        return TRUE;
+    }
+    
+    printf("I'm So full !\n");
+    return FALSE;
 }
 
 int removeClient(Client *client, int const pos,  int *total, int const max_socket ) {
