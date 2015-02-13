@@ -115,7 +115,6 @@ int main(int argc, char const *argv[]) {
             }
             else {
                 if ( block_group->max_socket < tmp.id_socket ) {
-                    DEBUG_MSG("Change the max socket\n");
                     block_group->max_socket = tmp.id_socket;
                 }
             }                        
@@ -126,7 +125,7 @@ int main(int argc, char const *argv[]) {
                     if(FD_ISSET(block_group->groups[i]->client[j].id_socket, &rdfs)) {                   
 
                         if ( read(block_group->groups[i]->client[j].id_socket, inBuf, 80) == 0 ) {
-                            removeClient(block_group->groups[i]->client, j, &block_group->groups[i]->total, &block_group->max_socket );
+                            block_group->max_socket = removeClient(block_group->groups[i]->client, i, &block_group->groups[i]->total, block_group->max_socket );
                         }
                         else {
                             /* Remove \r and \n */

@@ -18,9 +18,7 @@ Collector* new_collect(int nb_vol) {
     if ( (collect = calloc(1, sizeof(*collect))) == NULL) {
         QUIT_MSG("Can't Allocate Collector");
     }
-    
-    collect->sock = new_socket();
-    
+        
     if ((collect->volumes = calloc(nb_vol, sizeof(char))) == NULL) {
         QUIT_MSG("Can't Allocate Collector's volume list");
     }
@@ -52,10 +50,10 @@ Collector** CollectorsFromIps(int nb_coll, char** ips){
             QUIT_MSG("Can't Connect to Collector n°%d", i);
         }
         else {
-            memcpy(&coll_list[i]->sock->ip, h->h_addr, h->h_length);
+            memcpy(&coll_list[i].sock.ip, h->h_addr, h->h_length);
         }
-        (coll_list[i]->sock)->port = COLLECT_PORT;
-        tcp_start(coll_list[i]->sock);
+        (coll_list[i].sock).port = COLLECT_PORT;
+        tcp_start(coll_list[i].sock);
         ask_vol_list(coll_list[i]);
     }
     
