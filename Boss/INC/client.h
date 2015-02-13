@@ -22,6 +22,6 @@ void sendClient(Client *client, int number, int total, int to);
 
 bool addClient(Client *client, Client new, int *total);
 
-int removeClient(Client *client, int const pos,  int *total, int const max_socket);
+void removeClient(Client *client, int const pos,  int *total, int *max_socket);
 
 #endif /* CLIENT_H included */

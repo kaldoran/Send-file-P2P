@@ -7,7 +7,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include "struct_collector.h"
+#include "struct_client.h"
 
 int initServer();
 

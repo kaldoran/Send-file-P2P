@@ -10,7 +10,7 @@
 #include <limits.h>
 
 #include "boolean.h"
-#include "struct_collector.h"
+#include "struct_client.h"
 
 typedef struct Group {
     char name[NAME_MAX];
@@ -19,7 +19,7 @@ typedef struct Group {
     char* checker;
     
     int total;
-    Collector* client;
+    Client* client;
     
 } Group;
 
