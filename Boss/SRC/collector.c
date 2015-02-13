@@ -97,7 +97,11 @@ bool addClient(Collector *client, Collector new, int *total) {
 }
 
 <<<<<<< HEAD:Boss/SRC/collector.c
+<<<<<<< HEAD:Boss/SRC/collector.c
 void removeClient(Collector *client, int const pos,  int *total, int *max_socket ) {
+=======
+int removeClient(Client *client, int const pos,  int *total, int const max_socket ) {
+>>>>>>> parent of ecbb507... Fix segfault ;) [ Bit of fail by me ]:Boss/SRC/client.c
 =======
 int removeClient(Client *client, int const pos,  int *total, int const max_socket ) {
 >>>>>>> parent of ecbb507... Fix segfault ;) [ Bit of fail by me ]:Boss/SRC/client.c
