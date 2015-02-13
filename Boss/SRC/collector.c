@@ -1,6 +1,6 @@
 //----------------------------------------------------------
 // AUTEUR : REYNAUD Nicolas                                 |
-// FICHIER : client.c                                       |
+// FICHIER : collector.c                                    |
 // DATE : 09/02/15                                          |
 //----------------------------------------------------------
 
@@ -15,8 +15,8 @@
 #include "boolean.h"
 
 
-Client *newClient(int const number) {
-    Client *client;
+Collector *newClient(int const number) {
+    Collector *client;
     
     if ( (client = calloc(number, sizeof(*client))) == NULL ) {
         QUIT_MSG("Can't allocate memory for client");
@@ -26,20 +26,20 @@ Client *newClient(int const number) {
 }
 
 
-void closeClient(Client *client,int const total) {
+void closeClient(Collector *client,int const total) {
     int i;
     for(i = 0; i < total; i++) {
         close(client[i].id_socket);
     }
 }
 
-void freeClient(Client *client) {
+void freeClient(Collector *client) {
     free(client);
 }
 
 
-Client acceptClient( int const server_socket ) {
-    Client new_client;
+Collector acceptClient( int const server_socket ) {
+    Collector new_client;
     struct sockaddr_in s_client;
     int struct_size;
 
@@ -56,13 +56,13 @@ Client acceptClient( int const server_socket ) {
     return new_client;
 }
 
-void sendClient(Client *client, int number, int total, int to) {
+void sendClient(Collector *client, int number, int total, int to) {
     int i, pourcent;
     char outBuf[16];
     i = 0;
 
     pourcent = (int)((float)number / (float)total * 100.);
-    printf("Random : %d - Val : %d\n", number, pourcent);
+    DEBUG_MSG("Random : %d - Val : %d\n", number, pourcent);
 
     while( number >= 0) {
         if ( rand() % 100 <= pourcent ) {
@@ -83,7 +83,7 @@ void sendClient(Client *client, int number, int total, int to) {
     return;
 }
 
-bool addClient(Client *client, Client new, int *total) {
+bool addClient(Collector *client, Client new, int *total) {
     if ( *total != MAX_CONNEXION ) {
         
         client[*total] = new;
@@ -96,7 +96,7 @@ bool addClient(Client *client, Client new, int *total) {
     return FALSE;
 }
 
-void removeClient(Client *client, int const pos,  int *total, int *max_socket ) {
+void removeClient(Collector *client, int const pos,  int *total, int *max_socket ) {
     int i, new_max_socket;
     printf("Close : %d\n", client[pos].id_socket);
     

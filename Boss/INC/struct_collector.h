@@ -3,14 +3,14 @@
 // FICHIER : struct_client.c                                |
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
-#ifndef STRUCT_CLIENT_H
-#define STRUCT_CLIENT_H
+#ifndef STRUCT_COLLECTOR_H
+#define STRUCT_COLLECTOR_H
 
 #define MAX_CONNEXION 15
 
-typedef struct Client {
+typedef struct Collector {
     int id_socket; 
     char ip[15];
-} Client;
+} Collector;
 
-#endif
+#endif /* STRUCT_COLLECTOR_H included */

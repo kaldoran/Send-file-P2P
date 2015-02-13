@@ -19,7 +19,7 @@ typedef struct Group {
     char* checker;
     
     int total;
-    Client* client;
+    Collector* client;
     
 } Group;
 
