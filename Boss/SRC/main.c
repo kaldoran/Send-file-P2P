@@ -17,7 +17,7 @@
 
 #include "error.h"
 #include "group.h"
-#include "client.h"
+#include "collector.h"
 #include "server.h"
 #include "boolean.h"
 #include "block_group.h"
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
     int tmpVal;
     
     char inBuf[20];
-    Client tmp;
+    Collector tmp;
     
     int i, j;
     blockGroup* block_group;

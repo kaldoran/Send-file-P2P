@@ -9,7 +9,7 @@
 
 #include "error.h"
 #include "group.h"
-#include "client.h"
+#include "collector.h"
 
 Group* newGroup(char* const filename) {
     Group* group;

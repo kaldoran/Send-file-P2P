@@ -1,6 +1,6 @@
 //----------------------------------------------------------
 // AUTEUR : REYNAUD Nicolas                                 |
-// FICHIER : struct_client.c                                |
+// FICHIER : struct_collector.h                             |
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
 #ifndef STRUCT_COLLECTOR_H

@@ -20,7 +20,7 @@ Collector acceptClient( int const server_socket );
 
 void sendClient(Collector *client, int number, int total, int to);
 
-bool addClient(Collector *client, Client new, int *total);
+bool addClient(Collector *client, Collector new, int *total);
 
 void removeClient(Collector *client, int const pos,  int *total, int *max_socket);
 

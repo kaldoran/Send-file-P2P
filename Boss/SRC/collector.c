@@ -11,7 +11,7 @@
 #include <netinet/in.h>
 
 #include "error.h"
-#include "client.h"
+#include "collector.h"
 #include "boolean.h"
 
 
@@ -83,7 +83,7 @@ void sendClient(Collector *client, int number, int total, int to) {
     return;
 }
 
-bool addClient(Collector *client, Client new, int *total) {
+bool addClient(Collector *client, Collector new, int *total) {
     if ( *total != MAX_CONNEXION ) {
         
         client[*total] = new;
@@ -114,7 +114,7 @@ void removeClient(Collector *client, int const pos,  int *total, int *max_socket
     close(client[pos].id_socket);
     
     /* Move memory to avoid blank into array */
-    memmove(client + pos, client + pos + 1, (*total - pos - 1) * sizeof(Client));  
+    memmove(client + pos, client + pos + 1, (*total - pos - 1) * sizeof(Collector));  
     
     *max_socket = new_max_socket;
     --(*total);
