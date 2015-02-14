@@ -48,11 +48,14 @@ Exemple de conversation :
 
 ##### ( Connexion aux collecteurs ) 
 - ( Connexion au collecteur 1 )
+	- envoi de "ListOfVolums" par le collecteur local
 	- 00010001011 ( Ici le collecteur a les volumes 3, 7, 9 et 10 )
 - ( Connexion au collecteur 2 )
-	- AllVolume ( ici se collecteur a tout les volumes )
+	- envoi de "ListOfVolums" par le collecteur local
+	- fullVolum ( ici se collecteur a tout les volumes )
 - ( Connexion au collecteur 3 )
-	- EmptyVolume ( Ici se collecteur n'a aucun volume )
+	- envoi de "ListOfVolums" par le collecteur local
+	- nullVolum ( Ici se collecteur n'a aucun volume )
 
 ##### ( Echange de volume ) 
 - ( Collecteur local au collecteur 1 )  
