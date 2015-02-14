@@ -48,13 +48,11 @@ Exemple de conversation :
 
 ##### ( Connexion aux collecteurs ) 
 - ( Connexion au collecteur 1 )
-	- 1,5,15 ( Ici le collecteur 1 à les volumes 1 - 5 et 15 )
-	- 2,4,13 (Ici le collecteur local à les volumes 2 - 4 et 13 )
+	- 00010001011 ( Ici le collecteur a les volumes 3, 7, 9 et 10 )
 - ( Connexion au collecteur 2 )
-	- 8,13,15 ( Ici le collecteur 2 à les volumes 8 - 13 et 15)
-	- 2,4,13 (Ici le collecteur local à les volumes 2 - 4 et 13 )
+	- AllVolume ( ici se collecteur a tout les volumes )
 - ( Connexion au collecteur 3 )
-	- Message d'erreur
+	- EmptyVolume ( Ici se collecteur n'a aucun volume )
 
 ##### ( Echange de volume ) 
 - ( Collecteur local au collecteur 1 )  
@@ -63,14 +61,3 @@ Exemple de conversation :
 - ( Collecteur 1 au collecteur local )  
 	- Vol2  
 	( Envoi / reception du volume 2 )  
-
-##### ( Arret ) 
-- (Collecteur local au collecteur 1 )  
-	- Stop  
-	( Deconnexion du collecteur 1 )  
-- (Collecteur local au collecteur 2 )  
-	- Stop  
-	( Deconnexion du collecteur 2 )  
-- ( Message du boss au collecteur local )  
-	- Stop  
-	( Deconnexion du collecteur local )  
