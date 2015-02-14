@@ -5,12 +5,13 @@
 
 ##Envoi
 ###Messages
-- Message de déconnexion : S ( Si se message est recu les collecteurs qui le recoivent doivent se donnecter proprement du collecteur / boss )
-- Demande de connexion à un collecteur:
-- Demande de connexion à un boss:
-- Vérification qu'un collecteur ait toujours le fichier:
+- Demande de connexion à un collecteur: ListOfVolums
+- Demande de connexion à un boss: ListOfCollectors
+- Vérification qu'un collecteur ait toujours le fichier: envoi du nom du fichier
+	- "exist" : Le collecteur a le fichier
+	- "notExist" : Le collecteur n'a pas le fichier
 - Demande d'un volume à un collecteur: VolX ( X = numéro de volume ) 
-- Demande d'une nouvelle liste à un boss: ListOfCollector
+- Demande d'une nouvelle liste à un boss: ListOfCollectors
 
 ###Volumes
 - Unité: octet.
@@ -23,20 +24,15 @@
 - Établissement d'une connexion sur un collecteur: 47777.
 - Établissement d'une connexion sur un boss: Définit dans l'Index.
 
-###Limites
-- Nombre de connexions sur un collecteur: 15
+###Limites ( Valeur fixée par chaque groupe )
+- Nombre de connexions sur un collecteur: 25
 - Nombre de connexions sur un boss: 50
 - Nombre maximum de collecteur renvoyé par le boss : 10
 
-
 ##Erreurs
 - Connexion échouée:
-	- Limite de connexions atteinte sur un collecteur:
-	- Limite de connexions atteinte sur un boss:
-	- Autre:
-- Volume absent:
-- Liste vide:
-
+	- Limite de connexions atteinte sur un collecteur: deconnexion direct sans message d'erreur
+	- Limite de connexions atteinte sur un boss: deconnexion direct sans message d'erreur
 
 Exemple de conversation : 
 
