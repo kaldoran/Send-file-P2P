@@ -20,12 +20,12 @@ void getVolume(int vol_num, int vol_size, Collector* collectors, FILE* file) {
     fprintf(file, "%s", read);
 }
 
-void sendVolume(SOCKET s, int vol_num, int vol_size, FILE* file) {
+void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
     
     char buf[vol_size];
     
     fseek(file, ( vol_size * vol_num ), SEEK_SET);
     fread ((char*)buf, vol_size, 1, file);
        
-    tcpAction(s, buf, vol_size, SEND);
+    tcpAction(c, buf, vol_size, SEND);
 }

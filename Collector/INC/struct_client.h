@@ -12,7 +12,7 @@
 
 typedef struct Client {
     SOCKET id_socket; 
-    char ip[15];
+    SOCKADDR_IN sock_info;
 } Client;
 
 #endif /* STRUCT_CLIENT_H included */

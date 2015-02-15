@@ -16,8 +16,6 @@ Collector* newCollect(int nb_vol);
 
 void freeCollect(Collector *coll);
 
-Collector acceptCollector( int const server_socket );
-
 Collector** collectorsFromIps(int nb_coll, char** ips);
 
 void askVolList(Collector* collect);

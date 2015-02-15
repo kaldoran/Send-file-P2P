@@ -18,13 +18,10 @@
 
 #include "socket.h"
 #include "boolean.h"
+#include "struct_client.h"
 
-SOCKET newSocket();
+bool tcpStart(Client c);
 
-void freeSocket(SOCKET s);
-
-bool tcpStart(SOCKET s, SOCKADDR_IN serv );
-
-int tcpAction(SOCKET s, void *data, int data_length, int type);
+int tcpAction(Client c, void *data, int data_length, int type);
 
 #endif /* TCP_H included */

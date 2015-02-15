@@ -36,8 +36,7 @@ void usage(const char *name) {
 
 
 int main(int argc, char const *argv[]) {
-
-    char read[50];
+    int i;
     FILE *file = NULL;
     
     if ( argc < 2 ) {
@@ -50,7 +49,7 @@ int main(int argc, char const *argv[]) {
         printf("[ERROR] : Can't reach the boss serveur\n" );
     }
     
-    if ( tcpStart(index->sock) == FALSE ) {
+    if ( tcpStart(index->c) == FALSE ) {
         QUIT_MSG("Can't connect to boss : ");
     }
     

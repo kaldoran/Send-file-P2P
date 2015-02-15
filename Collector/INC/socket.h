@@ -1,3 +1,10 @@
+//----------------------------------------------------------
+// AUTEUR : REYNAUD Nicolas                                 |
+// FICHIER : socket.h                                       |
+// DATE : 15/02/15                                          |
+//----------------------------------------------------------
+
+
 /* If We are on windows */
 #if defined (WIN32)
     #include <winsock2.h>
@@ -8,6 +15,7 @@
     #include <netinet/in.h>
     #include <arpa/inet.h>
     #include <unistd.h>
+    #include <netdb.h>
 
     #define INVALID_SOCKET -1
     #define SOCKET_ERROR -1

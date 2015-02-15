@@ -21,15 +21,15 @@ void checkFile(FILE* file, Index* index) {
     
     int i;
     char outsha[40];
-    unsigned char inbuf[index->packSize];
+    unsigned char inbuf[index->pack_size];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
     
 
-    for ( i = 1; i <= index->nbPackage; i++ ) {
+    for ( i = 1; i <= index->pack_size; i++ ) {
         memset(outbuf, '\0', SHA_DIGEST_LENGTH);
-        memset(inbuf, '\0', index->packSize); 
+        memset(inbuf, '\0', index->pack_size); 
         
-        fread ((char*)inbuf, index->packSize, 1, file);
+        fread ((char*)inbuf, index->pack_size, 1, file);
         SHA1(inbuf, sizeof(inbuf), outbuf);
 
         hexToString(outbuf, outsha);

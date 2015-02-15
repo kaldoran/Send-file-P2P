@@ -10,8 +10,8 @@
 
 #include "boolean.h"
 #include "index_loader.h"
-#include "tcp.h"
 #include "error.h"
+#include "client.h"
 
 char *startWith(char *s1, char *s2) {
 
@@ -29,8 +29,10 @@ Index *newIndex() {
     if ((index = calloc(1, sizeof *index)) == NULL) {
         QUIT_MSG("Can't Allocate index");
     }
-    index->sock = new_socket();
-    index->nbPackage = -1;
+         
+    index->c = newClient();
+  
+    index->nb_package = -1;
     
     return index;
 }
@@ -39,11 +41,11 @@ char **newSha(int nb_package) {
     int i;
     char** sha;
     
-    if ( (sha = calloc(nbPackage, sizeof(char *))) == NULL ) {
+    if ( (sha = calloc(nb_package, sizeof(char *))) == NULL ) {
         QUIT_MSG("Can't Allocate index->sha");
     }
     
-    for ( i = 0; i < nbPackage; i++ ) {
+    for ( i = 0; i < nb_package; i++ ) {
         if ( (sha[i] = calloc(41, sizeof(char))) == NULL ) {
             QUIT_MSG("Can't Allocate index->sha[%d]", i);
         }
@@ -56,10 +58,8 @@ char **newSha(int nb_package) {
 
 void freeIndex(Index *index) {
     int i;
-    
-    free_socket(index->sock);
-    
-    for ( i = 0; i < index->nbPackage; i++ ) {
+        
+    for ( i = 0; i < index->nb_package; i++ ) {
         free(index->sha[i]);
     }
     free(index->sha);
@@ -82,7 +82,7 @@ bool loadIndex(const char *file, Index *index) {
         if((ret = strchr(ligne_lue, '\r')) != NULL) *ret = '\0'; 
         if((ret = strchr(ligne_lue, '\n')) != NULL) *ret = '\0';
 
-        if ( index->nbPackage == -1 ) {
+        if ( index->nb_package == -1 ) {
         
             /* complet index */
             if ( (ret = startWith("File:",ligne_lue)) != NULL ) {
@@ -98,18 +98,18 @@ bool loadIndex(const char *file, Index *index) {
                 index->nb_package = atoi(ret);
 
                 /* Allocate index->sha */
-                index->sha = new_sha(index->nb_package);
+                index->sha = newSha(index->nb_package);
             }
             else if ( (ret = startWith("Boss:",ligne_lue)) != NULL ) { 
                 if( (h = gethostbyname(ret)) == NULL ) {
                     return FALSE; /* Can't connect */
                 }
                 else {
-                    memcpy(&index->sock->ip, h->h_addr, h->h_length);
+                    memcpy(&index->c.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
                 }
             }    
             else if ( (ret = startWith("Port:",ligne_lue)) != NULL) {
-                index->sock->port = htons((in_port_t)atoi(ret));
+                index->c.sock_info.sin_port = htons((in_port_t)atoi(ret));
             }
             else {
                 QUIT_MSG("[Error] Incorrect Index.");

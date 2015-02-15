@@ -8,9 +8,10 @@
 #define STRUCT_INDEX_H
 
 #include "socket.h"
+#include "struct_client.h"
 
 typedef struct Index {
-    SOCKET sock;
+    Client c;
     char file[32];    /* Name of file */
     long int file_size;
     int  pack_size;  /* Port pour la connection */

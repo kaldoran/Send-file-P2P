@@ -14,6 +14,6 @@
 
 void getVolume(int vol_num, int vol_size, Collector* collectors, FILE* file);
 
-void sendVolume(SOCKET s, int volNum, int vol_size, FILE* file);
+void sendVolume(Client c, int volNum, int vol_size, FILE* file);
 
 #endif /* VOLUME_H included */

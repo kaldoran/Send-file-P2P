@@ -8,9 +8,10 @@
 #define STRUCT_COLLECT_H
 
 #include "socket.h"
+#include "struct_client.h"
 
 typedef struct Collector {
-    SOCKET sock;
+    Client c;
     char* volumes; /* Finally a boolean array but in char, as char is on 1 octet */
 
 } Collector;
