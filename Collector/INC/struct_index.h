@@ -8,10 +8,9 @@
 #define STRUCT_INDEX_H
 
 #include <netdb.h>
-#include "struct_socket.h"
 
 typedef struct Index {
-    Socket *sock;
+    Socket sock;
     char file[32];    /* Name of file */
     long int fileSize;
     int  packSize;  /* Port pour la connection */

@@ -13,8 +13,8 @@
 
 int initServer() {
     int struct_size, serveur_socket;
-    struct sockaddr_in s_serveur;
-    struct_size = sizeof(struct sockaddr_in);
+    SOCKADDR_IN s_serveur;
+    struct_size = sizeof(SOCKADDR_IN);
         
     s_serveur.sin_family = AF_INET;
     s_serveur.sin_addr.s_addr = INADDR_ANY;

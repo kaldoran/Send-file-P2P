@@ -22,7 +22,7 @@ Group* newGroup(char* const filename) {
         QUIT_MSG("Can't allocate memory for checkers : ");
     }
     
-    group->client = newClient(MAX_CONNEXION);
+    group->client = newClientArray(MAX_CONNEXION);
     
     strcpy(group->name, filename);
     
@@ -31,7 +31,7 @@ Group* newGroup(char* const filename) {
 
 void freeGroup(Group* group) {
 
-    freeClient(group->client);
+    freeClientArray(group->client);
     
     free(group->checker); 
     

@@ -10,11 +10,11 @@
 #include "boolean.h"
 #include "struct_client.h"
 
-Client *newClient(int const number);
+Client *newClientArray(int const number);
 
-void closeClient(Client *client,int const total);
+void closeClientArray(Client *client,int const total);
 
-void freeClient(Client *client);
+void freeClientArray(Client *client);
 
 Client acceptClient( int const server_socket );
 

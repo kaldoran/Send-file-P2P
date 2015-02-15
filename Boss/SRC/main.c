@@ -152,7 +152,7 @@ int main(int argc, char const *argv[]) {
     }
     
     for(i = 0; i < block_group->total; i++) {
-        closeClient(block_group->groups[i]->client, block_group->groups[i]->total);
+        closeClientArray(block_group->groups[i]->client, block_group->groups[i]->total);
     }
     freeBlockGroup(block_group);
     closeServer(block_group->server_socket);

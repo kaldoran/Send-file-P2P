@@ -6,10 +6,12 @@
 #ifndef STRUCT_CLIENT_H
 #define STRUCT_CLIENT_H
 
+#include "socket.h"
+
 #define MAX_CONNEXION 15
 
 typedef struct Client {
-    int id_socket; 
+    SOCKET id_socket; 
     char ip[15];
 } Client;
 

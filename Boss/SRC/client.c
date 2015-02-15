@@ -15,7 +15,7 @@
 #include "boolean.h"
 
 
-Client *newClient(int const number) {
+Client *newClientArray(int const number) {
     Client *client;
     
     if ( (client = calloc(number, sizeof(*client))) == NULL ) {
@@ -26,24 +26,24 @@ Client *newClient(int const number) {
 }
 
 
-void closeClient(Client *client,int const total) {
+void closeClientArray(Client *client,int const total) {
     int i;
     for(i = 0; i < total; i++) {
-        close(client[i].id_socket);
+        closesocket(client[i].id_socket);
     }
 }
 
-void freeClient(Client *client) {
+void freeClientArray(Client *client) {
     free(client);
 }
 
 
 Client acceptClient( int const server_socket ) {
     Client new_client;
-    struct sockaddr_in s_client;
+    SOCKADDR_IN s_client;
     int struct_size;
 
-    struct_size = sizeof(struct sockaddr_in);
+    struct_size = sizeof(SOCKADDR_IN);
     
     new_client.id_socket = accept(server_socket, (struct sockaddr*) &s_client, (socklen_t *)&struct_size);
 
