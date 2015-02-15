@@ -7,14 +7,14 @@
 #ifndef STRUCT_INDEX_H
 #define STRUCT_INDEX_H
 
-#include <netdb.h>
+#include "socket.h"
 
 typedef struct Index {
-    Socket sock;
+    SOCKET sock;
     char file[32];    /* Name of file */
-    long int fileSize;
-    int  packSize;  /* Port pour la connection */
-    int nbPackage;
+    long int file_size;
+    int  pack_size;  /* Port pour la connection */
+    int nb_package;
     char **sha; /* N package got N Sha1 of 40 length */
 } Index;
 

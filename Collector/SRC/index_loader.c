@@ -24,7 +24,7 @@ char *startWith(char *s1, char *s2) {
     return NULL;
 }
 
-Index *new_index() {
+Index *newIndex() {
     Index *index;
     if ((index = calloc(1, sizeof *index)) == NULL) {
         QUIT_MSG("Can't Allocate index");
@@ -35,7 +35,7 @@ Index *new_index() {
     return index;
 }
 
-char **new_sha(int nbPackage) {
+char **newSha(int nb_package) {
     int i;
     char** sha;
     
@@ -54,7 +54,7 @@ char **new_sha(int nbPackage) {
 
 }
 
-void free_index(Index *index) {
+void freeIndex(Index *index) {
     int i;
     
     free_socket(index->sock);
@@ -66,7 +66,7 @@ void free_index(Index *index) {
     free(index);
 }
 
-bool charger_index(const char *file, Index *index) {
+bool loadIndex(const char *file, Index *index) {
     char i[3] = "1:\0";
     int j = 0;
     char *ret;
@@ -89,16 +89,16 @@ bool charger_index(const char *file, Index *index) {
                 strcpy(index->file, ret);
             }
             else if ( (ret = startWith("Size:", ligne_lue)) != NULL ) {
-                index->fileSize = atoi(ret);
+                index->file_size = atoi(ret);
             }
             else if ( (ret = startWith("PackSize:", ligne_lue)) != NULL ) {
-                index->packSize = atoi(ret);
+                index->pack_size = atoi(ret);
             }
             else if ( (ret = startWith("NbVolume:", ligne_lue)) != NULL ) {
-                index->nbPackage = atoi(ret);
+                index->nb_package = atoi(ret);
 
                 /* Allocate index->sha */
-                index->sha = new_sha(index->nbPackage);
+                index->sha = new_sha(index->nb_package);
             }
             else if ( (ret = startWith("Boss:",ligne_lue)) != NULL ) { 
                 if( (h = gethostbyname(ret)) == NULL ) {

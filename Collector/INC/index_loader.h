@@ -12,14 +12,14 @@
 
 #include "struct_index.h"
 
-char * startWith(char *s1, char *s2);
+char* startWith(char *s1, char *s2);
 
-Index *new_index();
+Index *newIndex();
 
-char **new_sha(int nbPackage);
+char **newSha(int nbPackage);
 
-void free_index(Index *index);
+void freeIndex(Index *index);
 
-bool charger_index(const char *file, Index *index);
+bool loadIndex(const char *file, Index *index);
 
 #endif /* INDEX_LOADER_H Included */

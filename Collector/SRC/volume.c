@@ -7,25 +7,25 @@
 #include "volume.h"
 #include "tcp.h"
 
-void getVolume(int volNum, int volSize, Collector* collectors, FILE* file) {
+void getVolume(int vol_num, int vol_size, Collector* collectors, FILE* file) {
     (void) collectors; 
-    char read[volSize];
+    char read[vol_size];
 
     // int collector; /* Collector with searched volume's socket id */
     
     //tcp_action(collector, read, volSize, RECEIVED);
     
-    fseek(file, (volSize * volNum ), SEEK_SET);
+    fseek(file, (vol_size * vol_num ), SEEK_SET);
         
     fprintf(file, "%s", read);
 }
 
-void sendVolume(Socket *s, int volNum, int volSize, FILE* file) {
+void sendVolume(SOCKET s, int vol_num, int vol_size, FILE* file) {
     
-    char buf[volSize];
+    char buf[vol_size];
     
-    fseek(file, ( volSize * volNum ), SEEK_SET);
-    fread ((char*)buf, volSize, 1, file);
+    fseek(file, ( vol_size * vol_num ), SEEK_SET);
+    fread ((char*)buf, vol_size, 1, file);
        
-    tcp_action(s, buf, volSize, SEND);
+    tcpAction(s, buf, vol_size, SEND);
 }

@@ -1,6 +1,6 @@
 //----------------------------------------------------------
 // AUTEUR : REYNAUD Nicolas                                 |
-// FICHIER : struct_client.c                                |
+// FICHIER : struct_client.h                                |
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
 #ifndef STRUCT_CLIENT_H
@@ -15,4 +15,4 @@ typedef struct Client {
     char ip[15];
 } Client;
 
-#endif
+#endif /* STRUCT_CLIENT_H included */

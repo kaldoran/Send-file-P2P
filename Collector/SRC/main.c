@@ -45,12 +45,12 @@ int main(int argc, char const *argv[]) {
         exit(EXIT_SUCCESS);
     }
 
-    Index *index = new_index();
-    if ( charger_index(argv[1], index) == FALSE ) {
+    Index *index = newIndex();
+    if ( loadIndex(argv[1], index) == FALSE ) {
         printf("[ERROR] : Can't reach the boss serveur\n" );
     }
     
-    if ( tcp_start(index->sock) == FALSE ) {
+    if ( tcpStart(index->sock) == FALSE ) {
         QUIT_MSG("Can't connect to boss : ");
     }
     
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[]) {
     }
     else {
         file = fopen(index->file, "a+");
-        for ( i = 0; i < index->fileSize; i++ ) {
+        for ( i = 0; i < index->file_size; i++ ) {
             fprintf(file, "#");
         }
     }
@@ -74,7 +74,7 @@ int main(int argc, char const *argv[]) {
     
     printf("[[INFO] Client] Welcome to this awesome new project\n");
     
-    free_index(index);
+    freeIndex(index);
     
     exit(EXIT_SUCCESS);
 }

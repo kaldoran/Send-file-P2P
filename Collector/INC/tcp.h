@@ -16,16 +16,15 @@
     #define AFFICHE(DATA) ;
 #endif
 
+#include "socket.h"
 #include "boolean.h"
-#include "struct_socket.h"
 
+SOCKET newSocket();
 
-Socket* new_socket();
+void freeSocket(SOCKET s);
 
-void free_socket(Socket *s);
+bool tcpStart(SOCKET s, SOCKADDR_IN serv );
 
-bool tcp_start(Socket *s);
-
-int tcp_action(Socket *s, void *data, int data_length, int type);
+int tcpAction(SOCKET s, void *data, int data_length, int type);
 
 #endif /* TCP_H included */

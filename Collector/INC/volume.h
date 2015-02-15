@@ -9,11 +9,11 @@
 
 #include <stdio.h>
 
-#include "struct_socket.h"
+#include "socket.h"
 #include "struct_collect.h"
 
-void getVolume(int volNum, int volSize, Collector* collectors, FILE* file);
+void getVolume(int vol_num, int vol_size, Collector* collectors, FILE* file);
 
-void sendVolume(Socket *s, int volNum, int volSize, FILE* file);
+void sendVolume(SOCKET s, int volNum, int vol_size, FILE* file);
 
 #endif /* VOLUME_H included */
