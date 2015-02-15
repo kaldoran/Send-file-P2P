@@ -38,7 +38,6 @@ void usage(const char *name) {
 int main(int argc, char const *argv[]) {
 
     char read[50];
-    int nbCollector, i;
     FILE *file = NULL;
     
     if ( argc < 2 ) {
@@ -53,14 +52,6 @@ int main(int argc, char const *argv[]) {
     
     if ( tcp_start(index->sock) == FALSE ) {
         QUIT_MSG("Can't connect to boss : ");
-    }
-    
-    
-    tcp_action(index->sock, read, 50, RECEIVED);
-    
-    nbCollector = atoi(read);
-    for ( i = 0; i < nbCollector; i++ ) {
-        printf("Read %d collector information and connect to them, add this to select\n", i);
     }
     
     if( access( index->file, R_OK|W_OK ) != -1 ) {
