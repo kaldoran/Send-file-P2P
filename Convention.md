@@ -6,7 +6,7 @@
 ## Envoi
 ### Messages
 - Demande de connexion à un collecteur: ListOfVolums
-- Demande de connexion à un boss: <Nom du fichier à partager à télécharger>
+- Demande de connexion à un boss: <Nom du fichier à partager ou télécharger>
 - Vérification qu'un collecteur ait toujours le fichier: envoi du nom du fichier
 	- "exist" : Le collecteur a le fichier
 	- "notExist" : Le collecteur n'a pas le fichier
