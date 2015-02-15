@@ -1,40 +1,40 @@
-# Convention Projet Réseau
-####Team A: Kevin BASCOL, Nicolas REYNAUD
-####Team B: Bachir BOUACHERIA Kévin LAOUSSING, Amar SEBAA
+# Conventions Projet Réseau M1 WI
+#### Team A: Kevin BASCOL, Nicolas REYNAUD
+#### Team B: Bachir BOUACHERIA Kévin LAOUSSING, Amar SEBAA
 ##### 30 janvier 2015
 
-##Envoi
-###Messages
+## Envoi
+### Messages
 - Demande de connexion à un collecteur: ListOfVolums
-- Demande de connexion à un boss: ListOfCollectors
+- Demande de connexion à un boss: <Nom du fichier à partager/télécharger>
 - Vérification qu'un collecteur ait toujours le fichier: envoi du nom du fichier
 	- "exist" : Le collecteur a le fichier
 	- "notExist" : Le collecteur n'a pas le fichier
 - Demande d'un volume à un collecteur: VolX ( X = numéro de volume ) 
 - Demande d'une nouvelle liste à un boss: ListOfCollectors
 
-###Volumes
+### Volumes
 - Unité: octet.
 - Taille minimale: 8ko (inclus).
 - Taille maximale: 64ko (inclus).
 - Checksum: SHA1 partagé via la version humainement lisible.
 
-##Connexions
-###Ports
+## Connexions
+### Ports
 - Établissement d'une connexion sur un collecteur: 47777.
 - Établissement d'une connexion sur un boss: Définit dans l'Index.
 
-###Limites ( Valeur fixée par chaque groupe )
+### Limites ( Valeur fixée par chaque groupe )
 - Nombre de connexions sur un collecteur: 25
 - Nombre de connexions sur un boss: 50
 - Nombre maximum de collecteur renvoyé par le boss : 10
 
-##Erreurs
+## Erreurs
 - Connexion échouée:
 	- Limite de connexions atteinte sur un collecteur: deconnexion direct sans message d'erreur
 	- Limite de connexions atteinte sur un boss: deconnexion direct sans message d'erreur
 
-Exemple de conversation : 
+## Exemples de conversation
 
 ##### ( Connexion au boss ) 
 - Le collecteur envoie le nom du fichier dont il veut les collecteurs.
