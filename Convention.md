@@ -40,7 +40,7 @@
 ##### ( Connexion au boss ) 
 - Le collecteur envoie le nom du fichier dont il veut les collecteurs.
 - Le boss enregistre le collecteur dans la liste correspondant au fichier.
-- Le collecteur envoie ListOfCollector.
+- Le collecteur envoie "ListOfCollectors".
 - Le boss lui repond la liste sous la forme A|XXX.XXX.XXX.XXX .
  	- A : nombre de collecteurs restants dans la liste.
  	- XXX.XXX.XXX.XXX : adresse ip d'un collecteur.
