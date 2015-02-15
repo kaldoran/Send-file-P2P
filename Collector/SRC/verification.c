@@ -25,7 +25,7 @@ void checkFile(FILE* file, Index* index) {
     unsigned char outbuf[SHA_DIGEST_LENGTH];
     
 
-    for ( i = 1; i <= index->pack_size; i++ ) {
+    for ( i = 0; i < index->nb_package; i++ ) {
         memset(outbuf, '\0', SHA_DIGEST_LENGTH);
         memset(inbuf, '\0', index->pack_size); 
         
@@ -35,8 +35,8 @@ void checkFile(FILE* file, Index* index) {
         hexToString(outbuf, outsha);
 
         printf("%s\n", outsha);
-        printf("%s\n", index->sha[i-1]);
-        if ( strcmp(outsha, index->sha[i-1]) == 0 ) {
+        printf("%s\n", index->sha[i]);
+        if ( strcmp(outsha, index->sha[i]) == 0 ) {
             printf("Index %i is the same.\n", i);
         
         }

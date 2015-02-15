@@ -58,23 +58,24 @@ Client acceptClient( int const server_socket ) {
 
 void sendClient(Client *client, int number, int total, int to) {
     int i, pourcent;
-    char outBuf[16];
+    char outBuf[20];
     i = 0;
 
     pourcent = (int)((float)number / (float)total * 100.);
     printf("Random : %d - Val : %d\n", number, pourcent);
 
-    while( number >= 0) {
+    while( number > 0) {
         if ( rand() % 100 <= pourcent ) {
-            memset(outBuf, '\0', 16);
+            --number;
+            memset(outBuf, '\0', 20);
+
+            sprintf(outBuf, "%d|", number);
+            strcat(outBuf, client[i].ip);
             
             printf("Send the : %d\n", i);
+
+            send(client[to].id_socket, outBuf, 20, 0);
             
-            sprintf(outBuf, " %s", client[i].ip);
-            outBuf[0] = (char)( ((int) '0') + number );
-            
-            send(client[to].id_socket, outBuf, 16, 0);
-            --number;
         }
         
         if ( ++i > total ) { i = 0; }

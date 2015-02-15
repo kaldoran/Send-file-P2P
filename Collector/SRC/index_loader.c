@@ -67,7 +67,7 @@ void freeIndex(Index *index) {
 }
 
 bool loadIndex(const char *file, Index *index) {
-    char i[3] = "1:\0";
+    char i[3] = "0:";
     int j = 0;
     char *ret;
         
@@ -119,7 +119,7 @@ bool loadIndex(const char *file, Index *index) {
            
             if ( (ret = startWith(i, ligne_lue)) != NULL) {
                 j = i[0] - '0';
-                memcpy(index->sha[--j], ret, 41);
+                memcpy(index->sha[j], ret, 41);
                 i[0]++;
             }
         }

@@ -134,11 +134,11 @@ int main(int argc, char const *argv[]) {
                                           
                             printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, block_group->groups[i]->client[j].id_socket);
                             
-                            if ( strcmp(inBuf, "ListOfCollector") == 0 ) {
+                            if ( strcmp(inBuf, "ListOfCollectors") == 0 ) {
                                 tmpVal = (rand() % NB_MAX_COLLECTOR) + 1;
                                 if ( tmpVal > block_group->groups[i]->total ) { tmpVal = block_group->groups[i]->total; }
                                 
-                                sendClient(block_group->groups[i]->client, --tmpVal, block_group->groups[i]->total, i);              
+                                sendClient(block_group->groups[i]->client, tmpVal, block_group->groups[i]->total, i);              
                             }
                             else if ( strcmp(inBuf, "Pong") == 0 ) {
                                 printf("Pong received !\n");
