@@ -37,10 +37,16 @@
 Exemple de conversation : 
 
 ##### ( Connexion au boss ) 
-- ListOfCollector
-- 2127.0.0.1            ( Collecteur 1 ) 
-- 1154.454.15.1         ( Collecteur 2 ) 
-- 0157.125.125.125      ( Collecteur 3 ) 
+- Le collecteur envoie le nom du fichier dont il veut les collecteurs.
+- Le boss enregistre le collecteur dans la liste correspondant au fichier.
+- Le collecteur envoie ListOfCollector
+- Le boss lui repond la liste sous la forme A|XXX.XXX.XXX.XXX
+ 	- A : nombre de collecteurs restants dans la liste.
+ 	- XXX.XXX.XXX.XXX : adresse ip d'un collecteur
+ 	- exemple avec une liste de 3 collecteurs:
+		- 2127.0.0.1            ( Collecteur 1 ) 
+		- 1154.454.15.1         ( Collecteur 2 ) 
+		- 0157.125.125.125      ( Collecteur 3 ) 
 
 ##### ( Connexion aux collecteurs ) 
 - ( Connexion au collecteur 1 )
