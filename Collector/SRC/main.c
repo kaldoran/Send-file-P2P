@@ -84,16 +84,16 @@ int main(int argc, char const *argv[]) {
         token = strtok(NULL, "|");
         printf("Ip of Collector : %s\n", token);
         
-        collectors_list[i] = newCollect(index->nb_package);
+        collectors_list[total] = newCollect(index->nb_package);
         
-        collectors_list[i]->c = initClient();
-        strcpy(collectors_list[i]->c.ip, token);
+        collectors_list[total]->c = initClient();
+        strcpy(collectors_list[total]->c.ip, token);
         
-        if(tcpStart(collectors_list[i]->c) == FALSE){
+        if(tcpStart(collectors_list[total]->c) == FALSE){
             printf("Can't connect to collector n°%d", i);
         }
         else{
-            askVolList(collectors_list[i], index->nb_package);
+            askVolList(collectors_list[total], index->nb_package);
         }
         
         ++total;
