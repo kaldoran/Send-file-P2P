@@ -90,7 +90,7 @@ int main(int argc, char const *argv[]) {
         strcpy(collectors_list[total]->c.ip, token);
         
         if(tcpStart(collectors_list[total]->c) == FALSE){
-            printf("Can't connect to collector n°%d", i);
+            printf("Can't connect to collector n°%d", total);
         }
         else{
             askVolList(collectors_list[total], index->nb_package);
