@@ -8,6 +8,7 @@
 #ifndef COLLECTORS_H
 #define COLLECTORS_H
 
+#include "struct_index.h"
 #include "struct_collect.h"
 
 #define COLLECT_PORT 47777
@@ -19,6 +20,8 @@ void freeCollect(Collector *coll);
 
 Collector** collectorsFromIps(int nb_coll, char** ips);
 
-void askVolList(Collector* collect);
+void askVolList(Collector* collect, int nb_vol);
+
+int* findCollVol(Index* index, Collector** coll_list, int nb_seed);
 
 #endif

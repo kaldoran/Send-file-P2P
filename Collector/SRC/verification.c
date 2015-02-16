@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "boolean.h"
 #include "verification.h"
 
 void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]) {
@@ -17,30 +19,43 @@ void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]) {
     }
 }
 
-void checkFile(FILE* file, Index* index) {
-    
+bool checkFile(FILE* file, Index* index) {
+    bool full = TRUE;
+
     int i;
-    char outsha[40];
     unsigned char inbuf[index->pack_size];
-    unsigned char outbuf[SHA_DIGEST_LENGTH];
     
 
     for ( i = 0; i < index->nb_package; i++ ) {
-        memset(outbuf, '\0', SHA_DIGEST_LENGTH);
         memset(inbuf, '\0', index->pack_size); 
         
         fread ((char*)inbuf, index->pack_size, 1, file);
-        SHA1(inbuf, sizeof(inbuf), outbuf);
-
-        hexToString(outbuf, outsha);
-
-        printf("%s\n", outsha);
-        printf("%s\n", index->sha[i]);
-        if ( strcmp(outsha, index->sha[i]) == 0 ) {
-            printf("Index %i is the same.\n", i);
         
+        if(!checkVol(index, inbuf, i)){
+            full = FALSE;
         }
     }
 
-    return;
+    return full;
+}
+
+bool checkVol(Index* index, char* vol, int id_vol){
+    char outsha[40];
+    unsigned char outbuf[SHA_DIGEST_LENGTH];
+    
+    memset(outbuf, '\0', SHA_DIGEST_LENGTH);
+    
+    SHA1(vol, sizeof(vol), outbuf);
+
+    hexToString(outbuf, outsha);
+
+    printf("%s\n", outsha);
+    printf("%s\n", index->sha[id_vol]);
+    
+    if ( strcmp(outsha, index->sha[id_vol]) == 0 ) {
+        printf("Volume %i is the same.\n", id_vol);
+        return TRUE;
+    }
+    
+    return FALSE;
 }

@@ -15,6 +15,6 @@
 
 void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]);
 
-void checkFile(FILE* file, Index* index);
+bool checkFile(FILE* file, Index* index);
 
 #endif /* VERIFICATION_H included */

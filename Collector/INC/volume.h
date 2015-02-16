@@ -10,9 +10,10 @@
 #include <stdio.h>
 
 #include "socket.h"
+#include "struct_index.h"
 #include "struct_collect.h"
 
-void getVolume(int vol_num, int vol_size, Collector* collectors, FILE* file);
+void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file);
 
 void sendVolume(Client c, int volNum, int vol_size, FILE* file);
 

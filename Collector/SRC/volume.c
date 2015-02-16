@@ -4,20 +4,34 @@
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
 
+#include <stdlib.h>
+
+#include "verification.c"
+#include "collectors.h"
 #include "volume.h"
 #include "tcp.h"
 
-void getVolume(int vol_num, int vol_size, Collector* collectors, FILE* file) {
+void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
     (void) collectors; 
     char read[vol_size];
+    int collVol[2];
+    int id_vol;
 
-    // int collector; /* Collector with searched volume's socket id */
+    collVol = findCollVol(index, collectors, nb_seed);
+            
+    tcpAction(collectors_list[collVol[0]]->c, strcat("Vol", itoa(collVol[1], NULL, 10)), index->pack_size, SEND);
     
-    //tcp_action(collector, read, volSize, RECEIVED);
+    tcp_action(collector, read, volSize, RECEIVED);
     
-    fseek(file, (vol_size * vol_num ), SEEK_SET);
+    if(checkVol(index, read, collVol[1])) {
+        fseek(file, (vol_size * vol_num ), SEEK_SET);
         
-    fprintf(file, "%s", read);
+        fprintf(file, "%s", read);
+        
+        rewind(file);
+    } else {
+        printf("Wrong volume %d",collVol[1]);
+    }
 }
 
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {

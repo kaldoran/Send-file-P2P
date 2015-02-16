@@ -8,10 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "boolean.h"
-#include "index_loader.h"
 #include "error.h"
 #include "client.h"
+#include "boolean.h"
+#include "index_loader.h"
 
 char *startWith(char *s1, char *s2) {
 
@@ -30,7 +30,7 @@ Index *newIndex() {
         QUIT_MSG("Can't Allocate index");
     }
          
-    index->c = newClient();
+    index->c = initClient();
   
     index->nb_package = -1;
     
@@ -116,13 +116,16 @@ bool loadIndex(const char *file, Index *index) {
             }
         } 
         else {
-           
             if ( (ret = startWith(i, ligne_lue)) != NULL) {
                 j = i[0] - '0';
                 memcpy(index->sha[j], ret, 41);
                 i[0]++;
             }
         }
+    }
+    
+    if ((index->local_vols = calloc(index->nb_package, sizeof(char))) == NULL) {
+        QUIT_MSG("Can't Allocate index");
     }
 
     fclose(fichier);

@@ -17,6 +17,7 @@ typedef struct Index {
     int  pack_size;  /* Port pour la connection */
     int nb_package;
     char **sha; /* N package got N Sha1 of 40 length */
+    char *local_vols;
 } Index;
 
 #endif
