@@ -16,6 +16,8 @@ void closeClientArray(Client *client,int const total);
 
 void freeClientArray(Client *client);
 
+Client initClient();
+
 Client acceptClient( int const server_socket );
 
 void sendClient(Client *client, int number, int total, int to);

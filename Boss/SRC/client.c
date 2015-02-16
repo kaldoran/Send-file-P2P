@@ -16,12 +16,16 @@
 
 
 Client *newClientArray(int const number) {
+    int i ;
     Client *client;
     
     if ( (client = calloc(number, sizeof(*client))) == NULL ) {
         QUIT_MSG("Can't allocate memory for client");
     }
 
+    for ( i = 0; i < number; i++ ) {
+        client[i] = initClient();
+    }
     return client;
 }
 
@@ -35,6 +39,18 @@ void closeClientArray(Client *client,int const total) {
 
 void freeClientArray(Client *client) {
     free(client);
+}
+
+Client initClient() {
+    Client c;
+          
+    c.id_socket = socket(AF_INET,SOCK_STREAM,0); 
+      
+    if (c.id_socket == -1) {
+        QUIT_MSG("Can't create the socket");
+    }
+    
+    return c;
 }
 
 

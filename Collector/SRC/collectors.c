@@ -17,11 +17,11 @@ Collector* newCollect(int nb_vol) {
     Collector* collect;
     
     if ( (collect = calloc(1, sizeof(*collect))) == NULL) {
-        QUIT_MSG("Can't Allocate Collector");
+        QUIT_MSG("Can't Allocate Collector : ");
     }
         
     if ((collect->volumes = calloc(nb_vol, sizeof(char))) == NULL) {
-        QUIT_MSG("Can't Allocate Collector's volume list");
+        QUIT_MSG("Can't Allocate Collector's volume list : ");
     }
         
     return collect;

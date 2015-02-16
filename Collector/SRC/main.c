@@ -42,6 +42,7 @@ int main(int argc, char const *argv[]) {
     char in_buf[25];
     int total = 0;
     char *token;
+    Client *client = newClientArray(MAX_CONNEXION);
     Client tmp;
     FILE *file = NULL;
     
@@ -133,6 +134,7 @@ int main(int argc, char const *argv[]) {
     
     printf("[[INFO] Client] Welcome to this awesome new project\n");
     
+    freeClientArray(client);
     freeIndex(index);
     fclose(file);
     
