@@ -19,14 +19,6 @@
 #include "volume.h"
 
 
-void getListColl(int nbColl, char** collectors, Collector* listColl){
-    (void) nbColl;
-    (void) collectors;
-    (void) listColl;
-    /* Allocate the list
-       Ask the volumes of all collectors */
-}
-
 void usage(const char *name) {
     
     printf("Usage : %s file\n", name);
@@ -45,6 +37,7 @@ int main(int argc, char const *argv[]) {
     Client *client = newClientArray(MAX_CONNEXION);
     Client tmp;
     FILE *file = NULL;
+    Collector* collectors_list[LIST_COLL_SIZE_MAX];
     
     if ( argc < 2 ) {
         usage(argv[0]);
@@ -78,6 +71,8 @@ int main(int argc, char const *argv[]) {
     tcpAction(index->c, index->file, sizeof(index->file), SEND);
     
     tcpAction(index->c, "ListOfCollectors", 16, SEND);
+    
+    i = 0;
     do {
         memset(in_buf, '\0', 25);
         
@@ -89,16 +84,19 @@ int main(int argc, char const *argv[]) {
         
         token = strtok(NULL, "|");
         printf("Ip of Collector : %s\n", token);
-        /* After fill the list of collector, connect to them :
-         *      tcpStart(Client);
-         * if tcpStart == FALSE
-         *      Nothing to do ... can't connect to him
-         * Else 
-         *      Ask which volume they have
-         */
-    
+        
+        collectors_list[i] = newCollect(index->nb_package);
+        
+        collectors_list[i]->c = initClient();
+        strcpy(collectors_list[i]->c.ip, token);
+        
+        if(tcpStart(collectors_list[i]->c) == FALSE){
+            printf("Can't connect to collector n°%d", i);
+        }
+        else{
+            askVolList(collectors_list[i], index->nb_package);
+        }
     } while(*in_buf != '0');
-    
     
     for ( ;; ) {
         FD_ZERO(&rdfs);

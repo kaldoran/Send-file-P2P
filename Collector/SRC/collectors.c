@@ -34,38 +34,19 @@ void freeCollect(Collector *coll) {
     free(coll);
 }
 
-Collector** collectorsFromIps(int nb_coll, char** ips) {
+void askVolList(Collector* collect, int nb_vol) {
+    char data[nb_vol];
     int i;
-    Collector* coll_list[nb_coll];
-    struct hostent *h;
-
-    for (i = 0; i < nb_coll; ++i) {
-        if ((coll_list[i] = calloc(1, sizeof *coll_list[i])) == NULL) {
-            QUIT_MSG("Can't Allocate Collector n°%d", i);
-        }
-    }
-    
-    
-    for (i = 0; i < nb_coll; ++i) { 
-      
-        if( (h = gethostbyname(ips[i])) == NULL ) {
-            QUIT_MSG("Can't Connect to Collector n°%d", i);
-        }
-        else {
-            memcpy(&coll_list[i]->c.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
-        }
-        
-        coll_list[i]->c.sock_info.sin_port = COLLECT_PORT;
-        tcpStart(coll_list[i]->c);
-        askVolList(coll_list[i]);
-        
-    }
-   
-    return NULL;
-}
-
-void askVolList(Collector* collect) {
-    char data[50];
     (void) data;
     tcpAction(collect->c, "ListOfVolumes", 13, SEND);
+    
+    tcpAction(collect->c, data, nb_vol, RECEIVED);
+    
+    switch(data[0]){
+        case 'f': memset(collect->volumes[i], '1', nb_vol);
+                  break;
+        case 'n': memset(collect->volumes[i], '0', nb_vol);
+                  break;
+        default: strcpy(collect->volumes, data);
+    }
 }

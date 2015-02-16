@@ -11,6 +11,7 @@
 #include "struct_collect.h"
 
 #define COLLECT_PORT 47777
+#define LIST_COLL_SIZE_MAX 10
 
 Collector* newCollect(int nb_vol);
 
