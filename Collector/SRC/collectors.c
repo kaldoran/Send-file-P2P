@@ -37,7 +37,6 @@ void freeCollect(Collector *coll) {
 void askVolList(Collector* collect, int nb_vol) {
     char data[nb_vol];
     int i;
-    (void) data;
     tcpAction(collect->c, "ListOfVolumes", 13, SEND);
     
     tcpAction(collect->c, data, nb_vol, RECEIVED);
