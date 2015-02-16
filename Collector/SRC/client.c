@@ -54,7 +54,7 @@ Client initClient() {
 }
 
 Client acceptClient( int const server_socket ) {
-    Client new_client = newClient();
+    Client new_client = initClient();
 
     int struct_size;
 

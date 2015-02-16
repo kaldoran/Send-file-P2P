@@ -7,9 +7,10 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include "boolean.h"
 #include "struct_client.h"
 
-Client *newClientArray(int const number)
+Client *newClientArray(int const number);
 
 void closeClientArray(Client *client,int const total);
 

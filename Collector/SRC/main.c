@@ -91,7 +91,10 @@ int main(int argc, char const *argv[]) {
         printf("Ip of Collector : %s\n", token);
         /* After fill the list of collector, connect to them :
          *      tcpStart(Client);
-         * And ask which volume they have
+         * if tcpStart == FALSE
+         *      Nothing to do ... can't connect to him
+         * Else 
+         *      Ask which volume they have
          */
     
     } while(*in_buf != '0');

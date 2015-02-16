@@ -28,8 +28,10 @@ Collector* newCollect(int nb_vol) {
 }
 
 void freeCollect(Collector *coll) {
-    free(coll->volumes);
-
+    if ( coll->volumes != NULL ) {
+        free(coll->volumes);
+    }
+    free(coll);
 }
 
 Collector** collectorsFromIps(int nb_coll, char** ips) {
