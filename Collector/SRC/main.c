@@ -72,7 +72,6 @@ int main(int argc, char const *argv[]) {
     
     tcpAction(index->c, "ListOfCollectors", 16, SEND);
     
-    i = 0;
     do {
         memset(in_buf, '\0', 25);
         
@@ -96,6 +95,8 @@ int main(int argc, char const *argv[]) {
         else{
             askVolList(collectors_list[i], index->nb_package);
         }
+        
+        ++total;
     } while(*in_buf != '0');
     
     for ( ;; ) {
@@ -105,8 +106,7 @@ int main(int argc, char const *argv[]) {
         FD_SET(index->c.id_socket, &rdfs);
         
         for(i = 0; i < total; i++) {
-            ;
-            /*FD_SET(client[i].id_socket, &rdfs);  Add all of the collector */
+            FD_SET(collectors_list[i]->c.id_socket, &rdfs);
         }
         
         /* Then add the one from accept */
