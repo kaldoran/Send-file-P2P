@@ -54,7 +54,7 @@ int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
     
     int* collVol = NULL;
     
-    if ( collVol = malloc(2*sizeof(int)) == NULL ) {
+    if ( (collVol = malloc(2*sizeof(int))) == NULL ) {
         QUIT_MSG("Can't allocate collVol : ");
     }
     

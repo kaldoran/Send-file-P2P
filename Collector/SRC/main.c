@@ -38,7 +38,7 @@ int main(int argc, char const *argv[]) {
     fd_set rdfs;
     struct hostent *h;
     char in_buf[25];
-    int total = 0;
+
     char *token;
     Client *client = newClientArray(MAX_CONNEXION);
     Client tmp;
@@ -46,6 +46,7 @@ int main(int argc, char const *argv[]) {
     Collector* collectors_list[LIST_COLL_SIZE_MAX];
     
     int seed_socket = initServer();
+    int max_socket = seed_socket;
     
     if ( argc < 2 ) {
         usage(argv[0]);
@@ -63,9 +64,7 @@ int main(int argc, char const *argv[]) {
     if ( tcpStart(index->c) == FALSE ) {
         QUIT_MSG("Can't connect to boss : ");
     }
-    
-    char volumes[index->nb_package];
-    
+        
     if( access( index->file, R_OK|W_OK ) != -1 ) {
         file = fopen(index->file, "r");
         printf("File exist\n Check integrity\n");
@@ -162,12 +161,12 @@ int main(int argc, char const *argv[]) {
                 
                 printf("Client ask for something\n");
                 
-                if ( tcpAction(client[i].id_socket, in_buf, 25, RECEIVED) == 0 ) {
+                if ( tcpAction(client[i], in_buf, 25, RECEIVED) == 0 ) {
                     printf("Client disconnect\n");
-                    removeClient(client, i, nb_leach, max_socket );
+                    removeClient(client, i, &nb_leach, &max_socket );
                 } else {
                     if ( (token = startWith(in_buf, "Vol")) != NULL ) {
-                        sendVolume(client[i].id_socket, atoi(ret), index->pack_size, file);
+                        sendVolume(client[i], atoi(token), index->pack_size, file);
                     } else {
                         printf("Oh Mama he send something stupid '%s'", in_buf);
                     }

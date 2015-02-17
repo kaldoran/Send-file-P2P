@@ -4,11 +4,9 @@
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "boolean.h"
 #include "verification.h"
 
 void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]) {
@@ -38,7 +36,7 @@ bool checkFile(FILE* file, Index* index) {
     return full;
 }
 
-bool checkVol(Index* index, char* vol, int id_vol){
+bool checkVol(Index* index, unsigned char* vol, int id_vol) {
     char outsha[40];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
 

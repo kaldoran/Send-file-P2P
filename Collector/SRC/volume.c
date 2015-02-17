@@ -6,22 +6,21 @@
 
 #include <stdlib.h>
 
-#include "verification.c"
+#include "verification.h"
 #include "collectors.h"
 #include "volume.h"
 #include "tcp.h"
 
 void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
-    char read[index->pack_size];
+    unsigned char read[index->pack_size];
     int* collVol;
-    int id_vol;
 
-    collVol = findCollVol(index, collectors, nb_seed);
+    collVol = findCollVol(index, collectors_list, nb_seed);
     char* vol = strcat("Vol", itoa(collVol[1], NULL, 10));
 
     tcpAction(collectors_list[collVol[0]]->c, vol, sizeof(vol), SEND);
 
-    tcpAction(collector, read, index->pack_size, RECEIVED);
+    tcpAction(collectors_list[collVol[0]]->c, read, index->pack_size, RECEIVED);
 
     if(checkVol(index, read, collVol[1])) {
     
