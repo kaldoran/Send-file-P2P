@@ -33,7 +33,7 @@ void usage(const char *name) {
 int main(int argc, char const *argv[]) {
     int i;
     int nb_seed = 0, nb_leach = 0;
-    char collVol[2];
+
     bool full_file = FALSE;
     fd_set rdfs;
     struct hostent *h;
@@ -143,6 +143,11 @@ int main(int argc, char const *argv[]) {
             tmp = acceptClient(seed_socket);
             
             if(nb_leach < MAX_CONNEXION) {
+                if ( max_socket < tmp.id_socket ) {
+                    DEBUG_MSG("Change the max socket\n");
+                    max_socket = tmp.id_socket;
+                }
+                
                 client[nb_leach] = tmp;
                 ++nb_leach;
             } else {
@@ -153,7 +158,20 @@ int main(int argc, char const *argv[]) {
         
         for(i = 0; i < nb_leach; i++) {
             if ( FD_ISSET(client[i].id_socket, &rdfs) ) {
+                memset(in_buf, '\0', 25);
+                
                 printf("Client ask for something\n");
+                
+                if ( tcpAction(client[i].id_socket, in_buf, 25, RECEIVED) == 0 ) {
+                    printf("Client disconnect\n");
+                    removeClient(client, i, nb_leach, max_socket );
+                } else {
+                    if ( (token = startWith(in_buf, "Vol")) != NULL ) {
+                        sendVolume(client[i].id_socket, atoi(ret), index->pack_size, file);
+                    } else {
+                        printf("Oh Mama he send something stupid '%s'", in_buf);
+                    }
+                }
             }
         }
     }
