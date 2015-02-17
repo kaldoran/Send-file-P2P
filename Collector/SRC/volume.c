@@ -12,7 +12,6 @@
 #include "tcp.h"
 
 void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
-    (void) collectors; 
     char read[index->pack_size];
     int collVol[2];
     int id_vol;

@@ -154,15 +154,14 @@ int main(int argc, char const *argv[]) {
                 close(tmp.id_socket);
             }
         }
-        for(i = 0; i < total; i++) {
-            /*
-            if(FD_ISSET(client[i].id_socket, &rdfs)) {
-                ;
-                // one of the personne which you are connect to ask something or send something 
+        
+        if(!full_file) {
+            for(i = 0; i < nb_seed; i++) {
+                if ( FD_ISSET(collectors_list[i]->c.id_socket, &rdfs) ) {
+                    printf("Received the volum we ask\n");
+                }
             }
-            */    
         }
-
     }
     
     printf("[[INFO] Client] Welcome to this awesome new project\n");

@@ -25,7 +25,6 @@ bool checkFile(FILE* file, Index* index) {
     int i;
     unsigned char inbuf[index->pack_size];
     
-
     for ( i = 0; i < index->nb_package; i++ ) {
         memset(inbuf, '\0', index->pack_size); 
         
@@ -42,9 +41,7 @@ bool checkFile(FILE* file, Index* index) {
 bool checkVol(Index* index, char* vol, int id_vol){
     char outsha[40];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
-    
-    memset(outbuf, '\0', SHA_DIGEST_LENGTH);
-    
+
     SHA1(vol, sizeof(vol), outbuf);
 
     hexToString(outbuf, outsha);
