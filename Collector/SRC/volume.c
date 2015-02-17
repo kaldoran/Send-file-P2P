@@ -13,7 +13,7 @@
 
 void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
     char read[index->pack_size];
-    int collVol[2];
+    int* collVol;
     int id_vol;
 
     collVol = findCollVol(index, collectors, nb_seed);
@@ -21,17 +21,22 @@ void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
 
     tcpAction(collectors_list[collVol[0]]->c, vol, sizeof(vol), SEND);
 
-    tcp_action(collector, read, index->pack_size, RECEIVED);
+    tcpAction(collector, read, index->pack_size, RECEIVED);
 
     if(checkVol(index, read, collVol[1])) {
+    
+        index->local_vols[collVol[1]] = 1;
+        
         fseek(file, (index->pack_size * collVol[1] ), SEEK_SET);
+        rewind(file);
         
         fprintf(file, "%s", read);
-        
-        rewind(file);
+ 
     } else {
         printf("Wrong volume %d",collVol[1]);
     }
+    
+    free(collVol);
 }
 
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {

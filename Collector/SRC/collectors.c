@@ -52,7 +52,12 @@ void askVolList(Collector* collect, int nb_vol) {
 int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
     int i,j;
     
-    int* collVol = malloc(2*sizeof(int));
+    int* collVol = NULL;
+    
+    if ( collVol = malloc(2*sizeof(int)) == NULL ) {
+        QUIT_MSG("Can't allocate collVol : ");
+    }
+    
     collVol[0] = -1;
     collVol[1] = -1;
     

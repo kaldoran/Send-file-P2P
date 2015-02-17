@@ -123,11 +123,7 @@ int main(int argc, char const *argv[]) {
         FD_SET(STDIN_FILENO, &rdfs);
         FD_SET(index->c.id_socket, &rdfs);
         
-        if(!full_file) {
-            for(i = 0; i < nb_seed; i++) {
-                FD_SET(collectors_list[i]->c.id_socket, &rdfs);
-            }
-            
+        if(!full_file) {          
             getVolume(index, collectors_list, nb_seed, file);
         }
         
@@ -155,11 +151,9 @@ int main(int argc, char const *argv[]) {
             }
         }
         
-        if(!full_file) {
-            for(i = 0; i < nb_seed; i++) {
-                if ( FD_ISSET(collectors_list[i]->c.id_socket, &rdfs) ) {
-                    printf("Received the volum we ask\n");
-                }
+        for(i = 0; i < nb_leach; i++) {
+            if ( FD_ISSET(client[i].id_socket, &rdfs) ) {
+                printf("Client ask for something\n");
             }
         }
     }
