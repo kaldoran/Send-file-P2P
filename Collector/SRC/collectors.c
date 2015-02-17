@@ -40,7 +40,7 @@ void askVolList(Collector* collect, int nb_vol) {
     
     tcpAction(collect->c, data, nb_vol, RECEIVED);
     
-    switch(data[0]){
+    switch(*data){
         case 'f': memset(collect->volumes, '1', nb_vol);
                   break;
         case 'n': memset(collect->volumes, '0', nb_vol);
