@@ -13,18 +13,19 @@
 
 void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
     (void) collectors; 
-    char read[vol_size];
+    char read[index->pack_size];
     int collVol[2];
     int id_vol;
 
     collVol = findCollVol(index, collectors, nb_seed);
-            
-    tcpAction(collectors_list[collVol[0]]->c, strcat("Vol", itoa(collVol[1], NULL, 10)), index->pack_size, SEND);
-    
-    tcp_action(collector, read, volSize, RECEIVED);
-    
+    char* vol = strcat("Vol", itoa(collVol[1], NULL, 10));
+
+    tcpAction(collectors_list[collVol[0]]->c, vol, sizeof(vol), SEND);
+
+    tcp_action(collector, read, index->pack_size, RECEIVED);
+
     if(checkVol(index, read, collVol[1])) {
-        fseek(file, (vol_size * vol_num ), SEEK_SET);
+        fseek(file, (index->pack_size * collVol[1] ), SEEK_SET);
         
         fprintf(file, "%s", read);
         

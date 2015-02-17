@@ -143,11 +143,15 @@ int main(int argc, char const *argv[]) {
             break;
         }
         else if( FD_ISSET(seed_socket, &rdfs) ) {
+            
+            tmp = acceptClient(seed_socket);
+            
             if(nb_leach < MAX_CONNEXION) {
-                client[nb_leach] = acceptClient(seed_socket);
+                client[nb_leach] = tmp;
                 ++nb_leach;
             } else {
                 printf("Max number of client reached");
+                close(tmp.id_socket);
             }
         }
         for(i = 0; i < total; i++) {
