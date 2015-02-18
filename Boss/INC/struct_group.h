@@ -13,13 +13,13 @@
 #include "struct_client.h"
 
 typedef struct Group {
-    char name[NAME_MAX];
+    char name[NAME_MAX];            /* name of the group */
     
-    bool flag;
-    char* checker;
+    bool flag;                      /* flag for check if client are always here */
+    char* checker;                  /* a boolean array if checker[i] is at 1 then the client respond */
     
-    int total;
-    Client* client;
+    int total;                      /* total number of client into the client array */
+    Client* client;                 /* Array of client */
     
 } Group;
 

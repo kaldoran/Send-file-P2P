@@ -12,10 +12,10 @@
 #define MAX_GROUP 15
 
 typedef struct blockGroup {
-    int total;
-    int server_socket;
-    int max_socket;
-    Group** groups;
+    int total;                  /* Total number of groups */
+    int server_socket;          /* socket of the server */
+    int max_socket;             /* id of the maximum socket */
+    Group** groups;             /* array of Group */
 } blockGroup;
 
 #endif /* STRUCT_BLOCK_GROUP_H included */
