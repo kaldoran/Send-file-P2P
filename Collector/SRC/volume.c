@@ -4,7 +4,9 @@
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "verification.h"
 #include "collectors.h"

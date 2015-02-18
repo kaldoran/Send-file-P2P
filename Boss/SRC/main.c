@@ -127,13 +127,16 @@ int main(int argc, char const *argv[]) {
 
                         if ( read(block_group->groups[i]->client[j].id_socket, inBuf, 80) == 0 ) {
                             removeClient(block_group->groups[i]->client, j, &block_group->groups[i]->total, &block_group->max_socket );
+                            if ( &block_group->groups[i]->total == 0 ) {
+                                removeGroup( block_group, i );
+                            }
                         }
                         else {
                             /* Remove \r and \n */
                             removeEndCarac(inBuf);
                                           
                             printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, block_group->groups[i]->client[j].id_socket);
-                            
+
                             if ( strcmp(inBuf, "ListOfCollectors") == 0 ) {
                                 tmpVal = (rand() % NB_MAX_COLLECTOR) + 1;
                                 if ( tmpVal > block_group->groups[i]->total ) { tmpVal = block_group->groups[i]->total; }

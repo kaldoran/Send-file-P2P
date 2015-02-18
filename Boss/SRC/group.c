@@ -58,6 +58,14 @@ int addGroup( blockGroup* block_group, char* const filename ) {
     return pos;
 }
 
+void removeGroup( blockGroup* block_group, int pos ) {
+    DEBUG_MSG("Remove group for %s\n", block_group->groups[pos]->name);
+    
+    freeGroup(block_group->groups[pos]);
+
+    --block_group->total;
+}
+
 int existGroup( blockGroup* block_group, char* const filename ) {
     int i; 
     
