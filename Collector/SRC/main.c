@@ -21,6 +21,8 @@
 #include "verification.h"
 #include "struct_index.h"
 
+#include "windows.h"
+
 
 void usage(const char *name) {
     
