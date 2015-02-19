@@ -52,10 +52,13 @@ int main(int argc, char const *argv[]) {
         usage(argv[0]);
         exit(EXIT_SUCCESS);
     }
+        
     if( access( argv[1], R_OK|W_OK ) == -1 ) {
         QUIT_MSG("can't acces to : '%s' : ", argv[1]);
     }
     
+    initWindows();
+        
     Index *index = newIndex();
     if ( loadIndex(argv[1], index) == FALSE ) {
         printf("[ERROR] : Can't reach the boss serveur\n" );
@@ -180,6 +183,8 @@ int main(int argc, char const *argv[]) {
     freeClientArray(client);
     freeIndex(index);
     fclose(file);
+    
+    endWindows();
     
     exit(EXIT_SUCCESS);
 }
