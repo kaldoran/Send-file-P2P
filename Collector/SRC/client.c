@@ -86,12 +86,14 @@ void removeClient(Client *client, int const pos,  int *total, int *max_socket ) 
     int i, new_max_socket;
     printf("Close : %d\n", client[pos].id_socket);
     
-    new_max_socket = *max_socket;
+    new_max_socket = -1;
     
     /* Seek new socket max */
     if ( *max_socket == client[pos].id_socket ) {
         for ( i = 0; i < *total; i++) {
-            if ( client[i].id_socket > new_max_socket ) {
+            if ( i != pos 
+                && client[i].id_socket > new_max_socket ) {
+                
                 new_max_socket = client[i].id_socket;
             }
         }
@@ -102,7 +104,7 @@ void removeClient(Client *client, int const pos,  int *total, int *max_socket ) 
     /* Move memory to avoid blank into array */
     memmove(client + pos, client + pos + 1, (*total - pos - 1) * sizeof(Client));  
     
-    *max_socket = new_max_socket;
+    *max_socket = (new_max_socket == -1 ) ? *max_socket : new_max_socket;
     --(*total);
     
     return;
