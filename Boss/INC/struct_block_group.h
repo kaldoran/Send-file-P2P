@@ -8,6 +8,7 @@
 #define STRUCT_BLOCK_GROUP_H
 
 #include "struct_group.h"
+#include "boolean.h"
 
 #define MAX_GROUP 15
 
@@ -15,6 +16,7 @@ typedef struct blockGroup {
     int total;                  /* Total number of groups */
     int server_socket;          /* socket of the server */
     int max_socket;             /* id of the maximum socket */
+    bool flag;
     Group** groups;             /* array of Group */
 } blockGroup;
 

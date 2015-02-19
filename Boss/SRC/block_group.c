@@ -23,6 +23,8 @@ blockGroup* newBlockGroup() {
         QUIT_MSG("Can't allocate memory for block group of group : ");
     }
     
+    block_group->flag = FALSE;
+    
     return block_group;
 }
 

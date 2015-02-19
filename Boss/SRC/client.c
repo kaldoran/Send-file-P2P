@@ -122,7 +122,7 @@ void removeClient(Client *client, int const pos,  int *total, int *max_socket ) 
     /* Seek new socket max */
     if ( *max_socket == client[pos].id_socket ) {
         for ( i = 0; i < *total; i++) {
-            if ( client[i].id_socket > new_max_socket ) {
+            if ( i != pos && client[i].id_socket > new_max_socket ) {
                 new_max_socket = client[i].id_socket;
             }
         }
@@ -135,6 +135,41 @@ void removeClient(Client *client, int const pos,  int *total, int *max_socket ) 
     
     *max_socket = new_max_socket;
     --(*total);
+    
+    return;
+}
+
+void askPresence(blockGroup *block_group) {
+    int i, j;
+    if ( block_group->total != 0 ) {
+        block_group->flag = TRUE;
+        for(i = 0; i < block_group->total; i++) {
+            for ( j = 0; j < block_group->groups[i]->total; j++ ) {
+                /* Send the same message to all client from a groups */
+                send(block_group->groups[i]->client[j].id_socket, block_group->groups[i]->name, sizeof(block_group->groups[i]->name), 0);
+            }
+        }    
+    } 
+    
+    return;  
+}
+
+void checkPresence(blockGroup *block_group) {
+    int i, j;
+    if ( block_group->total != 0 ) {
+        for(i = 0; i < block_group->total; i++) {
+            for ( j = 0; j < block_group->groups[i]->total; j++ ) {
+                /* if the ckerckers flag if at 0 then i didn't respond in time */
+                if ( block_group->groups[i]->checkers[j] == 0 ) {
+                    removeClient(block_group->groups[i]->client, j, &block_group->groups[i]->total, &block_group->max_socket );
+                    if ( &block_group->groups[i]->total == 0 ) {
+                        removeGroup( block_group, i );
+                    }
+                }
+            }
+        }   
+        block_group->flag = FALSE;
+    }
     
     return;
 }

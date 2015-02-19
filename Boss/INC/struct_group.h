@@ -15,7 +15,6 @@
 typedef struct Group {
     char name[NAME_MAX];            /* name of the group */
     
-    bool flag;                      /* flag for check if client are always here */
     char* checker;                  /* a boolean array if checker[i] is at 1 then the client respond */
     
     int total;                      /* total number of client into the client array */

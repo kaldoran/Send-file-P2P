@@ -77,23 +77,14 @@ int main(int argc, char const *argv[]) {
         }
         
         if ( i == 0 ) {
-            printf("Time Reach\n");
-            tval.tv_sec  = 300;
-            if ( block_group->total != 0 ) {
-                for(i = 0; i < block_group->total; i++) {
-                    if ( block_group->groups[i]->flag == FALSE ) {
-                        block_group->groups[i]->flag = TRUE;
-                        
-                        for ( j = 0; j < block_group->groups[i]->total; j++ ) {
-                            send(block_group->groups[i]->client[j].id_socket, "ping", 4, 0);
-                        }
-                        tval.tv_sec  = 1;
-                    }
-                    else {
-                        printf("Check which of them as answer !\n");
-                        block_group->groups[i]->flag = FALSE;
-                    }
-                }        
+            printf("Timer Reach\n");
+            tval.tv_sec  = 1;
+            if ( block_group->flag == TRUE ) {
+                askPresence(block_group);
+            }
+            else {
+                checkPresence(block_group);
+                tval.tv_sec *= 300;
             }   
         }
         
@@ -106,8 +97,7 @@ int main(int argc, char const *argv[]) {
             read(tmp.id_socket, inBuf, 80);
             removeEndCarac(inBuf);
             fprintf(stderr, "Read : %s", inBuf);
-            
-            
+                        
             if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
                || addClient(block_group->groups[tmpVal]->client, tmp, &block_group->groups[tmpVal]->total) == FALSE ) {
                 /* Can't create groupe */
@@ -120,33 +110,38 @@ int main(int argc, char const *argv[]) {
                 }
             }                        
         }
-        else {    /* A client wrote something */    
+        else {    
+            /* A client wrote something */    
             for(i = 0; i < block_group->total; i++) {
                 for ( j = 0; j < block_group->groups[i]->total; j++ ) {
                     if(FD_ISSET(block_group->groups[i]->client[j].id_socket, &rdfs)) {                   
 
-                        if ( read(block_group->groups[i]->client[j].id_socket, inBuf, 80) == 0 ) {
+                        tmpVal = read(block_group->groups[i]->client[j].id_socket, inBuf, 80);
+                        removeEndCarac(inBuf);
+                        printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, block_group->groups[i]->client[j].id_socket);
+                        
+                        /* If we read empty thing then the client had been disconnect */
+                        if ( tmpVal == 0 
+                             || strcmp(inBuf, "notExist") == 0  ) {
+                             
+                            /* Remove the client from is groups */
                             removeClient(block_group->groups[i]->client, j, &block_group->groups[i]->total, &block_group->max_socket );
+                            /* If needed remove the group */
                             if ( &block_group->groups[i]->total == 0 ) {
                                 removeGroup( block_group, i );
                             }
                         }
-                        else {
-                            /* Remove \r and \n */
-                            removeEndCarac(inBuf);
-                                          
-                            printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, block_group->groups[i]->client[j].id_socket);
-
-                            if ( strcmp(inBuf, "ListOfCollectors") == 0 ) {
-                                tmpVal = (rand() % NB_MAX_COLLECTOR) + 1;
-                                if ( tmpVal > block_group->groups[i]->total ) { tmpVal = block_group->groups[i]->total; }
-                                
-                                sendClient(block_group->groups[i]->client, tmpVal, block_group->groups[i]->total, i);              
-                            }
-                            else if ( strcmp(inBuf, "Pong") == 0 ) {
-                                printf("Pong received !\n");
-                            }
+                        else if ( strcmp(inBuf, "ListOfCollectors") == 0 ) {
+                            tmpVal = (rand() % NB_MAX_COLLECTOR) + 1;
+                            if ( tmpVal > block_group->groups[i]->total ) { tmpVal = block_group->groups[i]->total; }
+                            
+                            sendClient(block_group->groups[i]->client, tmpVal, block_group->groups[i]->total, i);              
                         }
+                        else if ( strcmp(inBuf, "exist") == 0 ) {
+                            block_group->groups[i]->checker[j] = 1;
+                        }
+                        
+                        /* reinit input buffer */
                         memset(inBuf, '\0', 80);
                     }
                 }
