@@ -79,13 +79,18 @@ int main(int argc, char const *argv[]) {
         if ( i == 0 ) {
             printf("Timer Reach\n");
             tval.tv_sec  = 1;
-            if ( block_group->flag == TRUE ) {
-                askPresence(block_group);
+            
+            for(i = 0; i < block_group->total; i++) {
+                if ( block_group->flag == TRUE ) {
+                    askPresence(block_group->groups[i]);
+                } else {
+                    checkPresence(block_group->groups[i], &block_group->max_socket);
+                    tval.tv_sec *= 300;
+                }
             }
-            else {
-                checkPresence(block_group);
-                tval.tv_sec *= 300;
-            }   
+            
+            block_group->flag = !block_group->flag;
+  
         }
         
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
@@ -125,7 +130,7 @@ int main(int argc, char const *argv[]) {
                              || strcmp(inBuf, "notExist") == 0  ) {
                              
                             /* Remove the client from is groups */
-                            removeClient(block_group->groups[i]->client, j, &block_group->groups[i]->total, &block_group->max_socket );
+                            block_group->max_socket = removeClient(block_group->groups[i], j, block_group->max_socket );
                             /* If needed remove the group */
                             if ( &block_group->groups[i]->total == 0 ) {
                                 removeGroup( block_group, i );

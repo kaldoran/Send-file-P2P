@@ -24,7 +24,7 @@ Group* newGroup(char* const filename) {
     
     group->client = newClientArray(MAX_CONNEXION);
     
-    strcpy(group->filename, filename);
+    strcpy(group->name, filename);
     
     return group;
 }

@@ -113,63 +113,57 @@ bool addClient(Client *client, Client new, int *total) {
     return FALSE;
 }
 
-void removeClient(Client *client, int const pos,  int *total, int *max_socket ) {
+int removeClient(Group *group, int const pos, int const max_socket ) {
     int i, new_max_socket;
-    printf("Close : %d\n", client[pos].id_socket);
+    printf("Close : %d\n", group->client[pos].id_socket);
     
-    new_max_socket = *max_socket;
+    new_max_socket = -1;
     
     /* Seek new socket max */
-    if ( *max_socket == client[pos].id_socket ) {
-        for ( i = 0; i < *total; i++) {
-            if ( i != pos && client[i].id_socket > new_max_socket ) {
-                new_max_socket = client[i].id_socket;
+    if ( max_socket == group->client[pos].id_socket ) {
+        for ( i = 0; i < group->total; i++) {
+            if ( i != pos 
+                && group->client[i].id_socket > new_max_socket ) {
+                
+                new_max_socket = group->client[i].id_socket;
             }
         }
     }
 
-    close(client[pos].id_socket);
+    close(group->client[pos].id_socket);
     
     /* Move memory to avoid blank into array */
-    memmove(client + pos, client + pos + 1, (*total - pos - 1) * sizeof(Client));  
+    memmove((group->client) + pos, (group->client) + pos + 1, (group->total - pos - 1) * sizeof(*group->client));  
+    memmove((group->checker) + pos, (group->checker) + pos + 1, (group->total - pos - 1) * sizeof(*group->checker));  
     
-    *max_socket = new_max_socket;
-    --(*total);
+    --(group->total);
     
-    return;
+    if ( new_max_socket == -1 ) {
+        return max_socket;
+    }
+    
+    return new_max_socket;
 }
 
-void askPresence(blockGroup *block_group) {
-    int i, j;
-    if ( block_group->total != 0 ) {
-        block_group->flag = TRUE;
-        for(i = 0; i < block_group->total; i++) {
-            for ( j = 0; j < block_group->groups[i]->total; j++ ) {
-                /* Send the same message to all client from a groups */
-                send(block_group->groups[i]->client[j].id_socket, block_group->groups[i]->name, sizeof(block_group->groups[i]->name), 0);
-            }
-        }    
-    } 
-    
+void askPresence(Group *group) {
+    int i;
+
+    for ( i = 0; i < group->total; i++ ) {
+        /* Send the same message to all client from a groups */
+        send(group->client[i].id_socket, group->name, sizeof(*group->name), 0);
+    }   
     return;  
 }
 
-void checkPresence(blockGroup *block_group) {
-    int i, j;
-    if ( block_group->total != 0 ) {
-        for(i = 0; i < block_group->total; i++) {
-            for ( j = 0; j < block_group->groups[i]->total; j++ ) {
-                /* if the ckerckers flag if at 0 then i didn't respond in time */
-                if ( block_group->groups[i]->checkers[j] == 0 ) {
-                    removeClient(block_group->groups[i]->client, j, &block_group->groups[i]->total, &block_group->max_socket );
-                    if ( &block_group->groups[i]->total == 0 ) {
-                        removeGroup( block_group, i );
-                    }
-                }
-            }
-        }   
-        block_group->flag = FALSE;
-    }
+void checkPresence(Group *group, int *max_socket) {
+    int i;
     
+    for ( i = 0; i < group->total; i++ ) {
+        /* if the ckerckers flag if at 0 then i didn't respond in time */
+        if ( group->checker[i] == 0 ) {
+            *max_socket = removeClient(group, i, *max_socket );
+        }
+    }
+
     return;
 }

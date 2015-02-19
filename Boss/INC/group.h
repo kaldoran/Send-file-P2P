@@ -30,6 +30,12 @@ void freeGroup(Group* group);
  */
 int addGroup( blockGroup* block_group, char* const filename );
 
+/* remove a group from a block group
+ * %param block_group : block_group where you need to remove the group
+ * %param pos : position of the group 
+ */
+void removeGroup( blockGroup* block_group, int pos );
+
 /* Check if the group is existing in the block_group according to the filename
  * %param block_group : block_group that we need to check
  * %param filename : name of the group that we are looking for

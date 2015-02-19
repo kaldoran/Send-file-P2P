@@ -8,6 +8,7 @@
 #define CLIENT_H
 
 #include "boolean.h"
+#include "group.h"
 #include "struct_client.h"
 
 /* Allocate pointeur for an array of client 
@@ -56,11 +57,14 @@ void sendClient(Client *client, int number, int total, int to);
 bool addClient(Client *client, Client new, int *total);
 
 /* Remove a client frop the array of client
- * %param client : array of client which on you need to remove a client
+ * %param groupe : pointer on the group where you need to remove a client
  * %param pos : position of the client in the array
- * %param total : pointer on total number of client 
- * %param max_socket : pointer on the max id of the socket
+ * %param max_socket : max id of the socket
  */
-void removeClient(Client *client, int const pos,  int *total, int *max_socket);
+int removeClient(Group *group, int const pos, int const max_socket );
+
+void askPresence(Group *group);
+
+void checkPresence(Group *group, int *max_socket);
 
 #endif /* CLIENT_H included */
