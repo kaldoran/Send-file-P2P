@@ -88,15 +88,12 @@ void sendClient(Client *client, int number, int total, int to) {
             sprintf(outBuf, "%d|", number);
             strcat(outBuf, client[i].ip);
             
-            printf("Send the : %d\n", i);
-
             send(client[to].id_socket, outBuf, 20, 0);
-            
         }
-        
+
         if ( ++i > total ) { i = 0; }
     }
-    
+        
     return;
 }
 

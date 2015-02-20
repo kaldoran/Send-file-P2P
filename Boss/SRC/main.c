@@ -100,6 +100,7 @@ int main(int argc, char const *argv[]) {
         }
         
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
+            printf("Bye bye !");
             break;            
         }
         else if( FD_ISSET(block_group->server_socket, &rdfs) ) {
@@ -132,7 +133,7 @@ int main(int argc, char const *argv[]) {
 
                         tmpVal = read(group->client[j].id_socket, inBuf, 80);
                         removeEndCarac(inBuf);
-                        printf("[[INFO] Server] : message recu <%s> [Socket : %d]\n", inBuf, group->client[j].id_socket);
+                        printf("[[INFO] Server] : (%d) message recu <%s> [Socket : %d]\n", tmpVal, inBuf, group->client[j].id_socket);
                         
                         /* If we read empty thing then the client had been disconnect */
                         if ( tmpVal == 0 
@@ -149,7 +150,7 @@ int main(int argc, char const *argv[]) {
                             tmpVal = (rand() % NB_MAX_COLLECTOR) + 1;
                             if ( tmpVal > group->total ) { tmpVal = group->total; }
                             
-                            sendClient(group->client, tmpVal, group->total, i);              
+                            sendClient(group->client, tmpVal, group->total, j);              
                         }
                         else if ( strcmp(inBuf, "exist") == 0 ) {
                             group->checker[j] = 1;
@@ -158,11 +159,12 @@ int main(int argc, char const *argv[]) {
                         /* reinit input buffer */
                         memset(inBuf, '\0', 80);
                     }
-                }
-            }
-        }
-    }
+                } /* End of loop on client */
+            } /* End of loop on groups */
+        } /* End of else */
+    } /* End of infinit loop */
     
+    printf("End !\n");
     for(i = 0; i < block_group->total; i++) {
         closeClientArray(block_group->groups[i]->client, block_group->groups[i]->total);
     }

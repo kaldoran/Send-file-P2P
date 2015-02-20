@@ -54,7 +54,7 @@ int addGroup( blockGroup* block_group, char* const filename ) {
         ++block_group->total;
 
     }
-    
+
     return pos;
 }
 
