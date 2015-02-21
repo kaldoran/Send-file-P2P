@@ -68,8 +68,4 @@ bool addClient(Client *client, Client new, int *total);
  */
 int removeClient(Group *group, int const pos, int const max_socket );
 
-void askPresence(Group *group);
-
-void checkPresence(Group *group, int *max_socket);
-
 #endif /* CLIENT_H included */

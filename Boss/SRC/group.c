@@ -23,7 +23,7 @@ Group* newGroup(char* const filename) {
     }
     
     group->client = newClientArray(MAX_CONNEXION);
-    
+
     strcpy(group->name, filename);
     
     return group;
@@ -32,10 +32,10 @@ Group* newGroup(char* const filename) {
 void freeGroup(Group* group) {
 
     freeClientArray(group->client);
-    
     free(group->checker); 
-    
     free(group);
+    
+    return;
 }
 
 int addGroup( blockGroup* block_group, char* const filename ) {
@@ -52,7 +52,6 @@ int addGroup( blockGroup* block_group, char* const filename ) {
         pos = block_group->total;
         block_group->groups[block_group->total] = newGroup(filename);
         ++block_group->total;
-
     }
 
     return pos;
@@ -62,8 +61,11 @@ void removeGroup( blockGroup* block_group, int pos ) {
     DEBUG_MSG("Remove group for %s\n", block_group->groups[pos]->name);
     
     freeGroup(block_group->groups[pos]);
-
+    
+    memmove(block_group->groups + pos, block_group->groups + pos + 1, (block_group->total - pos - 1) * sizeof(*block_group->groups));  
     --block_group->total;
+    
+    return;
 }
 
 int existGroup( blockGroup* block_group, char* const filename ) {
@@ -76,5 +78,4 @@ int existGroup( blockGroup* block_group, char* const filename ) {
     }
     
     return -1;
-
 }

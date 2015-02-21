@@ -3,10 +3,10 @@
 // FICHIER : server.c                                       |
 // DATE : 09/02/15                                          |
 //----------------------------------------------------------
-#include <arpa/inet.h>
-#include <unistd.h>
 
 #include "error.h"
+#include "socket.h"
+#include "ping.h"
 #include "server.h"
 #include "client.h"
 #include "block_group.h"
@@ -50,9 +50,7 @@ void startServer() {
     block_group = newBlockGroup();
     block_group->server_socket = initServer();
     block_group->max_socket = block_group->server_socket;
-        
-    printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");
-    
+            
     for ( ;; ) {
     
         FD_ZERO(&rdfs);
@@ -64,12 +62,10 @@ void startServer() {
         
         if ( timer == 0 ) {
             printf("Timer Reach\n");
-            
             tval.tv_sec = handlerPresence(block_group);  
         }
         
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
-            printf("Server stop\n");
             break;            
         }
         else if( FD_ISSET(block_group->server_socket, &rdfs) ) {
@@ -80,11 +76,13 @@ void startServer() {
         }
     }
     
+    printf("Server stop\n");
     closeServer(block_group);
     
     return;
     
 }
+
 void setHandler(blockGroup *block_group, fd_set *rdfs) {
     int i, j;
     Group* group;
@@ -101,23 +99,6 @@ void setHandler(blockGroup *block_group, fd_set *rdfs) {
     }
     
     return;       
-}
-
-int handlerPresence(blockGroup *block_group) {
-    int i;
-    
-    for(i = 0; i < block_group->total; i++) {
-        
-        if ( block_group->flag == TRUE ) {
-            askPresence(block_group->groups[i]);
-        } else {
-            checkPresence(block_group->groups[i], &block_group->max_socket);
-        }
-    }
-    
-    block_group->flag = !block_group->flag;
-    
-    return (block_group->flag == TRUE) ? 1 : 300;
 }
 
 void closeServer(blockGroup *block_group) {

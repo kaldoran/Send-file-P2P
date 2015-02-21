@@ -20,8 +20,6 @@ void startServer();
 
 void setHandler(blockGroup *block_group, fd_set *rdfs);
 
-int handlerPresence(blockGroup *block_group);
-
 /* close a server
  * %param server_socket : socket of the server that you need to close
  */

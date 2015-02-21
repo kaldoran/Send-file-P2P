@@ -15,7 +15,8 @@
 
 
 Client *newClientArray(int const number) {
-    int i ;
+
+    int i;
     Client *client;
     
     if ( (client = calloc(number, sizeof(*client))) == NULL ) {
@@ -29,14 +30,14 @@ Client *newClientArray(int const number) {
 }
 
 void handleNewClient(blockGroup* block_group) {
-    
+
     int tmpVal;
     Client tmp;
-    char inBuf[READER_SIZE];
+    char inBuf[NAME_MAX];
     
     tmp = acceptClient(block_group->server_socket );
     
-    read(tmp.id_socket, inBuf, READER_SIZE);
+    read(tmp.id_socket, inBuf, NAME_MAX);
     removeEndCarac(inBuf);
                 
     if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
@@ -55,6 +56,7 @@ void handleNewClient(blockGroup* block_group) {
 }
 
 void handlerClient(blockGroup* block_group, fd_set* rdfs) {
+
     int i, j; 
     int tmpVal;
     Group* group;
@@ -71,29 +73,23 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
                 
                 printf("[[INFO] Server] : (%d) message recu <%s> [Socket : %d]\n", tmpVal, inBuf, group->client[j].id_socket);
                 
-                if ( tmpVal == 0 
-                     || strcmp(inBuf, "notExist") == 0  ) {
+                if ( tmpVal == 0 || strcmp(inBuf, FILE_NOTEXIST_MSG) == 0  ) {
                      
-                    /* Remove the client from is groups */
                     block_group->max_socket = removeClient(group, j, block_group->max_socket );
                     
-                    /* If needed remove the group */
-                    if ( &group->total == 0 ) {
-                        removeGroup( block_group, i );
-                    }
+                    if ( group->total == 0 ) { removeGroup( block_group, i );  } /* If needed remove the group */
                 }
-                else if ( strcmp(inBuf, "ListOfCollectors") == 0 ) {
+                else if ( strcmp(inBuf, LIST_OF_COLLECTOR_MSG) == 0 ) {
                     tmpVal = (rand() % MAX_CONNEXION) + 1;
                     if ( tmpVal > group->total ) { tmpVal = group->total; }
                     
                     sendClient(group->client, tmpVal, group->total, j);              
                 }
-                else if ( strcmp(inBuf, "exist") == 0 ) {
+                else if ( strcmp(inBuf, FILE_EXIST_MSG) == 0 ) {
                     group->checker[j] = 1;
                 }
                 
-                /* reinit input buffer */
-                memset(inBuf, '\0', READER_SIZE);
+                memset(inBuf, '\0', READER_SIZE);  /* reinit input buffer */
             }
         }
     }
@@ -106,6 +102,8 @@ void closeClientArray(Client *client,int const total) {
     for(i = 0; i < total; i++) {
         closesocket(client[i].id_socket);
     }
+    
+    return;
 }
 
 void freeClientArray(Client *client) {
@@ -118,12 +116,11 @@ Client initClient() {
     c.id_socket = socket(AF_INET,SOCK_STREAM,0); 
       
     if (c.id_socket == -1) {
-        QUIT_MSG("Can't create the socket");
+        QUIT_MSG("Can't initiliaze the socket");
     }
     
     return c;
 }
-
 
 Client acceptClient( int const server_socket ) {
     Client new_client;
@@ -211,27 +208,4 @@ int removeClient(Group *group, int const pos, int const max_socket ) {
     }
     
     return new_max_socket;
-}
-
-void askPresence(Group *group) {
-    int i;
-
-    for ( i = 0; i < group->total; i++ ) {
-        /* Send the same message to all client from a groups */
-        send(group->client[i].id_socket, group->name, sizeof(*group->name), 0);
-    }   
-    return;  
-}
-
-void checkPresence(Group *group, int *max_socket) {
-    int i;
-    
-    for ( i = 0; i < group->total; i++ ) {
-        /* if the ckerckers flag if at 0 then i didn't respond in time */
-        if ( group->checker[i] == 0 ) {
-            *max_socket = removeClient(group, i, *max_socket );
-        }
-    }
-
-    return;
 }
