@@ -15,8 +15,10 @@
 #define FILE_NOT_EXIST_MSG "notExist"
 #define LIST_OF_COLLECTOR_MSG "ListOfCollectors"
 
+/** Remove the end caractere of a string 
+ *  Remove : \n and \r
+ *  %param input : string where you need to remove caractere 
+ */
 void removeEndCarac(char *input);
-
-void handlerMessage(blockGroup* block_group, char inBuf[READER_SIZE], int tmpVal);
 
 #endif /* MESSAGE_H included */
