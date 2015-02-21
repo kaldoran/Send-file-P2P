@@ -8,6 +8,8 @@
 
 #include "error.h"
 #include "server.h"
+#include "client.h"
+#include "block_group.h"
 
 #define PORT 42000
 
@@ -36,9 +38,96 @@ int initServer() {
     return serveur_socket;
 }
 
-void closeServer(int server_socket) {
+void startServer() {
+    int timer;
+    fd_set rdfs;
+    blockGroup* block_group;
+    struct timeval tval;
+    
+    tval.tv_sec  = 300;
+    tval.tv_usec = 0; 
+    
+    block_group = newBlockGroup();
+    block_group->server_socket = initServer();
+    block_group->max_socket = block_group->server_socket;
+        
+    printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");
+    
+    for ( ;; ) {
+    
+        FD_ZERO(&rdfs);
+        setHandler(block_group, &rdfs);
+        
+        if( (timer = select(block_group->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
+            QUIT_MSG("Can't select : ");
+        }
+        
+        if ( timer == 0 ) {
+            printf("Timer Reach\n");
+            
+            tval.tv_sec = handlerPresence(block_group);  
+        }
+        
+        if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
+            printf("Server stop\n");
+            break;            
+        }
+        else if( FD_ISSET(block_group->server_socket, &rdfs) ) {
+            handleNewClient(block_group);                      
+        }
+        else { 
+            handlerClient(block_group, &rdfs);
+        }
+    }
+    
+    closeServer(block_group);
+    
+    return;
+    
+}
+void setHandler(blockGroup *block_group, fd_set *rdfs) {
+    int i, j;
+    Group* group;
+    
+    FD_SET(STDIN_FILENO, rdfs);                                /* Add stdin for stop server */
+    FD_SET(block_group->server_socket, rdfs);                  /* Add the socket f the server */
+    
+    for(i = 0; i < block_group->total; i++) {
+    
+        group = block_group->groups[i];
+        for ( j = 0; j < group->total; j++ ) {
+            FD_SET(group->client[j].id_socket, rdfs);          /* Add socket of each client */
+        }
+    }
+    
+    return;       
+}
 
-    close(server_socket);
+int handlerPresence(blockGroup *block_group) {
+    int i;
+    
+    for(i = 0; i < block_group->total; i++) {
+        
+        if ( block_group->flag == TRUE ) {
+            askPresence(block_group->groups[i]);
+        } else {
+            checkPresence(block_group->groups[i], &block_group->max_socket);
+        }
+    }
+    
+    block_group->flag = !block_group->flag;
+    
+    return (block_group->flag == TRUE) ? 1 : 300;
+}
+
+void closeServer(blockGroup *block_group) {
+    int i;
+    for(i = 0; i < block_group->total; i++) {
+        closeClientArray(block_group->groups[i]->client, block_group->groups[i]->total);
+    }
+    freeBlockGroup(block_group);
+    
+    close(block_group->server_socket);
     
     return;
 }

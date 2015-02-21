@@ -4,15 +4,14 @@
 // DATE : 09/02/15                                          |
 //----------------------------------------------------------
 
+#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
+#include "socket.h"
 
 #include "error.h"
 #include "client.h"
 #include "boolean.h"
+#include "message.h"
 
 
 Client *newClientArray(int const number) {
@@ -29,6 +28,78 @@ Client *newClientArray(int const number) {
     return client;
 }
 
+void handleNewClient(blockGroup* block_group) {
+    
+    int tmpVal;
+    Client tmp;
+    char inBuf[READER_SIZE];
+    
+    tmp = acceptClient(block_group->server_socket );
+    
+    read(tmp.id_socket, inBuf, READER_SIZE);
+    removeEndCarac(inBuf);
+                
+    if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
+       || addClient(block_group->groups[tmpVal]->client, tmp, &block_group->groups[tmpVal]->total) == FALSE ) {
+        /* Can't create groupe */
+        close(tmp.id_socket);
+    }
+    else {
+        if ( block_group->max_socket < tmp.id_socket ) {
+            DEBUG_MSG("Change the max socket\n");
+            block_group->max_socket = tmp.id_socket;
+        }
+    }  
+    
+    return;
+}
+
+void handlerClient(blockGroup* block_group, fd_set* rdfs) {
+    int i, j; 
+    int tmpVal;
+    Group* group;
+    char inBuf[READER_SIZE];
+    
+    for(i = 0; i < block_group->total; i++) {
+
+        group = block_group->groups[i];
+        for ( j = 0; j < group->total; j++ ) {
+        
+            if(FD_ISSET(group->client[j].id_socket, rdfs)) { 
+                tmpVal = read(group->client[j].id_socket, inBuf, READER_SIZE);
+                removeEndCarac(inBuf);
+                
+                printf("[[INFO] Server] : (%d) message recu <%s> [Socket : %d]\n", tmpVal, inBuf, group->client[j].id_socket);
+                
+                if ( tmpVal == 0 
+                     || strcmp(inBuf, "notExist") == 0  ) {
+                     
+                    /* Remove the client from is groups */
+                    block_group->max_socket = removeClient(group, j, block_group->max_socket );
+                    
+                    /* If needed remove the group */
+                    if ( &group->total == 0 ) {
+                        removeGroup( block_group, i );
+                    }
+                }
+                else if ( strcmp(inBuf, "ListOfCollectors") == 0 ) {
+                    tmpVal = (rand() % MAX_CONNEXION) + 1;
+                    if ( tmpVal > group->total ) { tmpVal = group->total; }
+                    
+                    sendClient(group->client, tmpVal, group->total, j);              
+                }
+                else if ( strcmp(inBuf, "exist") == 0 ) {
+                    group->checker[j] = 1;
+                }
+                
+                /* reinit input buffer */
+                memset(inBuf, '\0', READER_SIZE);
+            }
+        }
+    }
+    
+    return;
+}
 
 void closeClientArray(Client *client,int const total) {
     int i;

@@ -10,6 +10,7 @@
 #include "boolean.h"
 #include "group.h"
 #include "struct_client.h"
+#include "struct_block_group.h"
 
 /* Allocate pointeur for an array of client 
  * %param number : number of client
@@ -38,6 +39,10 @@ Client initClient();
  * %return : the information about the client
  */
 Client acceptClient( int const server_socket );
+
+void handleNewClient(blockGroup* block_group);
+
+void handlerClient(blockGroup* block_group, fd_set* rdfs);
 
 /* Send all client to a socket 
  * %param client : array of client which you wnat to send
