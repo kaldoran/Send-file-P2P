@@ -65,6 +65,7 @@ bool addClient(Client *client, Client new, int *total);
  *  %param groupe : pointer on the group where you need to remove a client
  *  %param pos : position of the client in the array
  *  %param max_socket : max id of the socket
+ *  %return : return the new max_socket value
  */
 int removeClient(Group *group, int const pos, int const max_socket );
 
