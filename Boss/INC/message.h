@@ -12,7 +12,7 @@
 #define READER_SIZE 80
 
 #define FILE_EXIST_MSG "exist"
-#define FILE_NOTEXIST_MSG "notExist"
+#define FILE_NOT_EXIST_MSG "notExist"
 #define LIST_OF_COLLECTOR_MSG "ListOfCollectors"
 
 void removeEndCarac(char *input);

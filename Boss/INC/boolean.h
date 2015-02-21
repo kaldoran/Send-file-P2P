@@ -10,7 +10,7 @@
 #define FALSE 0
 #define TRUE !FALSE /* True is the invert of False */
 
-/* Define what is a boolean
+/** Define what is a boolean
  *  'false' is equal to 0 by default.
  */
 typedef enum {

@@ -11,8 +11,8 @@
 #include "struct_block_group.h"
 
 
-/* init a socket for a server
- * %return : the initialized socket for the server
+/** init a socket for a server
+ *  %return : the initialized socket for the server
  */ 
 int initServer();
 
@@ -20,8 +20,8 @@ void startServer();
 
 void setHandler(blockGroup *block_group, fd_set *rdfs);
 
-/* close a server
- * %param server_socket : socket of the server that you need to close
+/** close a server
+ *  %param server_socket : socket of the server that you need to close
  */
 void closeServer(blockGroup *block_group);
 

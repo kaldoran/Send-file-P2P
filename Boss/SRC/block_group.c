@@ -34,6 +34,9 @@ void freeBlockGroup(blockGroup* block_group) {
     for ( i = 0; i < block_group->total; i++ ) {
         freeGroup(block_group->groups[i]);
     }
+    
     free(block_group->groups);
     free(block_group);
+    
+    return;
 }
