@@ -73,7 +73,7 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
                 
                 printf("[[INFO] Server] : (%d) message recu <%s> [Socket : %d]\n", tmpVal, inBuf, group->client[j].id_socket);
                 
-                if ( tmpVal == 0 || strcmp(inBuf, FILE_NOTEXIST_MSG) == 0  ) {
+                if ( tmpVal == 0 || strcmp(inBuf, FILE_NOT_EXIST_MSG) == 0  ) {
                      
                     block_group->max_socket = removeClient(group, j, block_group->max_socket );
                     

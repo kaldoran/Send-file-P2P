@@ -19,7 +19,6 @@ int main(int argc, char const *argv[]) {
     
     initWindows();  
     
-    printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");  
     startServer();  /* infinit loop into startServer() */
     endWindows();
     
