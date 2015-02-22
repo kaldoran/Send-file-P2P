@@ -10,6 +10,7 @@
 #include "tcp.h"
 #include "error.h"
 #include "socket.h"
+#include "client.h"
 #include "collectors.h"
 
 
@@ -47,6 +48,50 @@ void askVolList(Collector* collect, int nb_vol) {
                   break;
         default: strcpy(collect->volumes, data);
     }
+}
+
+int fillCollectorsList(Collector** collectors_list, Index* index){
+    int nb_seed = 0;
+    char in_buf[25];
+    char *token;
+    struct hostent *h;
+    
+    tcpAction(index->c, index->file, sizeof(index->file), SEND);
+        
+    tcpAction(index->c, "ListOfCollectors", 16, SEND);
+        
+    do {
+        memset(in_buf, '\0', 25);
+            
+        tcpAction(index->c, in_buf, 25, RECEIVED);
+        printf("Received : %s\n",  in_buf);
+            
+        token = strtok(in_buf, "|");
+        printf("Num of collector : %d\n", atoi(token));
+        
+        token = strtok(NULL, "|");
+           printf("Ip of Collector : %s\n", token);
+        
+        collectors_list[nb_seed] = newCollect(index->nb_package);
+        
+        collectors_list[nb_seed]->c = initClient();
+
+        if( (h = gethostbyname(token)) != NULL ) {
+            memcpy(&collectors_list[nb_seed]->c.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
+        }
+        collectors_list[nb_seed]->c.sock_info.sin_port = htons((in_port_t) COLLECT_PORT);
+
+        if(tcpStart(collectors_list[nb_seed]->c) == FALSE){
+            printf("Can't connect to collector n°%d", nb_seed);
+        }
+        else{
+            askVolList(collectors_list[nb_seed], index->nb_package);
+        }
+
+        ++nb_seed;
+    } while(*in_buf != '0');
+
+    return nb_seed;
 }
 
 int* findCollVol(Index* index, Collector** coll_list, int nb_seed){

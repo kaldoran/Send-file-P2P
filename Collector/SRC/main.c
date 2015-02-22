@@ -38,7 +38,6 @@ int main(int argc, char const *argv[]) {
 
     bool full_file = FALSE;
     fd_set rdfs;
-    struct hostent *h;
     char in_buf[25];
 
     char *token;
@@ -69,56 +68,11 @@ int main(int argc, char const *argv[]) {
     if ( tcpStart(index->c) == FALSE ) {
         QUIT_MSG("Can't connect to boss : ");
     }
-        
-    if( access( index->file, R_OK|W_OK ) != -1 ) {
-        file = fopen(index->file, "r");
-        printf("File exist\n Check integrity\n");
-        
-        full_file = checkFile(file, index);
-    } else {
-        file = fopen(index->file, "a+");
-        for ( i = 0; i < index->file_size; i++ ) {
-            fprintf(file, "#");
-        }
-        
-        memset(index->local_vols, '0', index->nb_package);
-    }
-    
+
+    full_file = initFile(index, file);
+
     if(!full_file) {
-        tcpAction(index->c, index->file, sizeof(index->file), SEND);
-        
-        tcpAction(index->c, "ListOfCollectors", 16, SEND);
-        
-        do {
-            memset(in_buf, '\0', 25);
-            
-            tcpAction(index->c, in_buf, 25, RECEIVED);
-            printf("Received : %s\n",  in_buf);
-            
-            token = strtok(in_buf, "|");
-            printf("Num of collector : %d\n", atoi(token));
-            
-            token = strtok(NULL, "|");
-            printf("Ip of Collector : %s\n", token);
-            
-            collectors_list[nb_seed] = newCollect(index->nb_package);
-            
-            collectors_list[nb_seed]->c = initClient();
-            
-            if( (h = gethostbyname(token)) != NULL ) {
-                memcpy(&collectors_list[nb_seed]->c.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
-            }
-            collectors_list[nb_seed]->c.sock_info.sin_port = htons((in_port_t) COLLECT_PORT);
-            
-            if(tcpStart(collectors_list[nb_seed]->c) == FALSE){
-                printf("Can't connect to collector n°%d", nb_seed);
-            }
-            else{
-                askVolList(collectors_list[nb_seed], index->nb_package);
-            }
-            
-            ++nb_seed;
-        } while(*in_buf != '0');
+        nb_seed = fillCollectorsList(collectors_list, index);
     }
     
     for ( ;; ) {

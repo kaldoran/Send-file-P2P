@@ -22,4 +22,6 @@ void freeIndex(Index *index);
 
 bool loadIndex(const char *file, Index *index);
 
+bool initFile(Index* index, FILE* file);
+
 #endif /* INDEX_LOADER_H Included */
