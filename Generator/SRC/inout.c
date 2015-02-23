@@ -11,7 +11,6 @@
 #include "verification.h"
 #include "inout.h"
 
-
 char* askBossIp() {
     char* ip;
     int verif;
@@ -62,4 +61,6 @@ void emptyBuffer() {
     while (c != '\n' && c != EOF) {
         c = getchar();
     }
+    
+    return;
 }
