@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "tcp.h"
 #include "error.h"
 #include "client.h"
 #include "boolean.h"
@@ -152,5 +153,19 @@ bool initFile(Index* index, FILE* file){
     }
     
     return full_file;
+}
+
+bool initIndex(Index* index, char const *index_name, FILE* file){
+    index = newIndex();
+    
+    if ( loadIndex(index_name, index) == FALSE ) {
+        printf("[ERROR] : Can't reach the boss serveur\n" );
+    }
+    
+    if ( tcpStart(index->c) == FALSE ) {
+        QUIT_MSG("Can't connect to boss : ");
+    }
+
+    return initFile(index, file);
 }
 
