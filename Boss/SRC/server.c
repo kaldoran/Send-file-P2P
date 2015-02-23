@@ -110,7 +110,7 @@ void closeServer(blockGroup *block_group) {
     }
     freeBlockGroup(block_group);
     
-    close(block_group->server_socket);
+    closesocket(block_group->server_socket);
     
     return;
 }

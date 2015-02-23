@@ -18,8 +18,11 @@ void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
     int* collVol;
 
     collVol = findCollVol(index, collectors_list, nb_seed);
-    char* vol = strcat("Vol", itoa(collVol[1], NULL, 10));
+    char vol[10];  /* 10 carac : 3 for "Vol", and 7 left for the number (i.e 9 millions person ) */
+    memset(vol, '\0', 10);
 
+    sprintf(vol, "Vol%d", collVol[1]);
+    
     tcpAction(collectors_list[collVol[0]]->c, vol, sizeof(vol), SEND);
 
     tcpAction(collectors_list[collVol[0]]->c, read, index->pack_size, RECEIVED);
