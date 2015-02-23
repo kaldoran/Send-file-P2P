@@ -22,6 +22,8 @@ Collector** collectorsFromIps(int nb_coll, char** ips);
 
 void askVolList(Collector* collect, int nb_vol);
 
+int fillCollectorsList(Collector** collectors_list, Index* index);
+
 int* findCollVol(Index* index, Collector** coll_list, int nb_seed);
 
 #endif

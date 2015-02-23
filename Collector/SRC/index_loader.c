@@ -11,6 +11,7 @@
 #include "error.h"
 #include "client.h"
 #include "boolean.h"
+#include "verification.h"
 #include "index_loader.h"
 
 char *startWith(char *s1, char *s2) {
@@ -130,5 +131,26 @@ bool loadIndex(const char *file, Index *index) {
 
     fclose(fichier);
     return TRUE;
+}
+
+bool initFile(Index* index, FILE* file){
+    bool full_file = FALSE;
+    int i;
+    
+    if( access( index->file, R_OK|W_OK ) != -1 ) {
+        file = fopen(index->file, "r");
+        printf("File exist\n Check integrity\n");
+        
+        full_file = checkFile(file, index);
+    } else {
+        file = fopen(index->file, "a+");
+        for ( i = 0; i < index->file_size; i++ ) {
+            fprintf(file, "#");
+        }
+        
+        memset(index->local_vols, '0', index->nb_package);
+    }
+    
+    return full_file;
 }
 
