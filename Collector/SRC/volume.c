@@ -18,8 +18,7 @@ void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
     int* collVol;
 
     collVol = findCollVol(index, collectors_list, nb_seed);
-    char vol[10];  /* 10 carac : 3 for "Vol", and 7 left for the number (i.e 9 millions person ) */
-    memset(vol, '\0', 10);
+    char vol[10] = "";  /* 10 carac : 3 for "Vol", and 7 left for the number (i.e 9 millions person ) */
 
     sprintf(vol, "Vol%d", collVol[1]);
     
