@@ -7,13 +7,13 @@
 #ifndef STRUCT_GROUP
 #define STRUCT_GROUP
 
-#include <limits.h>
+#include <stdio.h>
 
 #include "boolean.h"
 #include "struct_client.h"
 
 typedef struct Group {
-    char name[NAME_MAX];            /* name of the group */
+    char name[FILENAME_MAX];            /* name of the group */
     
     char* checker;                  /* a boolean array if checker[i] is at 1 then the client respond */
     

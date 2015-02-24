@@ -20,7 +20,6 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     int i, j;
     int nbVolume;
     FILE *inputFile = NULL;
-    char *outputFileName = NULL;
     FILE *outputFile = NULL;
     unsigned char inbuf[packSize];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
@@ -29,9 +28,8 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     if ( (inputFile = fopen(fileName, "r")) == NULL) {
         QUIT_MSG("Opening file '%s'", fileName);
     }
-    
-    outputFileName = strcat(baseName, ".ndex");
-    if ( (outputFile = fopen(outputFileName, "w+")) == NULL ) {
+   
+    if ( (outputFile = fopen("output.ndex", "w+")) == NULL ) {
         QUIT_MSG("Opening file '.ndex'");
     }
     
@@ -77,7 +75,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     fclose(inputFile);
     fclose(outputFile);
     
-    printf("\n[INFO] : File '%s' add been generated\n", outputFileName);
+    printf("\n[INFO] : File 'output.ndex' add been generated\n");
     
     return;
 }

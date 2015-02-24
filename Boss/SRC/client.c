@@ -33,11 +33,11 @@ void handleNewClient(blockGroup* block_group) {
 
     int tmpVal;
     Client tmp;
-    char inBuf[NAME_MAX];
+    char inBuf[FILENAME_MAX];
     
     tmp = acceptClient(block_group->server_socket );
     
-    read(tmp.id_socket, inBuf, NAME_MAX);
+    read(tmp.id_socket, inBuf, FILENAME_MAX);
     removeEndCarac(inBuf);
                 
     if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
@@ -129,7 +129,7 @@ Client acceptClient( int const server_socket ) {
 
     struct_size = sizeof(SOCKADDR_IN);
     
-    new_client.id_socket = accept(server_socket, (struct sockaddr*) &s_client, (socklen_t *)&struct_size);
+    new_client.id_socket = accept(server_socket, (struct sockaddr*) &s_client, (__socklen_t *)&struct_size);
 
     printf("New client [%d]\n\n", new_client.id_socket);
     printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));

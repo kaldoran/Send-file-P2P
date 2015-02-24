@@ -60,7 +60,7 @@ Client acceptClient( int const server_socket ) {
 
     struct_size = sizeof(SOCKADDR_IN);
     
-    new_client.id_socket = accept(server_socket, (struct sockaddr*) &new_client.sock_info, (socklen_t *)&struct_size);
+    new_client.id_socket = accept(server_socket, (struct sockaddr*) &new_client.sock_info, (__socklen_t *)&struct_size);
 
     printf("New client [%d]\n\n", new_client.id_socket);
     printf("IP address is: %s\n", inet_ntoa(new_client.sock_info.sin_addr));
@@ -99,7 +99,7 @@ void removeClient(Client *client, int const pos,  int *total, int *max_socket ) 
         }
     }
 
-    close(client[pos].id_socket);
+    closesocket(client[pos].id_socket);
     
     /* Move memory to avoid blank into array */
     memmove(client + pos, client + pos + 1, (*total - pos - 1) * sizeof(Client));  
