@@ -24,4 +24,6 @@ bool loadIndex(const char *file, Index *index);
 
 bool initFile(Index* index, FILE* file);
 
+bool initIndex(Index* index, char const *index_name, FILE* file);
+
 #endif /* INDEX_LOADER_H Included */

@@ -26,4 +26,12 @@ int fillCollectorsList(Collector** collectors_list, Index* index);
 
 int* findCollVol(Index* index, Collector** coll_list, int nb_seed);
 
+void startCollector(char const *index_name);
+
+void initFd(Index* index, Client* client, int nb_leach, fd_set* rdfs);
+
+int addNewClient(Client* client_tab, int seed_socket, int* max_socket, int nb_leach);
+
+void manageClient(Client *client_tab, int *nb_leach, int *max_socket, Index *index, FILE *file, fd_set* rdfs);
+
 #endif
