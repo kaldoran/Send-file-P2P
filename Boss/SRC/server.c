@@ -67,10 +67,13 @@ void startServer() {
             tval.tv_sec = handlerPresence(block_group);  
         }
         
+        #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;            
         }
-        else if( FD_ISSET(block_group->server_socket, &rdfs) ) {
+        else
+        #endif 
+        if( FD_ISSET(block_group->server_socket, &rdfs) ) {
             handleNewClient(block_group);                      
         }
         else { 
@@ -89,7 +92,9 @@ void setHandler(blockGroup *block_group, fd_set *rdfs) {
     int i, j;
     Group* group;
     
+    #ifdef linux
     FD_SET(STDIN_FILENO, rdfs);                                /* Add stdin for stop server */
+    #endif
     FD_SET(block_group->server_socket, rdfs);                  /* Add the socket f the server */
     
     for(i = 0; i < block_group->total; i++) {

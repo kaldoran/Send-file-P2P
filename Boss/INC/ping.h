@@ -12,7 +12,7 @@
 /* Time in seconde before check respond */
 #define PONG_CHECKER_TIMER 1
 /* Time in second between 2 presence check */
-#define PING_TIMER 30
+#define PING_TIMER 300
 
 /** handle if we need to ask presence or check the respond
  *  %param block_group : block gorup where you need to handle presence

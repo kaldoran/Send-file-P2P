@@ -154,6 +154,7 @@ void startCollector(char const *index_name){
         }
         
         if( (i = select(max_socket + 1, &rdfs, NULL, NULL, NULL)) == -1) {
+            endWindows();
             QUIT_MSG("Can't select : ");
         }
         
