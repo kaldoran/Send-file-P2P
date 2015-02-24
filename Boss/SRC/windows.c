@@ -6,6 +6,7 @@
 
 #include "windows.h"
 #include "socket.h"
+#include "error.h"
 
 void initWindows(void) {
     #ifdef WIN32
