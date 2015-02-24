@@ -4,6 +4,9 @@
 // DATE : 19/02/15                                          |
 //----------------------------------------------------------
 
+#include "windows.h"
+#include "socket.h"
+
 void initWindows(void) {
     #ifdef WIN32
        WSADATA wsa;
