@@ -15,6 +15,7 @@
 #include "client.h"
 #include "server.h"
 #include "boolean.h"
+#include "windows.h"
 #include "collectors.h"
 #include "index_loader.h"
 #include "verification.h"
@@ -61,6 +62,7 @@ int fillCollectorsList(Collector** collectors_list, Index* index){
     int nb_seed = 0;
     char in_buf[25];
     char *token;
+    //struct hostent *h;
     
     tcpAction(index->c, index->file, sizeof(index->file), SEND);
         
@@ -79,7 +81,7 @@ int fillCollectorsList(Collector** collectors_list, Index* index){
            printf("Ip of Collector : %s\n", token);
         
         collectors_list[nb_seed] = newCollect(index->nb_package);
-        
+
         createClientFromIp(&collectors_list[nb_seed]->c, token);
         
         if(tcpStart(collectors_list[nb_seed]->c) == FALSE){
@@ -101,7 +103,7 @@ void createClientFromIp(Client* client, char* ip){
     *client = initClient();
 
     if( (h = gethostbyname(ip)) != NULL ) {
-        memcpy(&client.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
+        memcpy(&client->sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
     }
     
     client->sock_info.sin_port = htons((in_port_t) COLLECT_PORT);

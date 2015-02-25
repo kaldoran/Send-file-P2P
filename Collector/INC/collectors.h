@@ -46,11 +46,12 @@ int fillCollectorsList(Collector** collectors_list, Index* index);
 
 /** Creates a Client un fonction of a given ip adress.
  * 
+ *  %param client: Instance of Client in which create the client.
  *  %param ip: Ip adress of the client.
  * 
  *  %return : Instance of Client corresponding to the IP adress.
  */
-Client createClientFromIp(char* ip);
+void createClientFromIp(Client* client, char* ip);
 
 /** Finds a Collector and a volume to ask.
  * 
