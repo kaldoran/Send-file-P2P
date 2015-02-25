@@ -61,7 +61,6 @@ int fillCollectorsList(Collector** collectors_list, Index* index){
     int nb_seed = 0;
     char in_buf[25];
     char *token;
-    struct hostent *h;
     
     tcpAction(index->c, index->file, sizeof(index->file), SEND);
         
@@ -81,13 +80,8 @@ int fillCollectorsList(Collector** collectors_list, Index* index){
         
         collectors_list[nb_seed] = newCollect(index->nb_package);
         
-        collectors_list[nb_seed]->c = initClient();
-
-        if( (h = gethostbyname(token)) != NULL ) {
-            memcpy(&collectors_list[nb_seed]->c.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
-        }
-        collectors_list[nb_seed]->c.sock_info.sin_port = htons((in_port_t) COLLECT_PORT);
-
+        createClientFromIp(&collectors_list[nb_seed]->c, token);
+        
         if(tcpStart(collectors_list[nb_seed]->c) == FALSE){
             printf("Can't connect to collector n°%d", nb_seed);
         }
@@ -99,6 +93,18 @@ int fillCollectorsList(Collector** collectors_list, Index* index){
     } while(*in_buf != '0');
 
     return nb_seed;
+}
+
+void createClientFromIp(Client* client, char* ip){
+    struct hostent *h;
+    
+    *client = initClient();
+
+    if( (h = gethostbyname(ip)) != NULL ) {
+        memcpy(&client.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
+    }
+    
+    client->sock_info.sin_port = htons((in_port_t) COLLECT_PORT);
 }
 
 int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
