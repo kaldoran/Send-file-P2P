@@ -11,8 +11,8 @@
 #include "struct_client.h"
 
 typedef struct Collector {
-    Client c;
-    char* volumes; /* Finally a boolean array but in char, as char is on 1 octet */
+    Client c;       // Client corresponding to the Collector.
+    char* volumes;  // Binary array for the Collector's volumes list (ex: if volumes[0]=1 then the Collector has the volume number 0)
 
 } Collector;
 

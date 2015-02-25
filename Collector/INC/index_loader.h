@@ -12,6 +12,14 @@
 
 #include "struct_index.h"
 
+/** Searches if a string has a given prefix.
+ * 
+ *  %param s1: Prefix to seek.
+ *  %param s2: String in which search the prefix.
+ * 
+ *  %return: s2 minus the prefix if s1 is the prefix of s2,
+ *           NULL otherwise.
+ */
 char* startWith(char *s1, char *s2);
 
 /** Allocates and initializes a new Index.

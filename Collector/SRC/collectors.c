@@ -62,7 +62,6 @@ int fillCollectorsList(Collector** collectors_list, Index* index){
     int nb_seed = 0;
     char in_buf[25];
     char *token;
-    //struct hostent *h;
     
     tcpAction(index->c, index->file, sizeof(index->file), SEND);
         
