@@ -20,4 +20,6 @@ bool checkFile(FILE* file, Index* index);
 
 bool checkVol(Index* index, unsigned char* vol, int id_vol);
 
+bool fileExist(const char *filename);
+
 #endif /* VERIFICATION_H included */

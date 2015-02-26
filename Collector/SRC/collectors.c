@@ -154,14 +154,16 @@ void startCollector(char const *index_name){
         }
         
         if( (i = select(max_socket + 1, &rdfs, NULL, NULL, NULL)) == -1) {
-            endWindows();
             QUIT_MSG("Can't select : ");
         }
         
+        #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;
         }
-        else if( FD_ISSET(seed_socket, &rdfs) ) {
+        else 
+        #endif
+        if( FD_ISSET(seed_socket, &rdfs) ) {
             nb_leach += addNewClient(client, seed_socket, &max_socket, nb_leach);
         }
         
@@ -178,7 +180,9 @@ void initFd(Index* index, Client* client, int nb_leach, fd_set* rdfs){
     
     FD_ZERO(rdfs);
     
+    #ifdef linux
     FD_SET(STDIN_FILENO, rdfs);
+    #endif
     FD_SET(index->c.id_socket, rdfs);
     
     for(i = 0; i < nb_leach; i++) {

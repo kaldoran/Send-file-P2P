@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include "error.h"
+#include "verification.h"
 #include "collectors.h"
 
 #include "windows.h"
@@ -26,10 +27,12 @@ void verifications(int argc, char const *argv[]) {
         usage(argv[0]);
         exit(EXIT_FAILURE);
     }
-        
-    if( access( argv[1], R_OK|W_OK ) == -1 ) {
+    
+    if ( fileExist(argv[1]) ) {
         QUIT_MSG("can't acces to : '%s' : ", argv[1]);
     }
+        
+
 }
 
 int main(int argc, char const *argv[]) {
