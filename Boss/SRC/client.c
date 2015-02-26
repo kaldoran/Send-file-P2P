@@ -29,7 +29,7 @@ Client *newClientArray(int const number) {
     return client;
 }
 
-void handleNewClient(blockGroup* block_group) {
+void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
 
     int tmpVal;
     Client tmp;
@@ -51,6 +51,8 @@ void handleNewClient(blockGroup* block_group) {
             block_group->max_socket = tmp.id_socket;
         }
     }  
+    
+    FD_SET(tmp.id_socket, rdfs);
     
     return;
 }

@@ -138,7 +138,7 @@ bool initFile(Index* index, FILE* file){
     bool full_file = FALSE;
     int i;
     
-    if( access( index->file, R_OK|W_OK ) != -1 ) {
+    if( fileExist(index->file) ) {
         file = fopen(index->file, "r");
         printf("File exist\n Check integrity\n");
         
@@ -151,6 +151,9 @@ bool initFile(Index* index, FILE* file){
         
         memset(index->local_vols, '0', index->nb_package);
     }
+    
+    fclose(file);
+    file = fopen(index->file, "r+");
     
     return full_file;
 }

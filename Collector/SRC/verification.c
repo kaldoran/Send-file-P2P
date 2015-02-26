@@ -59,3 +59,7 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
     index->local_vols[id_vol] = '0';
     return FALSE;
 }
+
+bool fileExist(const char *filename) {
+    return access( filename, R_OK|W_OK ) == -1;
+}

@@ -67,3 +67,7 @@
 - ( Collecteur 1 au collecteur local )  
 	- Vol2  
 	( Envoi / reception du volume 2 )  
+
+## A CHANGER
+- Rajouter forme index
+- Forme de la convention pas clair pour quelqu'un d'exterieur au projet

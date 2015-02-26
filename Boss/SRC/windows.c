@@ -8,6 +8,10 @@
 #include "socket.h"
 #include "error.h"
 
+#ifdef WIN32
+    #pragma comment(lib,"ws2_32.lib") //Winsock Library
+#endif
+
 void initWindows(void) {
     #ifdef WIN32
        WSADATA wsa;
