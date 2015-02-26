@@ -62,5 +62,5 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
 }
 
 bool fileExist(const char *filename) {
-    return access( filename, R_OK|W_OK ) == -1;
+    return access( filename, R_OK|W_OK ) != -1;
 }

@@ -47,7 +47,7 @@ void freeCollect(Collector *coll) {
 
 void askVolList(Collector* collect, int nb_vol) {
     char data[nb_vol];
-    tcpAction(collect->c, LIST_OF_VOLUMES_MSG, LOVM_SIZE, SEND);
+    tcpAction(collect->c, LIST_OF_VOLUMES_MSG, sizeof(LIST_OF_VOLUMES_MSG), SEND);
     
     tcpAction(collect->c, data, nb_vol, RECEIVED);
     removeEndCarac(data);
@@ -202,10 +202,10 @@ void pong(Index *index){
         tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED);
         removeEndCarac(in_buf);
     
-        if(strcmp(in_buf, index->file) == 0){
-            tcpAction(index->c, FILE_EXIST_MSG, FEM_SIZE, SEND);
+        if(strcmp(in_buf, index->file) == 0 && fileExist(in_buf)){
+            tcpAction(index->c, FILE_EXIST_MSG, sizeof(FILE_EXIST_MSG), SEND);
         }
         else{
-            tcpAction(index->c, FILE_NOT_EXIST_MSG, FNEM_SIZE, SEND);
+            tcpAction(index->c, FILE_NOT_EXIST_MSG, sizeof(FILE_NOT_EXIST_MSG), SEND);
         }
 }
