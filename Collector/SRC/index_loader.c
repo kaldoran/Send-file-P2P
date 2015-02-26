@@ -152,7 +152,7 @@ bool initFile(Index* index, FILE* file){
         memset(index->local_vols, '0', index->nb_package);
     }
     
-    close(file)
+    close(file);
     fopen(index->file, "r+");
     
     return full_file;
