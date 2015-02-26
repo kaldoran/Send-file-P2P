@@ -7,8 +7,13 @@
 #ifndef BOOLEAN_H
 #define BOOLEAN_H
 
-#define FALSE 0
-#define TRUE !FALSE /* True is the invert of False */
+#ifndef FALSE
+    #define FALSE 0
+#endif
+
+#ifndef TRUE 
+    #define TRUE !FALSE /* True is the invert of False */
+#endif
 
 /** Define what is a boolean
  *  'false' is equal to 0 by default.
