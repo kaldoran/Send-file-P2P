@@ -155,9 +155,7 @@ bool initFile(Index* index, FILE* file){
     return full_file;
 }
 
-bool initIndex(Index* index, char const *index_name, FILE* file){
-    index = newIndex();
-    
+void initIndex(Index* index, char const *index_name){
     if ( loadIndex(index_name, index) == FALSE ) {
         printf("[ERROR] : Can't reach the boss serveur\n" );
     }
@@ -165,7 +163,5 @@ bool initIndex(Index* index, char const *index_name, FILE* file){
     if ( tcpStart(index->c) == FALSE ) {
         QUIT_MSG("Can't connect to boss : ");
     }
-
-    return initFile(index, file);
 }
 

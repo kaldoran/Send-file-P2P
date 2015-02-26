@@ -6,7 +6,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h> // For fork and kill
+#include <unistd.h>
 
 #include "tcp.h"
 #include "error.h"
@@ -16,10 +16,12 @@
 #include "server.h"
 #include "boolean.h"
 #include "windows.h"
+#include "message.h"
 #include "collectors.h"
 #include "index_loader.h"
 #include "verification.h"
 #include "struct_index.h"
+#include "collectors_list.h"
 
 
 Collector* newCollect(int nb_vol) {
@@ -45,9 +47,10 @@ void freeCollect(Collector *coll) {
 
 void askVolList(Collector* collect, int nb_vol) {
     char data[nb_vol];
-    tcpAction(collect->c, "ListOfVolumes", 13, SEND);
+    tcpAction(collect->c, LIST_OF_VOLUMES_MSG, 13, SEND);
     
     tcpAction(collect->c, data, nb_vol, RECEIVED);
+    removeEndCarac(data);
     
     switch(*data){
         case 'f': memset(collect->volumes, '1', nb_vol);
@@ -56,44 +59,6 @@ void askVolList(Collector* collect, int nb_vol) {
                   break;
         default: strcpy(collect->volumes, data);
     }
-}
-
-int fillCollectorsList(Collector** collectors_list, Index* index){
-    int nb_seed = 0;
-    char in_buf[25];
-    char *token;
-    
-    tcpAction(index->c, index->file, sizeof(index->file), SEND);
-        
-    tcpAction(index->c, "ListOfCollectors", 16, SEND);
-        
-    do {
-        memset(in_buf, '\0', 25);
-            
-        tcpAction(index->c, in_buf, 25, RECEIVED);
-        printf("Received : %s\n",  in_buf);
-            
-        token = strtok(in_buf, "|");
-        printf("Num of collector : %d\n", atoi(token));
-        
-        token = strtok(NULL, "|");
-           printf("Ip of Collector : %s\n", token);
-        
-        collectors_list[nb_seed] = newCollect(index->nb_package);
-
-        createClientFromIp(&collectors_list[nb_seed]->c, token);
-        
-        if(tcpStart(collectors_list[nb_seed]->c) == FALSE){
-            printf("Can't connect to collector n°%d", nb_seed);
-        }
-        else{
-            askVolList(collectors_list[nb_seed], index->nb_package);
-        }
-
-        ++nb_seed;
-    } while(*in_buf != '0');
-
-    return nb_seed;
 }
 
 void createClientFromIp(Client* client, char* ip){
@@ -108,31 +73,6 @@ void createClientFromIp(Client* client, char* ip){
     client->sock_info.sin_port = htons((in_port_t) COLLECT_PORT);
 }
 
-int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
-    int i,j;
-    
-    int* collVol = NULL;
-    
-    if ( (collVol = malloc(2*sizeof(int))) == NULL ) {
-        QUIT_MSG("Can't allocate collVol : ");
-    }
-    
-    collVol[0] = -1;
-    collVol[1] = -1;
-    
-    for(i = 0; i < nb_seed; ++i){
-        for(j = 0; j < index->nb_package; ++j){
-            if(coll_list[i]->volumes[j] == 1 && index->local_vols[j] == 0){
-                collVol[0] = i;
-                collVol[1] = j;
-                return collVol;
-            }
-        }
-    }
-    
-    return collVol;
-}
-
 void startCollector(char const *index_name){
     int i;
     int nb_seed = 0, nb_leach = 0;
@@ -142,15 +82,18 @@ void startCollector(char const *index_name){
     Client *client = newClientArray(MAX_CONNEXION);
     FILE *file = NULL;
     Index *index = NULL;
-    Collector* collectors_list[LIST_COLL_SIZE_MAX];
+    Collector** collectors_list;
     
     int seed_socket = initServer();
     int max_socket = seed_socket;
     
-    full_file = initIndex(index, index_name, file);
+    index = newIndex();
+    
+    initIndex(index, index_name);
+    full_file = initFile(index, file);
     
     if(!full_file) {
-        nb_seed = fillCollectorsList(collectors_list, index);
+        collectors_list = fillCollectorsList(&nb_seed, index);
     }
     
     for ( ;; ) {
@@ -167,6 +110,9 @@ void startCollector(char const *index_name){
         
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;
+        }
+        else if( FD_ISSET(index->c.id_socket, &rdfs) ) {
+            
         }
         else if( FD_ISSET(seed_socket, &rdfs) ) {
             nb_leach += addNewClient(client, seed_socket, &max_socket, nb_leach);
@@ -228,8 +174,12 @@ void manageClient(Client *client_tab, int *nb_leach, int *max_socket, Index *ind
                 printf("Client disconnect\n");
                 removeClient(client_tab, i, nb_leach, max_socket );
             } else {
-                if ( (token = startWith(in_buf, "Vol")) != NULL ) {
+                removeEndCarac(in_buf);
+                
+                if ( (token = startWith(in_buf, PREFIX_OF_VOLUME_MSG)) != NULL ) {
                     sendVolume(client_tab[i], atoi(token), index->pack_size, file);
+                } else if( strcmp(in_buf, LIST_OF_VOLUMES_MSG) == 0 ) {
+                    sendListVolumes(client_tab[i], index);
                 } else {
                     printf("Oh Mama he send something stupid '%s'", in_buf);
                 }

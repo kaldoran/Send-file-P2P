@@ -18,7 +18,7 @@ bool tcpStart(Client c) {
     size_t serv_length = sizeof(c.sock_info);
     
     if (connect(c.id_socket, (struct sockaddr *)&(c.sock_info), serv_length) < 0){
-        close(c.id_socket);
+        closesocket(c.id_socket);
         return FALSE;
     }
     
@@ -28,9 +28,11 @@ bool tcpStart(Client c) {
 int tcpAction(Client c, void *data, int data_length, int type) {
     
     if ( type == SEND ) {
+        DEBUG_MSG("[INFO] SEND : '%s'", (char *)data);
         return send(c.id_socket, data, data_length, 0);
     }
     else if ( type == RECEIVED ) {
+        DEBUG_MSG("[INFO] RECEIVED : '%s'", (char *)data);
         return recv(c.id_socket, data, data_length, 0);
     }
    

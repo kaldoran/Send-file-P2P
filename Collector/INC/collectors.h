@@ -35,15 +35,6 @@ void freeCollect(Collector *coll);
  */
 void askVolList(Collector* collect, int nb_vol);
 
-/** Fills the list of Collectors from the ip adresses given by the boss.
- *  
- *  %param collectors_list: The Collector list to fill.
- *  %param index: Pointer to the loaded Index.
- * 
- *  %return : number of collectors given by the boss.
- */
-int fillCollectorsList(Collector** collectors_list, Index* index);
-
 /** Creates a Client un fonction of a given ip adress.
  * 
  *  %param client: Instance of Client in which create the client.
@@ -52,18 +43,6 @@ int fillCollectorsList(Collector** collectors_list, Index* index);
  *  %return : Instance of Client corresponding to the IP adress.
  */
 void createClientFromIp(Client* client, char* ip);
-
-/** Finds a Collector and a volume to ask.
- * 
- *  %param index: Pointer to the loaded Index.
- *  %param coll_list: List of the Collectors given by the boss.
- *  %param nb_seed: number of Collectors in the list.
- * 
- *  %return: 2 int:
- *      -the number of first Collectors in the list who has a volume that the local Collector doesn't have.
- *      -the number of this volume.
- */
-int* findCollVol(Index* index, Collector** coll_list, int nb_seed);
 
 /** The execution loop of the Collector.
  * 

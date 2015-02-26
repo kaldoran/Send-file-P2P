@@ -70,6 +70,6 @@ bool initFile(Index* index, FILE* file);
  *  %return : TRUE if the file is complete and its volumes checked,
  *            FALSE otherwise.
  */
-bool initIndex(Index* index, char const *index_name, FILE* file);
+void initIndex(Index* index, char const *index_name);
 
 #endif /* INDEX_LOADER_H Included */

@@ -26,9 +26,11 @@ bool checkFile(FILE* file, Index* index) {
     for ( i = 0; i < index->nb_package; i++ ) {
         memset(inbuf, '\0', index->pack_size); 
         
-        fread ((char*)inbuf, index->pack_size, 1, file);
-        
-        if(!checkVol(index, inbuf, i)){
+        if(fread ((char*)inbuf, index->pack_size, 1, file) == 0){
+            full = FALSE;
+            index->local_vols[i] = '0';
+        }
+        else if(!checkVol(index, inbuf, i)){
             full = FALSE;
         }
     }
@@ -49,8 +51,11 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
     
     if ( strcmp(outsha, index->sha[id_vol]) == 0 ) {
         printf("Volume %i is the same.\n", id_vol);
+        
+        index->local_vols[id_vol] = '1';
         return TRUE;
     }
     
+    index->local_vols[id_vol] = '0';
     return FALSE;
 }

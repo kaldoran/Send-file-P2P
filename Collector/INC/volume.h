@@ -33,4 +33,7 @@ void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
  */
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file);
 
+
+void sendListVolumes(Client c, Index* index);
+
 #endif /* VOLUME_H included */

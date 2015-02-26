@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "collectors_list.h"
 #include "verification.h"
 #include "collectors.h"
 #include "volume.h"
@@ -43,11 +44,14 @@ void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
 }
 
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
-    
     char buf[vol_size];
     
     fseek(file, ( vol_size * vol_num ), SEEK_SET);
     fread ((char*)buf, vol_size, 1, file);
        
     tcpAction(c, buf, vol_size, SEND);
+}
+
+void sendListVolumes(Client c, Index* index) {
+    tcpAction(c, index->local_vols, index->nb_package, SEND);
 }
