@@ -81,4 +81,7 @@ int addNewClient(Client* client_tab, int seed_socket, int* max_socket, int nb_le
  */
 void manageClient(Client *client_tab, int *nb_leach, int *max_socket, Index *index, FILE *file, fd_set* rdfs);
 
+
+void pong(Index *index);
+
 #endif

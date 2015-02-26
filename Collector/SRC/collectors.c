@@ -111,12 +111,12 @@ void startCollector(char const *index_name){
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;
         }
-        else if( FD_ISSET(index->c.id_socket, &rdfs) ) {
-            
-        }
-        else 
+        else
         #endif
-        if( FD_ISSET(seed_socket, &rdfs) ) {
+        if( FD_ISSET(index->c.id_socket, &rdfs) ) {
+            pong(index);
+        }
+        else if( FD_ISSET(seed_socket, &rdfs) ) {
             nb_leach += addNewClient(client, seed_socket, &max_socket, nb_leach);
         }
         
@@ -182,12 +182,30 @@ void manageClient(Client *client_tab, int *nb_leach, int *max_socket, Index *ind
                 
                 if ( (token = startWith(in_buf, PREFIX_OF_VOLUME_MSG)) != NULL ) {
                     sendVolume(client_tab[i], atoi(token), index->pack_size, file);
-                } else if( strcmp(in_buf, LIST_OF_VOLUMES_MSG) == 0 ) {
+                }
+                else if( strcmp(in_buf, LIST_OF_VOLUMES_MSG) == 0 ) {
                     sendListVolumes(client_tab[i], index);
-                } else {
+                }
+                else {
                     printf("Oh Mama he send something stupid '%s'", in_buf);
                 }
             }
         }
     }
+}
+
+void pong(Index *index){
+        char in_buf[FILENAME_MAX];
+    
+        memset(in_buf, '\0', FILENAME_MAX);
+            
+        tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED);
+        removeEndCarac(in_buf);
+    
+        if(strcmp(in_buf, index->file) == 0){
+            tcpAction(index->c, FILE_EXIST_MSG, FEM_SIZE, SEND);
+        }
+        else{
+            tcpAction(index->c, FILE_NOT_EXIST_MSG, FNEM_SIZE, SEND);
+        }
 }
