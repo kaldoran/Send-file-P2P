@@ -152,8 +152,8 @@ bool initFile(Index* index, FILE* file){
         memset(index->local_vols, '0', index->nb_package);
     }
     
-    close(file)
-    fopen(index->file, "r+");
+    fclose(file);
+    file = fopen(index->file, "r+");
     
     return full_file;
 }
@@ -169,6 +169,6 @@ bool initIndex(Index* index, char const *index_name, FILE* file){
         QUIT_MSG("Can't connect to boss : ");
     }
 
-    return initFile(index, file);
+    return TRUE;
 }
 

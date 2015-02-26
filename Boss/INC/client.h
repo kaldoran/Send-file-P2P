@@ -40,7 +40,7 @@ Client initClient();
  */
 Client acceptClient( int const server_socket );
 
-void handleNewClient(blockGroup* block_group);
+void handleNewClient(blockGroup* block_group, fd_set *rdfs);
 
 void handlerClient(blockGroup* block_group, fd_set* rdfs);
 

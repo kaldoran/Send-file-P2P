@@ -74,7 +74,7 @@ void startServer() {
         else
         #endif 
         if( FD_ISSET(block_group->server_socket, &rdfs) ) {
-            handleNewClient(block_group);                      
+            handleNewClient(block_group, &rdfs);                      
         }
         else { 
             handlerClient(block_group, &rdfs);
