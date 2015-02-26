@@ -16,7 +16,6 @@
 #define FNEM_SIZE 8
 
 #define PREFIX_OF_VOLUME_MSG "Vol"
-#define POVM_SIZE 3
 
 #define LIST_OF_VOLUMES_MSG "ListOfVolumes"
 #define LOVM_SIZE 13

@@ -47,7 +47,7 @@ void freeCollect(Collector *coll) {
 
 void askVolList(Collector* collect, int nb_vol) {
     char data[nb_vol];
-    tcpAction(collect->c, LIST_OF_VOLUMES_MSG, 13, SEND);
+    tcpAction(collect->c, LIST_OF_VOLUMES_MSG, LOVM_SIZE, SEND);
     
     tcpAction(collect->c, data, nb_vol, RECEIVED);
     removeEndCarac(data);
