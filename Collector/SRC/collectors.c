@@ -70,7 +70,7 @@ void createClientFromIp(Client* client, char* ip){
         memcpy(&client->sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
     }
     
-    client->sock_info.sin_port = htons((in_port_t) COLLECT_PORT);
+    client->sock_info.sin_port = htons(COLLECT_PORT);
 }
 
 void startCollector(char const *index_name){

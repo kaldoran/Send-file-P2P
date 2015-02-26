@@ -5,12 +5,28 @@
 //----------------------------------------------------------
 
 #include <stdio.h>
-#include <regex.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "verification.h"
 
 bool verifBossIp(char* ip){
-    return testRegex("(((2(([0-4][0-9])|(5[0-5])))|([01]?[0-9][0-9]?))\\.){3}((2(([0-4][0-9])|(5[0-5])))|([01]?[0-9][0-9]?))", ip);
+    int total = 0;
+    char *token;
+    int itoken;
+    
+    token = strtok(ip, ".");
+    while(total <= 4 && token != NULL) {
+        itoken = atoi(token);
+        if ( itoken < 0 || itoken > 255 ) {
+            return FALSE;
+        }
+        
+        token = strtok(NULL, ".");
+        ++total;
+    }
+    
+    return total == 4;
 }
 
 bool verifBossPort(int port) {
@@ -37,18 +53,4 @@ bool verifVolSize(int size){
         return TRUE;
     }
     return FALSE;
-}
-
-bool testRegex(char* regex, char* string) {
-    regex_t preg;
-    bool valid = FALSE;
-
-    if(regcomp(&preg, regex, REG_NOSUB | REG_EXTENDED) == 0) {
-        if(regexec (&preg, string, 0, NULL, 0) == 0) {
-            valid = TRUE;
-        }
-    }
-
-    regfree(&preg);
-    return valid;
 }

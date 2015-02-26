@@ -44,7 +44,7 @@ void startServer() {
     blockGroup* block_group;
     struct timeval tval;
     
-    tval.tv_sec  = 300;
+    tval.tv_sec  = PING_TIMER;
     tval.tv_usec = 0; 
     
     block_group = newBlockGroup();
