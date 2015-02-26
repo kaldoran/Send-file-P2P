@@ -3,7 +3,7 @@
 // FICHIER : server.c                                       |
 // DATE : 09/02/15                                          |
 //----------------------------------------------------------
-#include <arpa/inet.h>
+
 #include <unistd.h>
 
 #include "error.h"
