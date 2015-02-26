@@ -11,8 +11,8 @@
 #define MAX_CONNEXION 15
 
 typedef struct Client {
-    SOCKET id_socket; 
-    SOCKADDR_IN sock_info;
+    SOCKET id_socket;       // Id of the socket opened by the Client.
+    SOCKADDR_IN sock_info;  // Client's adress.
 } Client;
 
 #endif /* STRUCT_CLIENT_H included */
