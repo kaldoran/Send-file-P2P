@@ -111,7 +111,7 @@ bool loadIndex(const char *file, Index *index) {
                 }
             }    
             else if ( (ret = startWith("Port:",ligne_lue)) != NULL) {
-                index->c.sock_info.sin_port = htons((in_port_t)atoi(ret));
+                index->c.sock_info.sin_port = htons(atoi(ret));
             }
             else {
                 QUIT_MSG("[Error] Incorrect Index.");

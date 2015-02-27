@@ -33,7 +33,11 @@ void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
  */
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file);
 
-
+/** Sends the local list of volumes.
+ * 
+ *  %param c: Client who asks the list.
+ *  %param index: Pointer to the loaded Index.
+ */
 void sendListVolumes(Client c, Index* index);
 
 #endif /* VOLUME_H included */

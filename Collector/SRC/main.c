@@ -28,7 +28,7 @@ void verifications(int argc, char const *argv[]) {
         exit(EXIT_FAILURE);
     }
     
-    if ( fileExist(argv[1]) ) {
+    if ( !fileExist(argv[1]) ) {
         QUIT_MSG("can't acces to : '%s' : ", argv[1]);
     }
         
