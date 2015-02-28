@@ -37,13 +37,13 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
     
     tmp = acceptClient(block_group->server_socket );
     
-    read(tmp.id_socket, inBuf, FILENAME_MAX);
+    (void)read(tmp.id_socket, inBuf, FILENAME_MAX);
     removeEndCarac(inBuf);
                 
     if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
        || addClient(block_group->groups[tmpVal]->client, tmp, &block_group->groups[tmpVal]->total) == FALSE ) {
         /* Can't create groupe */
-        close(tmp.id_socket);
+        closesocket(tmp.id_socket);
     }
     else {
         if ( block_group->max_socket < tmp.id_socket ) {
