@@ -1,7 +1,7 @@
 # How to compile the program on Windows
 
 ## Requiered 
-- First you will need to install [openSSL] (slproweb.com/download/Win32OpenSSL-1_0_1L.exe)
+- First you will need to install [openSSL] (http://slproweb.com/download/Win32OpenSSL-1_0_1L.exe)
 - You also need [Code::Blocks From SourceForge] ( http://sourceforge.net/projects/codeblocks/files/Binaries/13.12/Windows/codeblocks-13.12mingw-setup.exe )
 - [Our projet] (https://github.com/UJM-INFO/p2p-a/archive/master.zip)
 
