@@ -5,8 +5,9 @@
 - You also need [Code::Blocks From SourceForge] ( http://sourceforge.net/projects/codeblocks/files/Binaries/13.12/Windows/codeblocks-13.12mingw-setup.exe )
 - [Our projet] (https://github.com/UJM-INFO/p2p-a/archive/master.zip)
 
-Please install openSSL in the default directory.
-Note : if your Hard disk don't go C: as name, please refered to the end of this tutorial.
+Please install openSSL in the default directory. 
+
+** Note :** if your Hard disk don't go C: as name, please refered to the end of this tutorial.
 
 # Prepare for Code::Blocks
 After that, unzip our project, then copy all the SRC/* and INC/* into the directory that contains the *cbp
