@@ -169,10 +169,7 @@ void sendClient(Client *client, int number, int total, int to) {
             --number;
             memset(outBuf, '\0', 30);
 
-            sprintf(outBuf, "%d|", number);
-            strcat(outBuf, client[i].ip);
-            strcat(outBuf, "|");
-            strcat(outBuf, client[i].port);
+            sprintf(outBuf, "%d|%s|%s", number, client[i].ip, client[i].port);
             
             send(client[to].id_socket, outBuf, 30, 0);
         }

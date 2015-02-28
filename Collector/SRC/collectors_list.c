@@ -46,13 +46,15 @@ int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
     return collVol;
 }
 
-Collector** fillCollectorsList(int* nb_seed, Index* index){
+Collector** fillCollectorsList(int* nb_seed, Index* index, int port){
     Collector** collectors_list = NULL;
     char in_buf[25];
+    char out_buf[sizeof(index->file) + 6] = {0}; /* +6 due tu | and max lenght for port is 5 digit */
     char *token;
     Client tmp;
     
-    tcpAction(index->c, index->file, sizeof(index->file), SEND);
+    sprintf(out_buf, "%s|%d", index->file, port);
+    tcpAction(index->c, out_buf, sizeof(out_buf), SEND);
 
     tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
 

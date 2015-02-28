@@ -23,10 +23,11 @@ Collector** newCollectorsList(int nb_coll);
  *  
  *  %param collectors_list: The Collector list to fill.
  *  %param index: Pointer to the loaded Index.
+ *  %param port : Port were we want to start server and also send to boss
  * 
  *  %return : number of collectors given by the boss.
  */
-Collector** fillCollectorsList(int* nb_seed, Index* index);
+Collector** fillCollectorsList(int* nb_seed, Index* index, int port);
 
 /** Finds a Collector and a volume to ask.
  * 
