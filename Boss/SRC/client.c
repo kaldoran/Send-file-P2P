@@ -202,7 +202,7 @@ int removeClient(Group *group, int const pos, int const max_socket ) {
         }
     }
 
-    close(group->client[pos].id_socket);
+    closesocket(group->client[pos].id_socket);
     
     /* Move memory to avoid blank into array */
     memmove((group->client) + pos, (group->client) + pos + 1, (group->total - pos - 1) * sizeof(*group->client));  
