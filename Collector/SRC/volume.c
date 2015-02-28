@@ -11,6 +11,7 @@
 #include "collectors_list.h"
 #include "verification.h"
 #include "collectors.h"
+#include "message.h"
 #include "volume.h"
 #include "error.h"
 #include "tcp.h"
@@ -20,9 +21,9 @@ bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
     int* collVol;
 
     collVol = findCollVol(index, collectors_list, nb_seed);
-    char vol[10] = "";  /* 10 carac : 3 for "Vol", and 7 left for the number (i.e 9 millions person ) */
+    char vol[sizeof(VOLUME_MSG) + sizeof(collVol[1])] = "";  /* 10 carac : 3 for "Vol", and 7 left for the number (i.e 9 millions person ) */
 
-    sprintf(vol, "Vol%d", collVol[1]);
+    sprintf(vol, "%s%d", VOLUME_MSG, collVol[1]);
     
     tcpAction(collectors_list[collVol[0]]->c, vol, sizeof(vol), SEND);
 

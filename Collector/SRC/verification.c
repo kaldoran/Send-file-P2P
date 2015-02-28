@@ -64,8 +64,8 @@ bool fileExist(const char *filename) {
 
 bool isComplet(const char* vol) {
 
-    for ( ; *s != '\0'; s++ ) {
-        if ( *s == 0 ) {
+    for ( ; *vol != '\0'; vol++ ) {
+        if ( *vol == 0 ) {
             return FALSE;
         }
     }

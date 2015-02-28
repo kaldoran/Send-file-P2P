@@ -95,7 +95,7 @@ void startCollector(char *index_name, const int port){
     file = fopen(index->file, "r+");
     
     if(!full_file) {
-        collectors_list = fillCollectorsList(&nb_seed, index);
+        collectors_list = fillCollectorsList(&nb_seed, index, port);
     }
     
     for ( ;; ) {
