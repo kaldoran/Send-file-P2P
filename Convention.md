@@ -3,6 +3,37 @@
 #### Team B: Bachir BOUACHERIA Kévin LAOUSSING, Amar SEBAA
 ##### 30 janvier 2015
 
+## Fichier .ndex
+### Contenue
+- Boss:XXX.XXX.XXX.XXX
+	- XXX.XXX.XXX.XXX : adresse ip du boss.
+- Port:XXXXXX
+	- XXXXXX : port de connexion au boss.
+- File:name.extension
+	- name.extension : name of the file with is extension
+- Size:XXXXX
+	- XXXXX : Size of the file
+- PackSize:XXXXX
+    - XXXXX : Size of a volume
+    - XXXXX Between 16000 and 64000
+- NbVolume:XXXX
+    - XXXX : Total number of volume ( At least one even for empty file )
+- Then for all volume ( Between 0 and NbVolume ) :
+    - A:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        - A : Id of a volume 
+        - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx : Sha 1 of this volume
+        
+### Exemple de fichier .ndex
+```
+Boss:127.0.0.1
+Port:42000
+File:verification.c
+Size:1406
+PackSize:16000
+NbVolume:1
+0:d225bfaa1b192201299705ef596bfff2bc1bd9ae
+```
+
 ## Envoi
 ### Messages
 - Demande de connexion à un collecteur: ListOfVolums
