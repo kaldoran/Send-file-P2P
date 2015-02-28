@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "error.h"
 #include "verification.h"
@@ -54,6 +55,18 @@ int askVolSize() {
     } while(verif != 1 || !verifVolSize(size));
 
     return size;
+}
+
+char* askFile() {
+    int verif;
+    char* file;
+    
+    do {
+        printf("On which file do you want to create the '.ndex' file ?\n");
+        verif = scanf("%ms", &file);
+    } while(verif != 1 || access(file ,R_OK|W_OK ) == -1);
+
+    return file;
 }
 
 void emptyBuffer() {

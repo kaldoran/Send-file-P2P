@@ -22,6 +22,10 @@ int askBossPort();
  */
 int askVolSize();
 
+/** Function that ask which file we want to create the .ndex
+ *  %return : name of the file 
+ */
+char* askFile();
 /** Function to empty the stdin buffer.
  * 
  */

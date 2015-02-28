@@ -20,34 +20,34 @@ void usage(const char *name) {
     return;
 }
 
-int main(int argc, char const *argv[]) {
+int main() {
     char* ip;
+    char* file;
     int port;
     int volSize;
     struct stat buf;
      
     printf("[INFO] Welcome to this awesome Generator\n\n");
+        
+    file = askFile();
     
-    if ( argc < 2 ) {
-        usage(argv[0]);
-        exit(EXIT_SUCCESS);
-    }
-    
-    if ( stat(argv[1], &buf) == -1 ) {
-        QUIT_MSG("Can't stats '%s' : ", argv[1]);
+    if ( stat(file, &buf) == -1 ) {
+        QUIT_MSG("Can't stats '%s' : ", file);
     }
     
     if ( buf.st_size == 0 ) {
-        printf("[WARNING] '%s' is an empty file.\n\n", argv[1]);
+        printf("[WARNING] '%s' is an empty file.\n\n", file);
     }
     
+
     ip = askBossIp();
     port = askBossPort();
     volSize = askVolSize();
     volSize *= 1000;
-    createNDex(ip, port, volSize, (char *)argv[1], buf);
+    createNDex(ip, port, volSize, file, buf);
     
     free(ip);
+    free(file);
    
     exit(EXIT_SUCCESS);
 }
