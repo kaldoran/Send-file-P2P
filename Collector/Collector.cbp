@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Collector" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Collector" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="exemple.ndex" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Collector" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="zaeaze" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="c:/OpenSSL-Win32/include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lws2_32" />
+			<Add library="c:\OpenSSL-Win32\lib\MinGW\libeay32.a" />
+			<Add library="c:\OpenSSL-Win32\lib\MinGW\ssleay32.a" />
+		</Linker>
+		<Unit filename="boolean.h" />
+		<Unit filename="client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="client.h" />
+		<Unit filename="collectors.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="collectors.h" />
+		<Unit filename="collectors_list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="collectors_list.h" />
+		<Unit filename="error.h" />
+		<Unit filename="index_loader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="index_loader.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="message.h" />
+		<Unit filename="server.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="server.h" />
+		<Unit filename="socket.h" />
+		<Unit filename="struct_client.h" />
+		<Unit filename="struct_collect.h" />
+		<Unit filename="struct_index.h" />
+		<Unit filename="tcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tcp.h" />
+		<Unit filename="verification.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="verification.h" />
+		<Unit filename="volume.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="volume.h" />
+		<Unit filename="windows.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="windows.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
+Collector.cbp
