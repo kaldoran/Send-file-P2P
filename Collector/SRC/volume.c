@@ -12,6 +12,7 @@
 #include "verification.h"
 #include "collectors.h"
 #include "volume.h"
+#include "error.h"
 #include "tcp.h"
 
 void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
@@ -47,7 +48,10 @@ void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
     char buf[vol_size];
     
     fseek(file, ( vol_size * vol_num ), SEEK_SET);
-    fread ((char*)buf, vol_size, 1, file);
+    
+    if(fread ((char*)buf, vol_size, 1, file) == 0){
+        DEBUG_MSG("[ERROR] sending empty volume\n");
+    }
        
     tcpAction(c, buf, vol_size, SEND);
 }

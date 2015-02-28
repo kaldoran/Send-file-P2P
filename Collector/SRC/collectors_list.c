@@ -54,7 +54,7 @@ Collector** fillCollectorsList(int* nb_seed, Index* index){
     
     tcpAction(index->c, index->file, sizeof(index->file), SEND);
 
-    tcpAction(index->c, LIST_OF_COLLECTOR_MSG, 16, SEND);
+    tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
 
     do {
         memset(in_buf, '\0', 25);

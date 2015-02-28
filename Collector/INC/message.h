@@ -10,9 +10,13 @@
 #define READER_SIZE 80
 
 #define FILE_EXIST_MSG "exist"
+
 #define FILE_NOT_EXIST_MSG "notExist"
+
 #define PREFIX_OF_VOLUME_MSG "Vol"
+
 #define LIST_OF_VOLUMES_MSG "ListOfVolumes"
+
 #define LIST_OF_COLLECTOR_MSG "ListOfCollectors"
 
 /** Remove the end caractere of a string 

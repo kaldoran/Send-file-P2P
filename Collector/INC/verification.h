@@ -42,6 +42,14 @@ bool checkFile(FILE* file, Index* index);
  */
 bool checkVol(Index* index, unsigned char* vol, int id_vol);
 
+
+/** Verifies that a file exists or not.
+ * 
+ *  %param filename: Path of the file to verify.
+ * 
+ *  %return: TRUE if the file exist,
+ *           FALSE otherwise.
+ */
 bool fileExist(const char *filename);
 
 #endif /* VERIFICATION_H included */
