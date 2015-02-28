@@ -9,6 +9,8 @@
 
 #define READER_SIZE 80
 
+#define ALONE_COLLECTOR_MSG "aloneCollectors"
+
 #define FILE_EXIST_MSG "exist"
 
 #define FILE_NOT_EXIST_MSG "notExist"

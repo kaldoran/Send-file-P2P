@@ -60,7 +60,8 @@ char **newSha(int nb_package) {
 
 void freeIndex(Index *index) {
     int i;
-        
+    
+    free(index->local_vols);
     for ( i = 0; i < index->nb_package; i++ ) {
         free(index->sha[i]);
     }
@@ -134,13 +135,13 @@ bool loadIndex(const char *file, Index *index) {
     return TRUE;
 }
 
-bool initFile(Index* index, FILE* file){
+bool initFile(Index* index){
+    FILE* file;
     bool full_file = FALSE;
     int i;
     
     if( fileExist(index->file) ) {
         file = fopen(index->file, "r");
-        printf("File exist\n Check integrity\n");
         
         full_file = checkFile(file, index);
     } else {
@@ -153,7 +154,6 @@ bool initFile(Index* index, FILE* file){
     }
     
     fclose(file);
-    file = fopen(index->file, "r+");
     
     return full_file;
 }

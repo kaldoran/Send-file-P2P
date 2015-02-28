@@ -40,6 +40,7 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
     char inBuf[FILENAME_MAX];
     
     tmp = acceptClient(block_group->server_socket );
+    FD_SET(tmp.id_socket, rdfs);
     
     (void)read(tmp.id_socket, inBuf, FILENAME_MAX);
     removeEndCarac(inBuf);
@@ -47,6 +48,7 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
     if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
        || addClient(block_group->groups[tmpVal]->client, tmp, &block_group->groups[tmpVal]->total) == FALSE ) {
         /* Can't create groupe */
+        FD_CLR(tmp.id_socket, rdfs);
         closesocket(tmp.id_socket);
     }
     else {
@@ -55,9 +57,7 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
             block_group->max_socket = tmp.id_socket;
         }
     }  
-    
-    FD_SET(tmp.id_socket, rdfs);
-    
+        
     return;
 }
 

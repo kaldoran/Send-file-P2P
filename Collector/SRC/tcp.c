@@ -32,8 +32,7 @@ int tcpAction(Client c, void *data, int data_length, int type) {
         return send(c.id_socket, data, data_length, 0);
     }
     else if ( type == RECEIVED ) {
-        DEBUG_MSG("[INFO] RECEIVED : '%s'", (char *)data);
-        return recv(c.id_socket, data, data_length, 0);
+        return read(c.id_socket, data, data_length);
     }
    
     return -1;

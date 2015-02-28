@@ -58,35 +58,39 @@ Collector** fillCollectorsList(int* nb_seed, Index* index){
 
     do {
         memset(in_buf, '\0', 25);
-            
+
         tcpAction(index->c, in_buf, 25, RECEIVED);
         removeEndCarac(in_buf);
         printf("Received : %s\n",  in_buf);
+        
+        if ( strcmp(in_buf, ALONE_COLLECTOR_MSG) == 0 ) {
+           *in_buf = '0';
+        } else {
+            token = strtok(in_buf, "|");
+            printf("Num of collector : %d\n", atoi(token));
             
-        token = strtok(in_buf, "|");
-        printf("Num of collector : %d\n", atoi(token));
-        
-        if(collectors_list == NULL){
-            collectors_list = newCollectorsList(atoi(token)+1);
-        }
-        
-        token = strtok(NULL, "|");
-           printf("Ip of Collector : %s\n", token);
+            if(collectors_list == NULL){
+                collectors_list = newCollectorsList(atoi(token)+1);
+            }
+            
+            token = strtok(NULL, "|");
+               printf("Ip of Collector : %s\n", token);
 
-        createClientFromIp(&tmp, token);
-        
-        if(tcpStart(tmp) == FALSE){
-            printf("Can't connect to collector n°%d", *nb_seed);
-        }
-        else{
-            collectors_list[*nb_seed] = newCollect(index->nb_package);
+            createClientFromIp(&tmp, token);
             
-            collectors_list[*nb_seed]->c = tmp;
-            
-            askVolList(collectors_list[*nb_seed], index->nb_package);
-        }
+            if(tcpStart(tmp) == FALSE){
+                printf("Can't connect to collector n°%d", *nb_seed);
+            }
+            else{
+                collectors_list[*nb_seed] = newCollect(index->nb_package);
+                
+                collectors_list[*nb_seed]->c = tmp;
+                
+                askVolList(collectors_list[*nb_seed], index->nb_package);
+            }
 
-        ++(*nb_seed);
+            ++(*nb_seed);
+        }
     } while(*in_buf != '0');
 
     return collectors_list;

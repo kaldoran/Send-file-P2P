@@ -46,9 +46,6 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
     SHA1(vol, sizeof(vol), outbuf);
 
     hexToString(outbuf, outsha);
-
-    printf("%s\n", outsha);
-    printf("%s\n", index->sha[id_vol]);
     
     if ( strcmp(outsha, index->sha[id_vol]) == 0 ) {
         printf("Volume %i is the same.\n", id_vol);

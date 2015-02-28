@@ -53,12 +53,11 @@ bool loadIndex(const char *file, Index *index);
 /** Checks if the file is already on the local machine and initialise the local volumes list.
  * 
  *  %param index: Pointer to the loaded Index.
- *  %param file: Pointer to the file.
  * 
  *  %return : TRUE if the file is complete and its volumes checked,
  *            FALSE otherwise.
  */
-bool initFile(Index* index, FILE* file);
+bool initFile(Index* index);
 
 
 /** Initialises and loads an Index, connects to the boss, and launches initFile.

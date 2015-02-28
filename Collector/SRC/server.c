@@ -9,16 +9,14 @@
 #include "error.h"
 #include "server.h"
 
-#define PORT 47777
-
-int initServer() {
+int initServer(const int port) {
     int struct_size, serveur_socket;
     SOCKADDR_IN s_serveur;
     struct_size = sizeof(SOCKADDR_IN);
         
     s_serveur.sin_family = AF_INET;
     s_serveur.sin_addr.s_addr = INADDR_ANY;
-    s_serveur.sin_port = htons(PORT);    
+    s_serveur.sin_port = htons(port);    
     
     if ( (serveur_socket = socket(AF_INET, SOCK_STREAM, 0)) == -1){
         QUIT_MSG("Can't create the socket : ");

@@ -22,25 +22,35 @@ void usage(const char *name) {
     return;
 }
 
-void verifications(int argc, char const *argv[]) {
-    if ( argc < 2 ) {
-        usage(argv[0]);
-        exit(EXIT_FAILURE);
-    }
-    
-    if ( !fileExist(argv[1]) ) {
-        QUIT_MSG("can't acces to : '%s' : ", argv[1]);
-    }
-        
 
+char* askNDex() {
+    char* file;
+    
+    do {
+        printf("Which .ndex do you want to use ? ");
+        scanf("%ms", &file);
+    } while ( !fileExist(file) );
+    
+    return file;
 }
 
-int main(int argc, char const *argv[]) {
-    verifications(argc, argv);
+
+int askPort() {
+    int port;
     
+    do {
+        printf("On which port do you want to start the collector ? ");
+        scanf("%d", &port);
+    } while (port < 1024 && port > 65536 );
+    
+    return port;
+}
+
+int main() {
+
     initWindows();
-    
-    startCollector(argv[1]);
+
+    startCollector(askNDex(), askPort());
     
     endWindows();
     

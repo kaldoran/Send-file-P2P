@@ -73,7 +73,7 @@ void createClientFromIp(Client* client, char* ip){
     client->sock_info.sin_port = htons(COLLECT_PORT);
 }
 
-void startCollector(char const *index_name){
+void startCollector(char *index_name, const int port){
     int i;
     int nb_seed = 0, nb_leach = 0;
 
@@ -82,15 +82,17 @@ void startCollector(char const *index_name){
     Client *client = newClientArray(MAX_CONNEXION);
     FILE *file = NULL;
     Index *index = NULL;
-    Collector** collectors_list;
+    Collector** collectors_list = NULL;
     
-    int seed_socket = initServer();
+    int seed_socket = initServer(port);
     int max_socket = seed_socket;
     
     index = newIndex();
     
     initIndex(index, index_name);
-    full_file = initFile(index, file);
+    full_file = initFile(index);
+    
+    file = fopen(index->file, "r+");
     
     if(!full_file) {
         collectors_list = fillCollectorsList(&nb_seed, index);
@@ -99,7 +101,7 @@ void startCollector(char const *index_name){
     for ( ;; ) {
         initFd(index, client, nb_leach, &rdfs);
         
-        if(!full_file) {          
+        if(!full_file && nb_seed != 0) {          
             getVolume(index, collectors_list, nb_seed, file);
         }
         
@@ -123,8 +125,10 @@ void startCollector(char const *index_name){
         manageClient(client, &nb_leach, & max_socket, index, file, &rdfs);
     }
     
+    
     freeClientArray(client);
     freeIndex(index);
+    free(index_name);
     fclose(file);
 }
 

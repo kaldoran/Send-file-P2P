@@ -47,8 +47,9 @@ void createClientFromIp(Client* client, char* ip);
 /** The execution loop of the Collector.
  * 
  * %param index_name: Path of the Index to load.
+ * %param port : port on which you want to start the collector
  */
-void startCollector(char const *index_name);
+void startCollector(char *index_name, const int port);
 
 /** Initialazes the Collector's execution loop
  * 
