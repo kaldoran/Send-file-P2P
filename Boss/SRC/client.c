@@ -4,6 +4,10 @@
 // DATE : 09/02/15                                          |
 //----------------------------------------------------------
 
+#ifdef WIN32
+    #define __socklen_t int
+#endif // WIN32
+
 #include <stdlib.h>
 #include <string.h>
 #include "socket.h"
