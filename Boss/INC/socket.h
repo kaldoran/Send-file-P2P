@@ -6,6 +6,8 @@
 
 
 /* If We are on windows */
+#include <unistd.h>
+    
 #if defined (WIN32)
     #include <winsock2.h>
 #elif defined (linux)
@@ -14,7 +16,6 @@
     #include <sys/socket.h>
     #include <netinet/in.h>
     #include <arpa/inet.h>
-    #include <unistd.h>
     #include <netdb.h>
 
     #define INVALID_SOCKET -1
