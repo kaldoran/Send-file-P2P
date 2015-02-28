@@ -143,6 +143,11 @@ Client acceptClient( int const server_socket ) {
 }
 
 void sendClient(Client *client, int number, int total, int to) {
+    if ( total == 1 ) {
+        send(client[to].id_socket, ALONE_COLLECTOR_MSG, sizeof(ALONE_COLLECTOR_MSG), 0);
+        return;
+    }
+    
     int i, pourcent;
     char outBuf[20];
     i = 0;
