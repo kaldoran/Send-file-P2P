@@ -6,7 +6,7 @@
 ## Envoi
 ### Messages
 - Demande de connexion à un collecteur: ListOfVolums
-- Demande de connexion à un boss: <Nom du fichier à partager ou télécharger>
+- Demande de connexion à un boss: <Nom du fichier à partager ou télécharger>|<Port de Connexion>
 - Vérification qu'un collecteur ait toujours le fichier: envoi du nom du fichier
 	- "exist" : Le collecteur a le fichier
 	- "notExist" : Le collecteur n'a pas le fichier
@@ -41,13 +41,15 @@
 - Le collecteur envoie le nom du fichier dont il veut les collecteurs.
 - Le boss enregistre le collecteur dans la liste correspondant au fichier.
 - Le collecteur envoie "ListOfCollectors".
-- Le boss lui repond la liste sous la forme A|XXX.XXX.XXX.XXX .
+- Le boss lui repond la liste sous la forme A|XXX.XXX.XXX.XXX|Port si il a plus de 1 collector.
  	- A : nombre de collecteurs restants dans la liste.
  	- XXX.XXX.XXX.XXX : adresse ip d'un collecteur.
  	- exemple avec une liste de 3 collecteurs:
 		- 2|127.0.0.1            ( Collecteur 1 ) 
 		- 1|154.454.15.1         ( Collecteur 2 ) 
 		- 0|157.125.125.125      ( Collecteur 3 ) 
+ 	- Port : Numéro du port sur lequel nous devons nous connecter.
+- Le boss lui repond "aloneCollector" dans le cas ou le collector qui demande la liste est seul.
 
 ##### ( Connexion aux collecteurs ) 
 - ( Connexion au collecteur 1 )
