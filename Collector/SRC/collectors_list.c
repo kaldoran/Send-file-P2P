@@ -74,7 +74,7 @@ Collector** fillCollectorsList(int* nb_seed, Index* index){
             }
             
             token = strtok(NULL, "|");
-               printf("Ip of Collector : %s\n", token);
+            printf("Ip of Collector : %s\n", token);
 
             createClientFromIp(&tmp, token);
             

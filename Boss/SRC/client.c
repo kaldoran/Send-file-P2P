@@ -10,8 +10,8 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "socket.h"
 
+#include "socket.h"
 #include "error.h"
 #include "client.h"
 #include "boolean.h"
@@ -37,15 +37,18 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
 
     int tmpVal;
     Client tmp;
+    char *token;
     char inBuf[FILENAME_MAX];
     
     tmp = acceptClient(block_group->server_socket );
     FD_SET(tmp.id_socket, rdfs);
     
-    (void)read(tmp.id_socket, inBuf, FILENAME_MAX);
+    read(tmp.id_socket, inBuf, FILENAME_MAX);
     removeEndCarac(inBuf);
-                
-    if ( ( tmpVal = addGroup( block_group, inBuf )) == -1 
+    
+    token = strtok(inBuf, "|");
+    
+    if ( ( tmpVal = addGroup( block_group, token )) == -1 
        || addClient(block_group->groups[tmpVal]->client, tmp, &block_group->groups[tmpVal]->total) == FALSE ) {
         /* Can't create groupe */
         FD_CLR(tmp.id_socket, rdfs);
@@ -57,6 +60,9 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
             block_group->max_socket = tmp.id_socket;
         }
     }  
+   
+    token = strtok(NULL, "|");
+    strcpy(tmp.port, token);
         
     return;
 }
@@ -139,7 +145,6 @@ Client acceptClient( int const server_socket ) {
 
     printf("New client [%d]\n\n", new_client.id_socket);
     printf("IP address is: %s\n", inet_ntoa(s_client.sin_addr));
-    printf("port is: %d\n", (int) ntohs(s_client.sin_port));
 
     strcpy(new_client.ip, inet_ntoa(s_client.sin_addr));
 
@@ -153,7 +158,7 @@ void sendClient(Client *client, int number, int total, int to) {
     }
     
     int i, pourcent;
-    char outBuf[20];
+    char outBuf[30];
     i = 0;
 
     pourcent = (int)((float)number / (float)total * 100.);
@@ -162,12 +167,14 @@ void sendClient(Client *client, int number, int total, int to) {
     while( number > 0) {
         if ( rand() % 100 <= pourcent ) {
             --number;
-            memset(outBuf, '\0', 20);
+            memset(outBuf, '\0', 30);
 
             sprintf(outBuf, "%d|", number);
             strcat(outBuf, client[i].ip);
+            strcat(outBuf, "|");
+            strcat(outBuf, client[i].port);
             
-            send(client[to].id_socket, outBuf, 20, 0);
+            send(client[to].id_socket, outBuf, 30, 0);
         }
 
         if ( ++i > total ) { i = 0; }

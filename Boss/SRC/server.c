@@ -4,6 +4,8 @@
 // DATE : 09/02/15                                          |
 //----------------------------------------------------------
 
+#include <string.h>
+
 #include "error.h"
 #include "socket.h"
 #include "ping.h"
