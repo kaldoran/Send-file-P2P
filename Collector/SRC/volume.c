@@ -15,7 +15,7 @@
 #include "error.h"
 #include "tcp.h"
 
-void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
+bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
     unsigned char read[index->pack_size];
     int* collVol;
 
@@ -37,10 +37,12 @@ void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
         
         fprintf(file, "%s", read);
  
+        return isComplet(index->local_vols);
     } else {
         printf("Wrong volume %d",collVol[1]);
     }
     
+    return FALSE;
     free(collVol);
 }
 

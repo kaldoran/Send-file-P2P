@@ -61,3 +61,14 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
 bool fileExist(const char *filename) {
     return access( filename, R_OK|W_OK ) != -1;
 }
+
+bool isComplet(const char* vol) {
+
+    for ( ; *s != '\0'; s++ ) {
+        if ( *s == 0 ) {
+            return FALSE;
+        }
+    }
+    
+    return TRUE;
+}

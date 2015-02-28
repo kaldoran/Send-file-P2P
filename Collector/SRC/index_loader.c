@@ -127,10 +127,11 @@ bool loadIndex(const char *file, Index *index) {
         }
     }
     
-    if ((index->local_vols = calloc(index->nb_package, sizeof(char))) == NULL) {
+    if ((index->local_vols = calloc(index->nb_package + 1, sizeof(char))) == NULL) {
         QUIT_MSG("Can't Allocate index");
     }
-
+    index->local_vols[index->nb_package] = '\0';
+    
     fclose(fichier);
     return TRUE;
 }

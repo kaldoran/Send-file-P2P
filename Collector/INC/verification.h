@@ -52,4 +52,12 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol);
  */
 bool fileExist(const char *filename);
 
+/** Check if the file is complet according to is list of volume 
+ *  %param vol : List of volum
+ *  
+ *  %return : TRUE if the file is complet
+ *            FASE else 
+ */
+bool isComplet(const char* vol); 
+
 #endif /* VERIFICATION_H included */

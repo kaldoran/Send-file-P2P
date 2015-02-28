@@ -20,8 +20,11 @@
  *  %param collectors_list: List of the collectors given by the boss.
  *  %param nb_seed: Number of Collectors in the list.
  *  %param file: Pointer to the file.
+ *
+ *  %return : TRUE if the file is complet
+ *            FALSE otherwise
  */
-void getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file);
+bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file);
 
 
 /** Sends a volume.

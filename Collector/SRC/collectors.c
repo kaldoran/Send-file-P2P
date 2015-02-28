@@ -102,7 +102,7 @@ void startCollector(char *index_name, const int port){
         initFd(index, client, nb_leach, &rdfs);
         
         if(!full_file && nb_seed != 0) {          
-            getVolume(index, collectors_list, nb_seed, file);
+            full_file = getVolume(index, collectors_list, nb_seed, file);
         }
         
         if( (i = select(max_socket + 1, &rdfs, NULL, NULL, NULL)) == -1) {
