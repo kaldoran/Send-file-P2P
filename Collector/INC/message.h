@@ -9,7 +9,7 @@
 
 #define READER_SIZE 80
 
-#define VOLUME_MSG "vol"
+
 #define ALONE_COLLECTOR_MSG "aloneCollectors"
 
 #define FILE_EXIST_MSG "exist"
