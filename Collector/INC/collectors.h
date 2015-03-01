@@ -9,6 +9,7 @@
 #define COLLECTORS_H
 
 #include "struct_index.h"
+#include "struct_server.h"
 #include "struct_collect.h"
 
 #define COLLECT_PORT 47777
@@ -58,7 +59,7 @@ void startCollector(char *index_name, const int port);
  *  %param nb_leach: Number of Client connected to the local Collector.
  *  %param rdfs: Parameter used for the one-threaded gestion of the Collector's features.
  */
-void initFd(Index* index, Client* client, int nb_leach, fd_set* rdfs);
+void initFd(Index* index, Server* s, fd_set* rdfs);
 
 /** Adds a new Client in the list of connected clients if the limit of connexions is not reached.
  * 
@@ -69,7 +70,7 @@ void initFd(Index* index, Client* client, int nb_leach, fd_set* rdfs);
  * 
  *  %return 1 if a Client is added, 0 otherwise.
  */
-int addNewClient(Client* client_tab, int seed_socket, int* max_socket, int nb_leach);
+int addNewClient(Server* s);
 
 /** Sends the volumes that the connected clients ask, or removes the clients of the connected Client list if they are no more connected.
  * 
@@ -80,7 +81,7 @@ int addNewClient(Client* client_tab, int seed_socket, int* max_socket, int nb_le
  *  %param file: Pointer to the shared file.
  *  %param rdfs: Parameter used for the one-threaded gestion of the Collector's features.
  */
-void manageClient(Client *client_tab, int *nb_leach, int *max_socket, Index *index, FILE *file, fd_set* rdfs);
+void manageClient(Server* s, Index *index, fd_set* rdfs);
 
 /** Receive from the boss a name of file and respond "Exist" if the file is available on the local machine, "NotExist" otherwise.
  * 

@@ -80,15 +80,7 @@ void startCollector(char *index_name, const int port){
     Collector** collectors_list = NULL;
     struct timeval tval;
 
-    /* Server *s = newServer(port); */
-    /* Remplacera */
-    int nb_seed = 0, nb_leach = 0;
-    bool full_file = FALSE;
-    Client *client = newClientArray(MAX_CONNEXION);
-    FILE *file = NULL;
-    SOCKET seed_socket = initServer(port);
-    int max_socket = seed_socket;
-    /*** Tout ceci ci dessus */
+    Server *s = newServer(port);
     
     tval.tv_sec  = 60;
     tval.tv_usec = 0; 
@@ -96,30 +88,30 @@ void startCollector(char *index_name, const int port){
     index = newIndex();
     
     initIndex(index, index_name);
-    full_file = initFile(index);
+    s->full_file = initFile(index);
     
-    file = fopen(index->file, "r+");
+    s->file = fopen(index->file, "r+");
     
     sendFileName(index, port); 
-    if(!full_file) {
-        collectors_list = fillCollectorsList(&nb_seed, index);
+    if(!s->full_file) {
+        collectors_list = fillCollectorsList(s, index);
     }
     
     for ( ;; ) {
-        initFd(index, client, nb_leach, &rdfs); /* Ici on pourra changer pour passer le pointeur de serveur */
+        initFd(index, s, &rdfs);
         
-        if(!full_file && nb_seed != 0) {          
-            full_file = getVolume(index, collectors_list, nb_seed, file); /* La meme ici */
+        if(!s->full_file && s->nb_seed != 0) {          
+            s->full_file = getVolume(index, collectors_list, s);
         }
         
-        if( (timer = select(max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
+        if( (timer = select(s->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
         }
         
         if ( timer == 0 ) {
-            if ( nb_seed == 0 ) {
+            if ( s->nb_seed == 0 ) {
                 /* If we are here, then the pointer, had not been allocated */
-                collectors_list = fillCollectorsList(&nb_seed, index);
+                collectors_list = fillCollectorsList(s, index);
             }
         }
         
@@ -132,29 +124,23 @@ void startCollector(char *index_name, const int port){
         if( FD_ISSET(index->c.id_socket, &rdfs) ) {
             pong(index);
         }
-        else if( FD_ISSET(seed_socket, &rdfs) ) {
-            /* Ici aussi */
-            nb_leach += addNewClient(client, seed_socket, &max_socket, nb_leach);
+        else if( FD_ISSET(s->seed_socket, &rdfs) ) {
+            s->nb_leach = s->nb_leach + addNewClient(s);
         }
         
-        /* Ici aussi */
-        manageClient(client, &nb_leach, & max_socket, index, file, &rdfs);
+        manageClient(s, index, &rdfs);
     }
     
 
     freeIndex(index);
     free(index_name);
     
-    /* freeServer(s); */
-    /* Deviendra donc useless */
-    freeClientArray(client);
-    fclose(file);
-    /* ****** */
+    freeServer(s);
     
     return;
 }
 
-void initFd(Index* index, Client* client, int nb_leach, fd_set* rdfs){
+void initFd(Index* index, Server* s, fd_set* rdfs){
     int i;
     
     FD_ZERO(rdfs);
@@ -164,21 +150,21 @@ void initFd(Index* index, Client* client, int nb_leach, fd_set* rdfs){
     #endif
     FD_SET(index->c.id_socket, rdfs);
     
-    for(i = 0; i < nb_leach; i++) {
-        FD_SET(client[i].id_socket, rdfs);
+    for(i = 0; i < s->nb_leach; i++) {
+        FD_SET(s->client[i].id_socket, rdfs);
     }
 }
 
-int addNewClient(Client* client_tab, int seed_socket, int* max_socket, int nb_leach){
-    Client tmp = acceptClient(seed_socket);
+int addNewClient(Server* s){
+    Client tmp = acceptClient(s->seed_socket);
             
-    if(nb_leach < MAX_CONNEXION) {
-        if ( *max_socket < tmp.id_socket ) {
-            DEBUG_MSG("Change the max socket\n");
-            *max_socket = tmp.id_socket;
+    if(s->nb_leach < MAX_CONNEXION) {
+        if ( s->max_socket < tmp.id_socket ) {
+            DEBUG_MSG("Change the max socket.");
+            s->max_socket = tmp.id_socket;
         }
 
-        client_tab[nb_leach] = tmp;
+        s->client[s->nb_leach] = tmp;
         
         return 1;
     }
@@ -189,28 +175,28 @@ int addNewClient(Client* client_tab, int seed_socket, int* max_socket, int nb_le
     return 0;
 }
 
-void manageClient(Client *client_tab, int *nb_leach, int *max_socket, Index *index, FILE *file, fd_set* rdfs){
+void manageClient(Server* s, Index *index, fd_set* rdfs){
     char in_buf[25];
     char *token;
     int i;
     
-    for(i = 0; i < *nb_leach; i++) {
-        if ( FD_ISSET(client_tab[i].id_socket, rdfs) ) {
+    for(i = 0; i < s->nb_leach; i++) {
+        if ( FD_ISSET(s->client[i].id_socket, rdfs) ) {
             memset(in_buf, '\0', 25);
 
             printf("Client ask for something\n");
 
-            if ( tcpAction(client_tab[i], in_buf, 25, RECEIVED) == 0 ) {
+            if ( tcpAction(s->client[i], in_buf, 25, RECEIVED) == 0 ) {
                 printf("Client disconnect\n");
-                removeClient(client_tab, i, nb_leach, max_socket );
+                removeClient(s, i);
             } else {
                 removeEndCarac(in_buf);
                 
                 if ( (token = startWith(in_buf, PREFIX_OF_VOLUME_MSG)) != NULL ) {
-                    sendVolume(client_tab[i], atoi(token), index->pack_size, file);
+                    sendVolume(s->client[i], atoi(token), index->pack_size, s->file);
                 }
                 else if( strcmp(in_buf, LIST_OF_VOLUMES_MSG) == 0 ) {
-                    sendListVolumes(client_tab[i], index);
+                    sendListVolumes(s->client[i], index);
                 }
                 else {
                     printf("Oh Mama he send something stupid '%s'", in_buf);

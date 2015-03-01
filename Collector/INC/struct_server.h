@@ -9,8 +9,9 @@
 
 #include <stdlib.h>
 
-#include "boolean.h"
 #include "socket.h"
+#include "boolean.h"
+#include "struct_client.h"
 
 typedef struct Server {
     SOCKET seed_socket;     // Socket for the server

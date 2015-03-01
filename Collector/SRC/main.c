@@ -28,7 +28,9 @@ char* askNDex() {
     
     do {
         printf("Which .ndex do you want to use ? ");
-        scanf("%ms", &file);
+        if(scanf("%ms", &file)) {
+            DEBUG_MSG("[ERROR] Nothing read when asking index.");
+        }
     } while ( !fileExist(file) );
     
     return file;
@@ -40,7 +42,9 @@ int askPort() {
     
     do {
         printf("On which port do you want to start the collector ? ");
-        scanf("%d", &port);
+        if(scanf("%d", &port) == 0){
+            DEBUG_MSG("[ERROR] Nothing read when asking port.");
+        }
     } while (port < 1024 && port > 65536 );
     
     return port;

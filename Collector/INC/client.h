@@ -8,6 +8,7 @@
 #define CLIENT_H
 
 #include "boolean.h"
+#include "struct_server.h"
 #include "struct_client.h"
 
 /** Allocate pointeur for an array of client.
@@ -64,6 +65,6 @@ bool addClient(Client *client, Client new, int *total);
  * 
  *  %return : return the new max_socket value.
  */
-void removeClient(Client *client, int const pos,  int *total, int *max_socket);
+void removeClient(Server* s, int const pos);
 
 #endif /* CLIENT_H included */

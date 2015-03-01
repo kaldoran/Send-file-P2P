@@ -9,6 +9,7 @@
 #define COLLECTORSLIST_H
 
 #include "struct_index.h"
+#include "struct_server.h"
 #include "struct_collect.h"
 
 /** Allocates a list of Collectors
@@ -32,7 +33,7 @@ void freeCollectorsList(Collector** coll, int nb_seed);
  * 
  *  %return : number of collectors given by the boss.
  */
-Collector** fillCollectorsList(int* nb_seed, Index* index);
+Collector** fillCollectorsList(Server* s, Index* index);
 
 /** Finds a Collector and a volume to ask.
  * 

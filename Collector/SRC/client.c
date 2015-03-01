@@ -86,30 +86,30 @@ bool addClient(Client *client, Client new, int *total) {
     return FALSE;
 }
 
-void removeClient(Client *client, int const pos,  int *total, int *max_socket ) {
+void removeClient(Server* s, int const pos) {
     int i, new_max_socket;
-    printf("Close : %d\n", client[pos].id_socket);
+    printf("Close : %d\n", s->client[pos].id_socket);
     
     new_max_socket = -1;
     
     /* Seek new socket max */
-    if ( *max_socket == client[pos].id_socket ) {
-        for ( i = 0; i < *total; i++) {
+    if ( s->max_socket == s->client[pos].id_socket ) {
+        for ( i = 0; i < s->nb_leach; i++) {
             if ( i != pos 
-                && client[i].id_socket > new_max_socket ) {
+                && (s->client[i]).id_socket > new_max_socket ) {
                 
-                new_max_socket = client[i].id_socket;
+                new_max_socket = (s->client[i]).id_socket;
             }
         }
     }
 
-    closesocket(client[pos].id_socket);
+    closesocket((s->client[pos]).id_socket);
     
     /* Move memory to avoid blank into array */
-    memmove(client + pos, client + pos + 1, (*total - pos - 1) * sizeof(Client));  
+    memmove(s->client + pos, s->client + pos + 1, (s->nb_leach - pos - 1) * sizeof(Client));  
     
-    *max_socket = (new_max_socket == -1 ) ? *max_socket : new_max_socket;
-    --(*total);
+    s->max_socket = (new_max_socket == -1 ) ? s->max_socket : new_max_socket;
+    --(s->nb_leach);
     
     return;
 }

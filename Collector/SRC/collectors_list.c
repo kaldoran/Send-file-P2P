@@ -56,7 +56,7 @@ int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
     return collVol;
 }
 
-Collector** fillCollectorsList(int* nb_seed, Index* index){
+Collector** fillCollectorsList(Server* s, Index* index){
     Collector** collectors_list = NULL;
     char in_buf[25];
 
@@ -89,17 +89,17 @@ Collector** fillCollectorsList(int* nb_seed, Index* index){
         createClientFromIp(&tmp, token);
         
         if(tcpStart(tmp) == FALSE){
-            printf("Can't connect to collector n°%d", *nb_seed);
+            printf("Can't connect to collector n°%d", s->nb_seed);
         }
         else{
-            collectors_list[*nb_seed] = newCollect(index->nb_package);
+            collectors_list[s->nb_seed] = newCollect(index->nb_package);
             
-            collectors_list[*nb_seed]->c = tmp;
+            collectors_list[s->nb_seed]->c = tmp;
             
-            askVolList(collectors_list[*nb_seed], index->nb_package);
+            askVolList(collectors_list[s->nb_seed], index->nb_package);
         }
 
-        ++(*nb_seed);
+        ++(s->nb_seed);
     } while(*in_buf != '0');
 
     return collectors_list;

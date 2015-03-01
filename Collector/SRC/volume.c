@@ -16,15 +16,15 @@
 #include "error.h"
 #include "tcp.h"
 
-bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file) {
+bool getVolume(Index* index, Collector** collectors_list, Server* s) {
     unsigned char read[index->pack_size];
     int* collVol;
 
-    collVol = findCollVol(index, collectors_list, nb_seed);
+    collVol = findCollVol(index, collectors_list, s->nb_seed);
     
     if ( collVol[0] == -1 ) {
-        freeCollectorsList(collectors_list, nb_seed);
-        collectors_list = fillCollectorsList(&nb_seed, index);
+        freeCollectorsList(collectors_list, s->nb_seed);
+        collectors_list = fillCollectorsList(s, index);
         
         return FALSE;
     }
@@ -41,10 +41,10 @@ bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
     
         index->local_vols[collVol[1]] = 1;
         
-        fseek(file, (index->pack_size * collVol[1] ), SEEK_SET);
-        rewind(file);
+        fseek(s->file, (index->pack_size * collVol[1] ), SEEK_SET);
+        rewind(s->file);
         
-        fprintf(file, "%s", read);
+        fprintf(s->file, "%s", read);
  
         return isComplet(index->local_vols);
     } else {
@@ -61,7 +61,7 @@ void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
     fseek(file, ( vol_size * vol_num ), SEEK_SET);
     
     if(fread ((char*)buf, vol_size, 1, file) == 0){
-        DEBUG_MSG("[ERROR] sending empty volume\n");
+        DEBUG_MSG("[ERROR] sending empty volume.");
     }
        
     tcpAction(c, buf, vol_size, SEND);

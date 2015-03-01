@@ -9,6 +9,7 @@
 #include "error.h"
 #include "client.h"
 #include "server.h"
+#include "boolean.h"
 
 Server* newServer(const int port) {
     Server* s; 
@@ -20,6 +21,12 @@ Server* newServer(const int port) {
     s->seed_socket = initServer(port);
     s->max_socket = s->seed_socket;
     s->client = newClientArray(MAX_CONNEXION);
+    
+    s->file = NULL;
+    
+    s->nb_leach = 0;
+    s->nb_seed = 0;
+    s->full_file = FALSE;
 
     return s;
 }

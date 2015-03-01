@@ -11,6 +11,7 @@
 
 #include "socket.h"
 #include "struct_index.h"
+#include "struct_server.h"
 #include "struct_collect.h"
 
 
@@ -24,7 +25,7 @@
  *  %return : TRUE if the file is complet
  *            FALSE otherwise
  */
-bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* file);
+bool getVolume(Index* index, Collector** collectors_list, Server* s);
 
 
 /** Sends a volume.
