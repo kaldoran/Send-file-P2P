@@ -51,8 +51,8 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
         printf("Wrong volume %d",collVol[1]);
     }
     
-    return FALSE;
     free(collVol);
+    return FALSE;
 }
 
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
