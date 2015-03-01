@@ -73,17 +73,24 @@ Client acceptClient( int const server_socket ) {
     return new_client;
 }
 
-bool addClient(Client *client, Client new, int *total) {
-    if ( *total != MAX_CONNEXION ) {
+int addClient(Server* s){
+    Client tmp = acceptClient(s->seed_socket);
+            
+    if(s->nb_leach < MAX_CONNEXION) {
+        if ( s->max_socket < tmp.id_socket ) {
+            DEBUG_MSG("Change the max socket.");
+            s->max_socket = tmp.id_socket;
+        }
+
+        s->client[s->nb_leach] = tmp;
         
-        client[*total] = new;
-        ++(*total);
-        
-        return TRUE;
+        return 1;
     }
     
-    printf("I'm So full !\n");
-    return FALSE;
+    printf("Max number of client reached");
+    close(tmp.id_socket);
+    
+    return 0;
 }
 
 void removeClient(Server* s, int const pos) {

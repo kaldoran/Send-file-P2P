@@ -125,7 +125,7 @@ void startCollector(char *index_name, const int port){
             pong(index);
         }
         else if( FD_ISSET(s->seed_socket, &rdfs) ) {
-            s->nb_leach = s->nb_leach + addNewClient(s);
+            s->nb_leach = s->nb_leach + addClient(s);
         }
         
         manageClient(s, index, &rdfs);
@@ -153,26 +153,6 @@ void initFd(Index* index, Server* s, fd_set* rdfs){
     for(i = 0; i < s->nb_leach; i++) {
         FD_SET(s->client[i].id_socket, rdfs);
     }
-}
-
-int addNewClient(Server* s){
-    Client tmp = acceptClient(s->seed_socket);
-            
-    if(s->nb_leach < MAX_CONNEXION) {
-        if ( s->max_socket < tmp.id_socket ) {
-            DEBUG_MSG("Change the max socket.");
-            s->max_socket = tmp.id_socket;
-        }
-
-        s->client[s->nb_leach] = tmp;
-        
-        return 1;
-    }
-    
-    printf("Max number of client reached");
-    close(tmp.id_socket);
-    
-    return 0;
 }
 
 void manageClient(Server* s, Index *index, fd_set* rdfs){

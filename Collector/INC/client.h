@@ -46,16 +46,17 @@ Client initClient();
  */
 Client acceptClient( int const server_socket );
 
-/** Add a client to an array of client.
+
+/** Adds a new Client in the list of connected clients if the limit of connexions is not reached.
  * 
- *  %param client : array where you need to add the new client.
- *  %param new : the new client that you need to add.
- *  %param total : pointeur on the total number of client.
+ *  %param client_tab: List of Client connected to the local Collector.
+ *  %param seed_socket: Id of the local Collector's socket.
+ *  %param max_socket: Pointer to the id of the last connected client.
+ *  %param nb_leach: Number of Client connected to the local Collector.
  * 
- *  %return : True if we succeed into adding a client.
- *            False otherwise.
+ *  %return 1 if a Client is added, 0 otherwise.
  */
-bool addClient(Client *client, Client new, int *total);
+int addClient(Server* s);
 
 /** Remove a client frop the array of client.
  * 

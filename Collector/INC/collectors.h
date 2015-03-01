@@ -61,17 +61,6 @@ void startCollector(char *index_name, const int port);
  */
 void initFd(Index* index, Server* s, fd_set* rdfs);
 
-/** Adds a new Client in the list of connected clients if the limit of connexions is not reached.
- * 
- *  %param client_tab: List of Client connected to the local Collector.
- *  %param seed_socket: Id of the local Collector's socket.
- *  %param max_socket: Pointer to the id of the last connected client.
- *  %param nb_leach: Number of Client connected to the local Collector.
- * 
- *  %return 1 if a Client is added, 0 otherwise.
- */
-int addNewClient(Server* s);
-
 /** Sends the volumes that the connected clients ask, or removes the clients of the connected Client list if they are no more connected.
  * 
  *  %param client_tab: List of Client connected to the local Collector.
