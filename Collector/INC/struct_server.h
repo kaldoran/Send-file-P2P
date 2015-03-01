@@ -13,16 +13,16 @@
 #include "socket.h"
 
 typedef struct Server {
-    SOCKET seed_socket;
-    int max_socket;
+    SOCKET seed_socket;     // Socket for the server
+    int max_socket;         // Max id of all socket
     
-    int nb_seed;
+    int nb_seed;            // Total number of seeder
     
-    FILE *file;
-    bool full_file;
+    FILE *file;             // File on which we write 
+    bool full_file;         // Boolean that indicate if file is full
     
-    Client *client;
-    int nb_leach;
+    Client *client;         // List of client
+    int nb_leach;           // Total number of leacher
 } Server;
 
 #endif /* STRUCT_SERVER_H included */
