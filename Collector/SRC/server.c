@@ -7,7 +7,33 @@
 #include <unistd.h>
 
 #include "error.h"
+#include "client.h"
 #include "server.h"
+
+Server newServer(const int port) {
+    Server s; 
+    
+    if ( (s = calloc(1, sizeof(*s)) == NULL ) {
+        QUIT_MSG("Can't allocate new server");
+    }
+
+    s->seed_socket = initServer(port);
+    s->max_socket = s->seed_socket;
+    s->client = newClientArray(MAX_CONNEXION);
+    
+    return s;
+}
+
+void freeServer(Server *s) {
+    if ( s->file != NULL ) {
+        fclose(s->file);
+    }
+    
+    freeClientArray(s->client);
+    free(s);
+
+    return;
+}
 
 int initServer(const int port) {
     int struct_size, serveur_socket;

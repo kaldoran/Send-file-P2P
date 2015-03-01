@@ -7,7 +7,11 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include "struct_client.h"
+#include "struct_server.h"
+
+Server newServer(const int port);
+
+void freeServer(Server *s);
 
 /** init a socket for a server
  * 

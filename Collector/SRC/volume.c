@@ -21,7 +21,7 @@ bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
     int* collVol;
 
     collVol = findCollVol(index, collectors_list, nb_seed);
-    char vol[sizeof(PREFIX_OF_VOLUME_MSG) + sizeof(collVol[1])] = "";  /* 10 carac : 3 for "Vol", and 7 left for the number (i.e 9 millions person ) */
+    char vol[sizeof(PREFIX_OF_VOLUME_MSG) + sizeof(collVol[1])] = "";
 
     sprintf(vol, "%s%d", PREFIX_OF_VOLUME_MSG, collVol[1]);
     

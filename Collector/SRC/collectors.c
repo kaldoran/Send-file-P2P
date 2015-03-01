@@ -74,18 +74,24 @@ void createClientFromIp(Client* client, char* ip){
 }
 
 void startCollector(char *index_name, const int port){
-    int i;
-    int nb_seed = 0, nb_leach = 0;
-
-    bool full_file = FALSE;
+    int timer;
     fd_set rdfs;
-    Client *client = newClientArray(MAX_CONNEXION);
-    FILE *file = NULL;
     Index *index = NULL;
     Collector** collectors_list = NULL;
-    
-    int seed_socket = initServer(port);
+    struct timeval tval;
+
+    /* Server *s = newServer(port); */
+    /* Remplacera */
+    int nb_seed = 0, nb_leach = 0;
+    bool full_file = FALSE;
+    Client *client = newClientArray(MAX_CONNEXION);
+    FILE *file = NULL;
+    SOCKET seed_socket = initServer(port);
     int max_socket = seed_socket;
+    /*** Tout ceci ci dessus */
+    
+    tval.tv_sec  = 60;
+    tval.tv_usec = 0; 
     
     index = newIndex();
     
@@ -99,16 +105,21 @@ void startCollector(char *index_name, const int port){
     }
     
     for ( ;; ) {
-        initFd(index, client, nb_leach, &rdfs);
+        initFd(index, client, nb_leach, &rdfs); /* Ici on pourra changer pour passer le pointeur de serveur */
         
         if(!full_file && nb_seed != 0) {          
-            full_file = getVolume(index, collectors_list, nb_seed, file);
+            full_file = getVolume(index, collectors_list, nb_seed, file); /* La meme ici */
         }
         
-        if( (i = select(max_socket + 1, &rdfs, NULL, NULL, NULL)) == -1) {
+        if( (timer = select(max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
         }
         
+        if ( timer == 0 ) {
+            if ( nb_seed == 0 ) {
+                ; /* Ask list */
+            }
+        }
         #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;
@@ -119,17 +130,24 @@ void startCollector(char *index_name, const int port){
             pong(index);
         }
         else if( FD_ISSET(seed_socket, &rdfs) ) {
+            /* Ici aussi */
             nb_leach += addNewClient(client, seed_socket, &max_socket, nb_leach);
         }
         
+        /* Ici aussi */
         manageClient(client, &nb_leach, & max_socket, index, file, &rdfs);
     }
     
-    
-    freeClientArray(client);
+    freeServer(s);
     freeIndex(index);
     free(index_name);
+    
+    /* Deviendra donc useless */
+    freeClientArray(client);
     fclose(file);
+    /* ****** */
+    
+    return;
 }
 
 void initFd(Index* index, Client* client, int nb_leach, fd_set* rdfs){
