@@ -32,7 +32,7 @@ int tcpAction(Client c, void *data, int data_length, int type) {
         return send(c.id_socket, data, data_length, 0);
     }
     else if ( type == RECEIVED ) {
-        return read(c.id_socket, data, data_length);
+        return recv(c.id_socket, data, data_length, 0);
     }
    
     return -1;
