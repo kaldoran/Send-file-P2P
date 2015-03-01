@@ -9,7 +9,7 @@
 
 #include "struct_server.h"
 
-Server newServer(const int port);
+Server* newServer(const int port);
 
 void freeServer(Server *s);
 

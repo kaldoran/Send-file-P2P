@@ -21,7 +21,15 @@ bool getVolume(Index* index, Collector** collectors_list, int nb_seed, FILE* fil
     int* collVol;
 
     collVol = findCollVol(index, collectors_list, nb_seed);
-    char vol[sizeof(PREFIX_OF_VOLUME_MSG) + sizeof(collVol[1])] = "";
+    
+    if ( collVol[0] == -1 ) {
+        freeCollectorsList(collectors_list, nb_seed);
+        collectors_list = fillCollectorsList(&nb_seed, index);
+        
+        return FALSE;
+    }
+    
+    char vol[sizeof(PREFIX_OF_VOLUME_MSG) + 5] = "";
 
     sprintf(vol, "%s%d", PREFIX_OF_VOLUME_MSG, collVol[1]);
     

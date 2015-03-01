@@ -101,7 +101,7 @@ void startCollector(char *index_name, const int port){
     file = fopen(index->file, "r+");
     
     if(!full_file) {
-        collectors_list = fillCollectorsList(&nb_seed, index, port);
+        collectors_list = fillCollectorsList(&nb_seed, index);
     }
     
     for ( ;; ) {
@@ -117,9 +117,11 @@ void startCollector(char *index_name, const int port){
         
         if ( timer == 0 ) {
             if ( nb_seed == 0 ) {
-                ; /* Ask list */
+                /* If we are here, then the pointer, had not been allocated */
+                collectors_list = fillCollectorsList(&nb_seed, index);
             }
         }
+        
         #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;
@@ -138,10 +140,11 @@ void startCollector(char *index_name, const int port){
         manageClient(client, &nb_leach, & max_socket, index, file, &rdfs);
     }
     
-    freeServer(s);
+
     freeIndex(index);
     free(index_name);
     
+    /* freeServer(s); */
     /* Deviendra donc useless */
     freeClientArray(client);
     fclose(file);

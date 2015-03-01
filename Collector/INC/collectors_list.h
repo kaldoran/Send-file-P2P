@@ -19,15 +19,16 @@
  */
 Collector** newCollectorsList(int nb_coll);
 
+void freeCollectorsList(Collector** coll, int nb_seed);
+
 /** Fills the list of Collectors from the ip adresses given by the boss.
  *  
  *  %param collectors_list: The Collector list to fill.
  *  %param index: Pointer to the loaded Index.
- *  %param port : Port were we want to start server and also send to boss
  * 
  *  %return : number of collectors given by the boss.
  */
-Collector** fillCollectorsList(int* nb_seed, Index* index, int port);
+Collector** fillCollectorsList(int* nb_seed, Index* index);
 
 /** Finds a Collector and a volume to ask.
  * 
