@@ -88,4 +88,11 @@ void manageClient(Client *client_tab, int *nb_leach, int *max_socket, Index *ind
  */
 void pong(Index *index);
 
+/** Send the file name and the port to the server 
+ *  
+ *  %param index : index which contains the socket to boss
+ *  %param port : which port we need to send 
+ */
+void sendFileName(Index *index, int port);
+
 #endif

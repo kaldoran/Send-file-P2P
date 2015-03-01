@@ -100,6 +100,7 @@ void startCollector(char *index_name, const int port){
     
     file = fopen(index->file, "r+");
     
+    sendFileName(index, port); 
     if(!full_file) {
         collectors_list = fillCollectorsList(&nb_seed, index);
     }
@@ -233,4 +234,13 @@ void pong(Index *index){
         else{
             tcpAction(index->c, FILE_NOT_EXIST_MSG, sizeof(FILE_NOT_EXIST_MSG), SEND);
         }
+}
+
+void sendFileName(Index *index, int port) {
+    char out_buf[sizeof(index->file) + 6] = "";
+    sprintf(out_buf, "%s|%d", index->file, port);
+
+    tcpAction(index->c, out_buf, sizeof(out_buf), SEND);
+    
+    return;
 }
