@@ -12,8 +12,8 @@
 
 typedef struct Client {
     SOCKET id_socket;       /* id of the socket */
-    char ip[15];            /* ip associate with the socket */
-    char port[5];
+    char ip[16];            /* ip associate with the socket */
+    char port[6];
 } Client;
 
 #endif /* STRUCT_CLIENT_H included */

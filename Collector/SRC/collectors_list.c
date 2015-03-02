@@ -89,23 +89,22 @@ Collector** fillCollectorsList(Server* s, Index* index){
         printf("Ip of Collector : %s\n", token);
         if( (h = gethostbyname(token)) != NULL ) {
             memcpy(&tmp.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
-        }
         
-        token = strtok(NULL, "|");
-        printf("Port du collector : %s\n", token);
-        tmp.sock_info.sin_port = htons(atoi(token));
-            
-        if(tcpStart(tmp) == FALSE){
-            printf("Can't connect to collector n°%d", s->nb_seed);
-        }
-        else{
-            collectors_list[s->nb_seed] = newCollect(index->nb_package);
-            collectors_list[s->nb_seed]->c = tmp;
-            
-            askVolList(collectors_list[s->nb_seed], index->nb_package);
-        }
-
-        ++(s->nb_seed);
+            token = strtok(NULL, "|");
+            printf("Port du collector : %s\n", token);
+            tmp.sock_info.sin_port = htons(atoi(token));
+                
+            if(tcpStart(tmp) == FALSE){
+                printf("Can't connect to collector n°%d", s->nb_seed);
+            }
+            else{
+                collectors_list[s->nb_seed] = newCollect(index->nb_package);
+                collectors_list[s->nb_seed]->c = tmp;
+                
+                askVolList(collectors_list[s->nb_seed], index->nb_package);
+                ++(s->nb_seed);
+            }
+        } 
     } while(*in_buf != '0');
 
     return collectors_list;

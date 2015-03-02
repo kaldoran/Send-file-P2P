@@ -29,7 +29,7 @@ void askPresence(Group *group) {
     printf("Let send the ping test !\n");
     for ( i = 0; i < group->total; i++ ) {
         /* Send the same message to all client from a groups */
-        send(group->client[i].id_socket, group->name, sizeof(*group->name), 0);
+        send(group->client[i].id_socket, group->name, sizeof(group->name), 0);
     }   
     return;  
 }

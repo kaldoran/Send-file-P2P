@@ -46,11 +46,10 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs);
 
 /** Send all client to a socket 
  *  %param client : array of client which you wnat to send
- *  %param number : total number of client that you need to send
  *  %param total : total number of client
  *  %param to : position of the client into the client array 
  */ 
-void sendClient(Client *client, int number, int total, int to);
+void sendClient(Client *client, int total, int to);
 
 /** Add a client to an array of client
  *  %param client : array where you need to add the new client

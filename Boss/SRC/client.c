@@ -107,9 +107,7 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
                     if ( group->total == 0 ) { removeGroup( block_group, i );  } /* If needed remove the group */
                 }
                 else if ( strcmp(inBuf, LIST_OF_COLLECTOR_MSG) == 0 ) {
-                    tmpVal = (rand() % (group->total - 1)) + 1;
-                    
-                    sendClient(group->client, tmpVal, group->total, j);              
+                    sendClient(group->client, group->total, j);    
                 }
                 else if ( strcmp(inBuf, FILE_EXIST_MSG) == 0 ) {
                     group->checker[j] = 1;
@@ -164,15 +162,18 @@ Client acceptClient( int const server_socket ) {
     return new_client;
 }
 
-void sendClient(Client *client, int number, int total, int to) {
+void sendClient(Client *client, int total, int to) {
+    
+    int i, pourcent, number;
+    char outBuf[30];
+    
     if ( total == 1 ) {
         send(client[to].id_socket, ALONE_COLLECTOR_MSG, sizeof(ALONE_COLLECTOR_MSG), 0);
         return;
     }
     
-    int i, pourcent;
-    char outBuf[30];
     i = 0;
+    number = (rand() % (total - 1)) + 1;
 
     pourcent = (int)((float)number / (float)total * 100.);
     DEBUG_MSG("Random : %d - Val : %d\n", number, pourcent);
@@ -183,7 +184,6 @@ void sendClient(Client *client, int number, int total, int to) {
             
             --number;
             memset(outBuf, '\0', 30);
-            fprintf(stderr, "( I : %d ) Number : %d - Ip : %s - Port : %s\n", i, number, client[i].ip, client[i].port);
             sprintf(outBuf, "%d|%s|%s", number, client[i].ip, client[i].port);
             
             send(client[to].id_socket, outBuf, 30, 0);
