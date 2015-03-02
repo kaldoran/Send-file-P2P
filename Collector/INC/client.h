@@ -49,10 +49,7 @@ Client acceptClient( int const server_socket );
 
 /** Adds a new Client in the list of connected clients if the limit of connexions is not reached.
  * 
- *  %param client_tab: List of Client connected to the local Collector.
- *  %param seed_socket: Id of the local Collector's socket.
- *  %param max_socket: Pointer to the id of the last connected client.
- *  %param nb_leach: Number of Client connected to the local Collector.
+ *  %param s: The instance of the local Server.
  * 
  *  %return 1 if a Client is added, 0 otherwise.
  */
@@ -60,11 +57,8 @@ int addClient(Server* s);
 
 /** Remove a client frop the array of client.
  * 
- *  %param groupe : pointer on the group where you need to remove a client.
+ *  %param s: The instance of the local Server.
  *  %param pos : position of the client in the array.
- *  %param max_socket : max id of the socket.
- * 
- *  %return : return the new max_socket value.
  */
 void removeClient(Server* s, int const pos);
 

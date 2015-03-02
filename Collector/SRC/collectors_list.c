@@ -31,31 +31,6 @@ void freeCollectorsList(Collector** coll, int nb_seed) {
     return; 
 }
 
-int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
-    int i,j;
-    
-    int* collVol = NULL;
-    
-    if ( (collVol = malloc(2*sizeof(int))) == NULL ) {
-        QUIT_MSG("Can't allocate collVol : ");
-    }
-    
-    collVol[0] = -1;
-    collVol[1] = -1;
-    
-    for(i = 0; i < nb_seed; ++i){
-        for(j = 0; j < index->nb_package; ++j){
-            if(coll_list[i]->volumes[j] == 1 && index->local_vols[j] == 0){
-                collVol[0] = i;
-                collVol[1] = j;
-                return collVol;
-            }
-        }
-    }
-    
-    return collVol;
-}
-
 Collector** fillCollectorsList(Server* s, Index* index){
     Collector** collectors_list = NULL;
     char in_buf[COLLECTOR_READER_SIZE] = "";
@@ -95,7 +70,7 @@ Collector** fillCollectorsList(Server* s, Index* index){
             tmp.sock_info.sin_port = htons(atoi(token));
                 
             if(tcpStart(tmp) == FALSE){
-                printf("Can't connect to collector n°%d", s->nb_seed);
+                printf("[ERROR] Can't connect to collector n°%d\n", s->nb_seed);
             }
             else{
                 collectors_list[s->nb_seed] = newCollect(index->nb_package);

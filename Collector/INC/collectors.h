@@ -46,19 +46,15 @@ void startCollector(char *index_name, const int port);
 /** Initialazes the Collector's execution loop
  * 
  *  %param index: Pointer to the loaded Index.
- *  %param client: List of Client connected to the local Collector.
- *  %param nb_leach: Number of Client connected to the local Collector.
+ *  %param s: The instance of the local Server.
  *  %param rdfs: Parameter used for the one-threaded gestion of the Collector's features.
  */
 void initFd(Index* index, Server* s, fd_set* rdfs);
 
 /** Sends the volumes that the connected clients ask, or removes the clients of the connected Client list if they are no more connected.
  * 
- *  %param client_tab: List of Client connected to the local Collector.
- *  %param nb_leach: Pointer to the number of Client connected to the local Collector.
- *  %param max_socket: Pointer to the id of the last connected client.
+ *  %param s: The instance of the local Server.
  *  %param index: Pointer to the loaded Index.
- *  %param file: Pointer to the shared file.
  *  %param rdfs: Parameter used for the one-threaded gestion of the Collector's features.
  */
 void manageClient(Server* s, Index *index, fd_set* rdfs);
