@@ -86,7 +86,7 @@ int addClient(Server* s){
     }
     
     printf("Max number of client reached");
-    close(tmp.id_socket);
+    closesocket(tmp.id_socket);
     
     return 0;
 }
