@@ -28,6 +28,16 @@
 bool getVolume(Index* index, Collector** collectors_list, Server* s);
 
 
+/** Finds a Collector and a volume to ask.
+ * 
+ *  %param index: Pointer to the loaded Index.
+ *  %param coll: Pointer of the Collector .
+ * 
+ *  %return: Id of a volume available at a Collector and that the local Collector doesn't have.
+ */
+int findCollVol(Index* index, Collector* coll);
+
+
 /** Sends a volume.
  * 
  *  %param c: Client who asks the volume.
