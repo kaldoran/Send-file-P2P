@@ -17,23 +17,23 @@
 
 int initServer() {
     int struct_size, serveur_socket;
-    SOCKADDR_IN s_serveur;
+    SOCKADDR_IN s_serveur = { 0 };
     struct_size = sizeof(SOCKADDR_IN);
         
     s_serveur.sin_family = AF_INET;
     s_serveur.sin_addr.s_addr = INADDR_ANY;
     s_serveur.sin_port = htons(PORT);    
     
-    if ( (serveur_socket = socket(AF_INET, SOCK_STREAM, 0)) == -1){
+    if ( (serveur_socket = socket(AF_INET, SOCK_STREAM, 0)) == SOCKET_ERROR ){
         QUIT_MSG("Can't create the socket : ");
     }
 
-    if ( bind(serveur_socket, (struct sockaddr *)&s_serveur, struct_size) == -1){
+    if ( bind(serveur_socket, (struct sockaddr *)&s_serveur, struct_size) == SOCKET_ERROR ){
         QUIT_MSG("Can't bind the socket : ");
     }
     
     /* Hey listen */
-    if ( listen(serveur_socket,MAX_CONNEXION) == -1 ){
+    if ( listen(serveur_socket,MAX_CONNEXION) == SOCKET_ERROR ){
         QUIT_MSG("Socket listen trouble : ");
     }
     
@@ -53,22 +53,22 @@ void startServer() {
     block_group->server_socket = initServer();
     block_group->max_socket = block_group->server_socket;
             
-    printf("[INFO] : Press Enter to Stop the Boss\n");  
+    printf("[IMPORTANT] : Press Enter to Stop the Boss\n");  
     
     for ( ;; ) {
     
         FD_ZERO(&rdfs);
         setHandler(block_group, &rdfs);
-        
+
         if( (timer = select(block_group->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
         }
         
         if ( timer == 0 ) {
-            printf("Timer Reach\n");
+            printf("\n[PING] Timer Reach\n");
             tval.tv_sec = handlerPresence(block_group);  
         }
-        
+
         #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;            
@@ -83,7 +83,7 @@ void startServer() {
         }
     }
     
-    printf("Server stop\n");
+    printf("[BYE] Server stop\n");
     closeServer(block_group);
     
     return;

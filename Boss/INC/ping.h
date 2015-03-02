@@ -29,6 +29,6 @@ void askPresence(Group *group);
  *  %param group : group to check
  *  %param max_socket : pointeur on the max_socket number
  */ 
-void checkPresence(Group *group, int *max_socket);
+void checkPresence(Group *group, int server_socket, int *max_socket);
 
 #endif /* PING_H included */

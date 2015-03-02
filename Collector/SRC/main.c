@@ -55,7 +55,7 @@ int main() {
     initWindows();
 
     startCollector(askNDex(), askPort());
-    
+
     endWindows();
     
     exit(EXIT_SUCCESS);
