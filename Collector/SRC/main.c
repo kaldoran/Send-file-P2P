@@ -15,8 +15,7 @@
 #include "windows.h"
 
 
-void usage(const char *name) {
-    
+void usage(const char *name) { 
     printf("Usage : %s file\n", name);
     
     return;
@@ -26,9 +25,13 @@ void usage(const char *name) {
 char* askNDex() {
     char* file;
     
+    if ( (file = calloc(FILENAME_MAX, sizeof(char))) == NULL ) {
+        QUIT_MSG("Can't allocate file");
+    }
+    
     do {
         printf("Which .ndex do you want to use ? ");
-        if(scanf("%ms", &file) != 1) {
+        if(scanf("%s", file) != 1) {
             DEBUG_MSG("[ERROR] Nothing read when asking index.");
         }
     } while ( !fileExist(file) );

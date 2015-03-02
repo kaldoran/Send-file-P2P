@@ -61,6 +61,11 @@ char* askFile() {
     int verif;
     char* file;
     
+    if ( (file = calloc(FILENAME_MAX, sizeof(char))) == NULL ) {
+        QUIT_MSG("Can't allocate file");
+    }
+    
+    
     do {
         printf("On which file do you want to create the '.ndex' file ?\n");
         verif = scanf("%ms", &file);

@@ -117,8 +117,9 @@ void startCollector(char *index_name, const int port){
         else if( FD_ISSET(s->seed_socket, &rdfs) ) {
             s->nb_leach = s->nb_leach + addClient(s);
         }
-        
-        manageClient(s, index, &rdfs);
+        else {
+            manageClient(s, index, &rdfs);
+        }
     }
     
 
@@ -159,6 +160,7 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
             if ( tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED) == 0 ) {
                 printf("Client disconnect\n");
                 removeClient(s, i);
+                --i; /* When we remove a client we need to apply this to i */
             } else {
                 removeEndCarac(in_buf);
                 
