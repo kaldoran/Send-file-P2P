@@ -21,6 +21,7 @@
 Collector** newCollectorsList(int nb_coll);
 
 /** Free a liste of collector
+ * 
  *  %param coll : list to free
  *  %param nb_seed : total of collector in the list
  */
@@ -28,7 +29,7 @@ void freeCollectorsList(Collector** coll, int nb_seed);
 
 /** Fills the list of Collectors from the ip adresses given by the boss.
  *  
- *  %param collectors_list: The Collector list to fill.
+ *  %param s: The instance of the local Server.
  *  %param index: Pointer to the loaded Index.
  * 
  *  %return : number of collectors given by the boss.

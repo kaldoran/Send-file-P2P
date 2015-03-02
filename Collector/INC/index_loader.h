@@ -30,6 +30,8 @@ Index *newIndex();
 
 /** Allocates and initializes a list of sha1.
  * 
+ *  %param nbPackage: Number of volumes.
+ * 
  *  %return: Allocated and initialized list of sha1.
  */
 char **newSha(int nbPackage);
@@ -64,7 +66,6 @@ bool initFile(Index* index);
  * 
  *  %param index: Pointer to the loaded Index.
  *  %param index_name: Name of the file of the Index.
- *  %param file: Pointer to the file.
  * 
  *  %return : TRUE if the file is complete and its volumes checked,
  *            FALSE otherwise.

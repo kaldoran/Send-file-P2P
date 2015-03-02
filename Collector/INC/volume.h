@@ -19,19 +19,17 @@
  * 
  *  %param index: Pointer to the loaded Index.
  *  %param collectors_list: List of the collectors given by the boss.
- *  %param nb_seed: Number of Collectors in the list.
- *  %param file: Pointer to the file.
+ *  %param s: The instance of the local Server.
  *
- *  %return : TRUE if the file is complet
- *            FALSE otherwise
+ *  %return : TRUE if the file is complet,
+ *            FALSE otherwise.
  */
 bool getVolume(Index* index, Collector** collectors_list, Server* s);
 
-
-/** Finds a Collector and a volume to ask.
+/** Finds a volume to ask.
  * 
  *  %param index: Pointer to the loaded Index.
- *  %param coll: Pointer of the Collector .
+ *  %param coll: Pointer of the Collector at which we search a volume.
  * 
  *  %return: Id of a volume available at a Collector and that the local Collector doesn't have.
  */
