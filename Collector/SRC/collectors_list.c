@@ -15,7 +15,6 @@
 #include "collectors.h"
 #include "collectors_list.h"
 
-
 Collector** newCollectorsList(int nb_coll){
     Collector** collectors_list = (Collector**) calloc(nb_coll, sizeof(Collector*));
     
@@ -59,7 +58,7 @@ int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
 
 Collector** fillCollectorsList(Server* s, Index* index){
     Collector** collectors_list = NULL;
-    char in_buf[25] = "";
+    char in_buf[COLLECTOR_READER_SIZE] = "";
 
     char *token;
     struct hostent *h;
@@ -68,10 +67,12 @@ Collector** fillCollectorsList(Server* s, Index* index){
     tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
         
     do {
-        memset(in_buf, '\0', 25);
-
-        tcpAction(index->c, in_buf, 25, RECEIVED);
+        memset(in_buf, '\0', COLLECTOR_READER_SIZE);
+                
+        tcpAction(index->c, in_buf, COLLECTOR_READER_SIZE, RECEIVED);
         removeEndCarac(in_buf);
+        
+        printf("Received : %s\n", in_buf);
         
         if ( strcmp(in_buf, ALONE_COLLECTOR_MSG) == 0 ) {
             return collectors_list;
@@ -103,7 +104,7 @@ Collector** fillCollectorsList(Server* s, Index* index){
                 askVolList(collectors_list[s->nb_seed], index->nb_package);
                 ++(s->nb_seed);
             }
-        } 
+        }
     } while(*in_buf != '0');
 
     return collectors_list;

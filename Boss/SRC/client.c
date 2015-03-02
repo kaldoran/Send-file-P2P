@@ -33,7 +33,7 @@ Client *newClientArray(int const number) {
     return client;
 }
 
-void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
+void handleNewClient(blockGroup* block_group) {
 
     int tmpVal;
     Client tmp;
@@ -78,7 +78,6 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
         }
     }  
     
-    FD_SET(tmp.id_socket, rdfs);
     return;
 }
 
@@ -157,7 +156,7 @@ Client acceptClient( int const server_socket ) {
     
     new_client.id_socket = accept(server_socket, (struct sockaddr*) &s_client, (__socklen_t *)&struct_size);
 
-    printf("[INFO] New client [%d] Ip : %s\n", new_client.id_socket, inet_ntoa(s_client.sin_addr));
+    printf("\n[INFO] New client [%d] Ip : %s\n", new_client.id_socket, inet_ntoa(s_client.sin_addr));
 
     strcpy(new_client.ip, inet_ntoa(s_client.sin_addr));
 

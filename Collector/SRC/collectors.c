@@ -146,17 +146,17 @@ void initFd(Index* index, Server* s, fd_set* rdfs){
 }
 
 void manageClient(Server* s, Index *index, fd_set* rdfs){
-    char in_buf[25];
+    char in_buf[READER_SIZE];
     char *token;
     int i;
     
     for(i = 0; i < s->nb_leach; i++) {
         if ( FD_ISSET(s->client[i].id_socket, rdfs) ) {
-            memset(in_buf, '\0', 25);
+            memset(in_buf, '\0', READER_SIZE);
 
             printf("Client ask for something\n");
 
-            if ( tcpAction(s->client[i], in_buf, 25, RECEIVED) == 0 ) {
+            if ( tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED) == 0 ) {
                 printf("Client disconnect\n");
                 removeClient(s, i);
             } else {

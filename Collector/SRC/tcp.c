@@ -28,7 +28,6 @@ bool tcpStart(Client c) {
 int tcpAction(Client c, void *data, int data_length, int type) {
     
     if ( type == SEND ) {
-        DEBUG_MSG("[INFO] SEND : '%s' to %d", (char *)data, c.id_socket);
         return send(c.id_socket, data, data_length, 0);
     }
     else if ( type == RECEIVED ) {
@@ -36,5 +35,4 @@ int tcpAction(Client c, void *data, int data_length, int type) {
     }
    
     return -1;
-
 }

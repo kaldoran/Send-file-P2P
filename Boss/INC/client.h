@@ -40,8 +40,15 @@ Client initClient();
  */
 Client acceptClient( int const server_socket );
 
-void handleNewClient(blockGroup* block_group, fd_set *rdfs);
+/** Handle new connexion of a client
+ *  %param block_group : Block group on which there is the socket server and the array of client
+ */
+void handleNewClient(blockGroup* block_group);
 
+/** Handle client, Check message and handle them
+ *  %param block_group : Block groupe to handle
+ *  %param rdfs : fd set where the descriptor of socket is
+ */
 void handlerClient(blockGroup* block_group, fd_set* rdfs);
 
 /** Send all client to a socket 
