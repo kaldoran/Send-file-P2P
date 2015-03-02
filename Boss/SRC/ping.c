@@ -36,8 +36,8 @@ void askPresence(Group *group) {
 
 void checkPresence(Group *group, int *max_socket) {
     int i;
-    
-    for ( i = 0; i < group->total; i++ ) {
+    int total = group->total; /* Save value of total, cause it's going to deceased as we remove Client */
+    for ( i = 0; i < total; i++ ) {
         /* if the ckerckers flag if at 0 then i didn't respond in time */
         if ( group->checker[i] == 0 ) {
             printf("Client %d do not respond to ping in time \n", group->client[i].id_socket);

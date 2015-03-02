@@ -65,7 +65,6 @@ Collector** fillCollectorsList(Server* s, Index* index){
     struct hostent *h;
     Client tmp = initClient();
 
-    usleep(1);
     tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
         
     do {

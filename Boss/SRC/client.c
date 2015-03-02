@@ -77,7 +77,7 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
             block_group->max_socket = tmp.id_socket;
         }
     }  
-    
+        
     return;
 }
 
@@ -189,8 +189,7 @@ void sendClient(Client *client, int total, int to) {
             send(client[to].id_socket, outBuf, 30, 0);
         }
 
-        if ( ++i >= total ) { i = 0; }
-        
+        if ( ++i >= total ) { i = 0; }        
     }
         
     return;
@@ -233,7 +232,7 @@ int removeClient(Group *group, int const pos, int const max_socket ) {
     memmove((group->checker) + pos, (group->checker) + pos + 1, (group->total - pos - 1) * sizeof(*group->checker));  
     
     --(group->total);
-    
+
     if ( new_max_socket == -1 ) {
         return max_socket;
     }
