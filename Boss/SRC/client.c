@@ -60,8 +60,8 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
         return; 
     }
     
-    printf("[INFO] : File : %s\n", file);
-    printf("[INFO] : Port : %s\n", port);
+    printf("[INFO] File : %s\n", file);
+    printf("[INFO] Port : %s\n", port);
     strcpy(tmp.port, port);
 
     if ( ( tmpVal = addGroup( block_group, file )) == -1 
@@ -77,7 +77,8 @@ void handleNewClient(blockGroup* block_group, fd_set *rdfs) {
             block_group->max_socket = tmp.id_socket;
         }
     }  
-        
+    
+    FD_SET(tmp.id_socket, rdfs);
     return;
 }
 
@@ -87,9 +88,9 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
     int tmpVal;
     Group* group;
     char inBuf[READER_SIZE] = "";
-
+    
     for(i = 0; i < block_group->total; i++) {
-
+    
         group = block_group->groups[i];
         for ( j = 0; j < group->total; j++ ) {
 
@@ -98,13 +99,14 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
                 tmpVal = recv(group->client[j].id_socket, inBuf, READER_SIZE, 0);
                 removeEndCarac(inBuf);
                 
-                printf("[INFO] : (%d) message recu <%s> [Socket : %d]\n", tmpVal, inBuf, group->client[j].id_socket);
+                if ( tmpVal != 0 ) {
+                    printf("\n[INFO] (%d) message recu '%s' [Client : %d]\n", tmpVal, inBuf, group->client[j].id_socket);
+                } 
                 
-                if ( tmpVal == 0 || strcmp(inBuf, FILE_NOT_EXIST_MSG) == 0  ) {
-                     
-                    block_group->max_socket = removeClient(group, j, block_group->max_socket );
-                    
-                    if ( group->total == 0 ) { removeGroup( block_group, i );  } /* If needed remove the group */
+                if ( tmpVal == 0 || strcmp(inBuf, FILE_NOT_EXIST_MSG) == 0  ) {                    
+                    block_group->max_socket = removeClient(group, j, block_group->server_socket );
+                    --j; /* We remove a client, so group->total - 1, then we apply it to j */
+                    if ( group->total == 0 ) { removeGroup( block_group, i );  --i; } /* If needed remove the group */
                 }
                 else if ( strcmp(inBuf, LIST_OF_COLLECTOR_MSG) == 0 ) {
                     sendClient(group->client, group->total, j);    
@@ -147,15 +149,15 @@ Client initClient() {
 }
 
 Client acceptClient( int const server_socket ) {
-    Client new_client;
-    SOCKADDR_IN s_client;
+    Client new_client = initClient();
+    SOCKADDR_IN s_client = { 0 };
     int struct_size;
 
     struct_size = sizeof(SOCKADDR_IN);
     
     new_client.id_socket = accept(server_socket, (struct sockaddr*) &s_client, (__socklen_t *)&struct_size);
 
-    printf("New client [%d] Ip : %s\n", new_client.id_socket, inet_ntoa(s_client.sin_addr));
+    printf("[INFO] New client [%d] Ip : %s\n", new_client.id_socket, inet_ntoa(s_client.sin_addr));
 
     strcpy(new_client.ip, inet_ntoa(s_client.sin_addr));
 
@@ -166,18 +168,19 @@ void sendClient(Client *client, int total, int to) {
     
     int i, pourcent, number;
     char outBuf[30];
-    
+
     if ( total == 1 ) {
+        printf("[INFO] Client %d is alone\n", client[to].id_socket);
         send(client[to].id_socket, ALONE_COLLECTOR_MSG, sizeof(ALONE_COLLECTOR_MSG), 0);
         return;
     }
     
     i = 0;
     number = (rand() % (total - 1)) + 1;
-
-    pourcent = (int)((float)number / (float)total * 100.);
+    printf("[INFO] List Of Collector Send : \n");
+    pourcent = (int)((float)number / (float)(total - 1) * 100.);
     DEBUG_MSG("Random : %d - Val : %d\n", number, pourcent);
-
+    
     while( number > 0) {
         if ( rand() % 100 <= pourcent 
             && client[i].id_socket != client[to].id_socket) {
@@ -185,7 +188,7 @@ void sendClient(Client *client, int total, int to) {
             --number;
             memset(outBuf, '\0', 30);
             sprintf(outBuf, "%d|%s|%s", number, client[i].ip, client[i].port);
-            
+            printf("\t - Client %d [%s:%s]\n", client[i].id_socket, client[i].ip, client[i].port);
             send(client[to].id_socket, outBuf, 30, 0);
         }
 
@@ -210,10 +213,9 @@ bool addClient(Client *client, Client new, int *total) {
 
 int removeClient(Group *group, int const pos, int const max_socket ) {
     int i, new_max_socket;
-    printf("Close : %d\n", group->client[pos].id_socket);
-    
+    printf("[INFO] Client %d disconnect\n\n", group->client[pos].id_socket);
+   
     new_max_socket = -1;
-    
     /* Seek new socket max */
     if ( max_socket == group->client[pos].id_socket ) {
         for ( i = 0; i < group->total; i++) {
