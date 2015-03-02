@@ -47,7 +47,7 @@ int addGroup( blockGroup* block_group, char* const filename ) {
             return -1;
         } 
         
-        DEBUG_MSG("Add another group for %s\n", filename);
+        DEBUG_MSG("Add another group for '%s'\n", filename);
         
         pos = block_group->total;
         block_group->groups[block_group->total] = newGroup(filename);
@@ -58,7 +58,8 @@ int addGroup( blockGroup* block_group, char* const filename ) {
 }
 
 void removeGroup( blockGroup* block_group, int pos ) {
-    DEBUG_MSG("Remove group for %s\n", block_group->groups[pos]->name);
+    
+    DEBUG_MSG("Remove group for '%s'\n", block_group->groups[pos]->name);
     
     freeGroup(block_group->groups[pos]);
     

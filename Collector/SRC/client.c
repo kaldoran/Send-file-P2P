@@ -28,7 +28,6 @@ Client *newClientArray(int const number) {
     return client;
 }
 
-
 void closeClientArray(Client *client,int const total) {
     int i;
     for(i = 0; i < total; i++) {
@@ -39,7 +38,6 @@ void closeClientArray(Client *client,int const total) {
 void freeClientArray(Client *client) {
     free(client);
 }
-
 
 Client initClient() {
     Client c;

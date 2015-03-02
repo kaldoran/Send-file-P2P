@@ -61,18 +61,6 @@ void askVolList(Collector* collect, int nb_vol) {
     }
 }
 
-void createClientFromIp(Client* client, char* ip){
-    struct hostent *h;
-    
-    *client = initClient();
-
-    if( (h = gethostbyname(ip)) != NULL ) {
-        memcpy(&client->sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
-    }
-    
-    client->sock_info.sin_port = htons(COLLECT_PORT);
-}
-
 void startCollector(char *index_name, const int port){
     int timer;
     fd_set rdfs;
@@ -93,6 +81,7 @@ void startCollector(char *index_name, const int port){
     s->file = fopen(index->file, "r+");
     
     sendFileName(index, port); 
+    
     if(!s->full_file) {
         collectors_list = fillCollectorsList(s, index);
     }
@@ -102,7 +91,7 @@ void startCollector(char *index_name, const int port){
         
         if(!s->full_file && s->nb_seed != 0) {          
             s->full_file = getVolume(index, collectors_list, s);
-        }
+        }        
         
         if( (timer = select(s->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
@@ -112,6 +101,7 @@ void startCollector(char *index_name, const int port){
             if ( s->nb_seed == 0 ) {
                 /* If we are here, then the pointer, had not been allocated */
                 collectors_list = fillCollectorsList(s, index);
+                tval.tv_sec  = 60;
             }
         }
         

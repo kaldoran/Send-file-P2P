@@ -10,6 +10,7 @@
 
 #include "tcp.h"
 #include "error.h"
+#include "client.h"
 #include "message.h"
 #include "collectors.h"
 #include "collectors_list.h"
@@ -58,42 +59,47 @@ int* findCollVol(Index* index, Collector** coll_list, int nb_seed){
 
 Collector** fillCollectorsList(Server* s, Index* index){
     Collector** collectors_list = NULL;
-    char in_buf[25];
+    char in_buf[25] = "";
 
     char *token;
-    Client tmp;
+    struct hostent *h;
+    Client tmp = initClient();
 
+    usleep(1);
     tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
-    
-    if ( strcmp(in_buf, ALONE_COLLECTOR_MSG) == 0 ) {
-        return NULL;
-    }
-    
+        
     do {
         memset(in_buf, '\0', 25);
 
         tcpAction(index->c, in_buf, 25, RECEIVED);
         removeEndCarac(in_buf);
-        printf("Received : %s\n",  in_buf);
+        
+        if ( strcmp(in_buf, ALONE_COLLECTOR_MSG) == 0 ) {
+            return collectors_list;
+        }
         
         token = strtok(in_buf, "|");
-        printf("Num of collector : %d\n", atoi(token));
+        printf("Num of collector : %s\n", token);
         
         if(collectors_list == NULL){
-            collectors_list = newCollectorsList(atoi(token)+1);
+            collectors_list = newCollectorsList( atoi(token) + 1);
         }
         
         token = strtok(NULL, "|");
         printf("Ip of Collector : %s\n", token);
-
-        createClientFromIp(&tmp, token);
+        if( (h = gethostbyname(token)) != NULL ) {
+            memcpy(&tmp.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
+        }
         
+        token = strtok(NULL, "|");
+        printf("Port du collector : %s\n", token);
+        tmp.sock_info.sin_port = htons(atoi(token));
+            
         if(tcpStart(tmp) == FALSE){
             printf("Can't connect to collector n°%d", s->nb_seed);
         }
         else{
             collectors_list[s->nb_seed] = newCollect(index->nb_package);
-            
             collectors_list[s->nb_seed]->c = tmp;
             
             askVolList(collectors_list[s->nb_seed], index->nb_package);

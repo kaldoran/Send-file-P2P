@@ -36,15 +36,6 @@ void freeCollect(Collector *coll);
  */
 void askVolList(Collector* collect, int nb_vol);
 
-/** Creates a Client un fonction of a given ip adress.
- * 
- *  %param client: Instance of Client in which create the client.
- *  %param ip: Ip adress of the client.
- * 
- *  %return : Instance of Client corresponding to the IP adress.
- */
-void createClientFromIp(Client* client, char* ip);
-
 /** The execution loop of the Collector.
  * 
  * %param index_name: Path of the Index to load.

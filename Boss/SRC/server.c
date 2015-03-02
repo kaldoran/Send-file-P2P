@@ -53,7 +53,7 @@ void startServer() {
     block_group->server_socket = initServer();
     block_group->max_socket = block_group->server_socket;
             
-    printf("[[INFO] Boss] : Press Enter to Stop the Boss\n");  
+    printf("[INFO] : Press Enter to Stop the Boss\n");  
     
     for ( ;; ) {
     
@@ -76,11 +76,11 @@ void startServer() {
         else
         #endif 
         if( FD_ISSET(block_group->server_socket, &rdfs) ) {
-            handleNewClient(block_group, &rdfs);                      
+            handleNewClient(block_group, &rdfs);      
         }
-        else { 
+        else {
             handlerClient(block_group, &rdfs);
-        }    
+        }
     }
     
     printf("Server stop\n");

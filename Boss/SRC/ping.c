@@ -26,7 +26,7 @@ int handlerPresence(blockGroup *block_group) {
 
 void askPresence(Group *group) {
     int i;
-
+    printf("Let send the ping test !\n");
     for ( i = 0; i < group->total; i++ ) {
         /* Send the same message to all client from a groups */
         send(group->client[i].id_socket, group->name, sizeof(*group->name), 0);
@@ -40,6 +40,7 @@ void checkPresence(Group *group, int *max_socket) {
     for ( i = 0; i < group->total; i++ ) {
         /* if the ckerckers flag if at 0 then i didn't respond in time */
         if ( group->checker[i] == 0 ) {
+            printf("Client %d do not respond to ping in time \n", group->client[i].id_socket);
             *max_socket = removeClient(group, i, *max_socket );
         }
     }
