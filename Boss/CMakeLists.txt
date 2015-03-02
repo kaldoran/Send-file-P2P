@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project (Generator)
 
-find_package(OpenSSL)
-
-set(CMAKE_C_FLAGS "-W -Wall -Wextra -O2 -lm -lrt -lssl -lcrypto")
+set(CMAKE_C_FLAGS "-W -Wall -Wextra -O2 -lm -lrt")
 
 file(GLOB_RECURSE Generator_SOURCES "SRC/*.c")
 file(GLOB_RECURSE Generator_HEADERS "INC/*.h")

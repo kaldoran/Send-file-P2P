@@ -68,7 +68,7 @@ char* askFile() {
     
     do {
         printf("On which file do you want to create the '.ndex' file ?\n");
-        verif = scanf("%ms", &file);
+        verif = scanf("%s", file);
     } while(verif != 1 || access(file ,R_OK|W_OK ) == -1);
 
     return file;
