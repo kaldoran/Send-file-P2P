@@ -27,7 +27,6 @@ int askVolSize();
  */
 char* askFile();
 /** Function to empty the stdin buffer.
- * 
  */
 void emptyBuffer();
 

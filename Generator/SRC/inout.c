@@ -6,14 +6,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 
 #include "error.h"
 #include "verification.h"
 #include "inout.h"
 
 char* askBossIp() {
-    char* ip;
+    char* ip, sv[15];
     int verif;
     
     if ( (ip = calloc(15, sizeof(char))) == NULL ) {
@@ -21,10 +21,11 @@ char* askBossIp() {
     } 
 
     do {
-        printf("What is the IP adress of the boss ?\n");
-        verif = scanf("%15[^\n]",ip);
+        printf("\n[Q] What is the IP adress of the boss ?\n");
+        verif = scanf("%15[^\n]",sv);
         emptyBuffer();
-    } while(verif != 1 || !verifBossIp(ip));
+        strcpy(ip, sv); /* Need to cp string as far as strtok modifie the original string */
+    } while(verif != 1 || !verifBossIp(sv));
 
     return ip;
 }
@@ -34,7 +35,7 @@ int askBossPort() {
     int port ,verif;
 
     do {
-        printf("What is the port to connect to ?\n");
+        printf("\n[Q] What is the port to connect to ?\n");
         printf("(From 1024 to 65536)\n");
         verif = scanf("%d",&port);
         emptyBuffer();
@@ -48,7 +49,7 @@ int askVolSize() {
     int size ,verif;
 
     do {
-        printf("What size do you want the volumes to be ?\n");
+        printf("\n[Q] What size do you want the volumes to be ?\n");
         printf("(Size in ko from 8 to 64, both included)\n");
         verif = scanf("%d",&size);
         emptyBuffer();
@@ -63,13 +64,13 @@ char* askFile() {
     
     if ( (file = calloc(FILENAME_MAX, sizeof(char))) == NULL ) {
         QUIT_MSG("Can't allocate file");
-    }
-    
+    }      
     
     do {
-        printf("On which file do you want to create the '.ndex' file ?\n");
+        printf("\n[Q] On which file do you want to create the '.ndex' file ?\n");
         verif = scanf("%s", file);
-    } while(verif != 1 || access(file ,R_OK|W_OK ) == -1);
+        emptyBuffer();
+    } while(verif != 1 || !verifFileExist(file));
 
     return file;
 }

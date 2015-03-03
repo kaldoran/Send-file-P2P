@@ -24,24 +24,25 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     unsigned char inbuf[packSize];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
     char *baseName = basename(fileName);
-        
+    char outputName[FILENAME_MAX] = "";
+    
     if ( (inputFile = fopen(fileName, "r")) == NULL) {
         QUIT_MSG("Opening file '%s'", fileName);
     }
-   
-    if ( (outputFile = fopen("output.ndex", "w+")) == NULL ) {
+    
+    sprintf(outputName, "%s.ndex", baseName);
+    if ( (outputFile = fopen(outputName, "w+")) == NULL ) {
         QUIT_MSG("Opening file '.ndex'");
     }
     
     nbVolume = floor(buf.st_size / packSize) + 1;
 
-
-    printf("Boss:%s\n", ip);
-    printf("Port:%d\n", port);
-    printf("File:%s\n", baseName);
-    printf("Size:%ld\n", buf.st_size);
-    printf("PackSize:%d\n", packSize);
-    printf("NbVolume:%d\n", nbVolume);
+    printf("\n[INFO] Boss : %s\n", ip);
+    printf("[INFO] Port : %d\n", port);
+    printf("[INFO] File : %s\n", baseName);
+    printf("[INFO] Size : %ld\n", buf.st_size);
+    printf("[INFO] PackSize : %d\n", packSize);
+    printf("[INFO] NbVolume : %d\n", nbVolume);
     
     fprintf(outputFile, "Boss:%s\n", ip);
     fprintf(outputFile, "Port:%d\n", port);
@@ -58,7 +59,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
 
         SHA1(inbuf, sizeof(inbuf), outbuf);
 
-        printf("%d:", i);
+        printf("[INFO] Volume %d\n\tSha1 : ", i);
         fprintf(outputFile, "%d:", i);
         
         for(j = 0; j < SHA_DIGEST_LENGTH; j++) {
@@ -75,7 +76,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     fclose(inputFile);
     fclose(outputFile);
     
-    printf("\n[INFO] : File 'output.ndex' add been generated\n");
+    printf("\n[INFO] : File '%s' add been generated\n", outputName);
     
     return;
 }

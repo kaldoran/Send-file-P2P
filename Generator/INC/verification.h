@@ -9,29 +9,32 @@
 
 #include "boolean.h"
 
-
-/**    Funtion to verify the user imput for the boss' IP.
+/** Funtion to verify the user imput for the boss' IP.
  *  %param ip : IP to verify.
- *  %return : If valid IP then TRUE, else FALSE.
+ *  %return : If valid IP then TRUE, 
+ *            else FALSE.
  */
 bool verifBossIp(char* ip);
 
-/**    Funtion to verify the user imput for the boss' port.
+/** Funtion to verify the user imput for the boss' port.
  *  %param port : Port to verify.
- *  %return : If valid port then TRUE, else FALSE.
+ *  %return : If valid port then TRUE,
+ *            else FALSE.
  */
 bool verifBossPort(int port);
 
-/**    Funtion to verify the user imput for the volumes' size.
+/** Funtion to verify the user imput for the volumes' size.
  *  %param size : Size to verify.
- *  %return : If valid size then TRUE, else FALSE.
+ *  %return : If valid size then TRUE, 
+ *             else FALSE.
  */
 bool verifVolSize(int size);
 
-/** Function to test if the string match the regex.
- *  %param regex : Regular expression to match to.
- *  %param string : String to test.
+/** Function that check if file exist 
+ *  %param filename : name of the file to check existance
+ *  %return : TRUE if file exist and is reachable and is a file
+ *            FALSE otherwise
  */
-bool testRegex(char* regex, char* string);
+bool verifFileExist(char* filename);
 
 #endif /* VERIFICATION_H included */

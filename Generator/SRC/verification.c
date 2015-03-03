@@ -1,5 +1,5 @@
 //----------------------------------------------------------
-// AUTHOR : BASCOL Kevin                                     |
+// AUTHOR : BASCOL Kevin & REYNAUD Nicolas                   |
 // FILE : verification.c                                     |
 // DATE : 30/01/15                                           |
 //----------------------------------------------------------
@@ -7,50 +7,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
+#include "error.h"
 #include "verification.h"
 
 bool verifBossIp(char* ip){
     int total = 0;
     char *token;
     int itoken;
-    
     token = strtok(ip, ".");
-    while(total <= 4 && token != NULL) {
+    while( token != NULL ) {        
         itoken = atoi(token);
-        if ( itoken < 0 || itoken > 255 ) {
-            return FALSE;
+        if ( itoken < 0 || itoken > 255 || *ip == '.' ) {
+            ERROR_MSG("Ip range for each part is from 0 To 255\n"); 
         }
         
-        token = strtok(NULL, ".");
+        if ( (token = strtok(NULL, ".")) == NULL && total == 0 ) {
+            ERROR_MSG("Ip delimitor is '.'\n");
+        }
+
         ++total;
     }
     
-    return total == 4;
+    if ( total != 4) { 
+        ERROR_MSG("Ip is normaly composed by 4 part\n"); 
+    }
+    
+    return TRUE;
 }
 
 bool verifBossPort(int port) {
     if(port <= 1024){
-        printf("[ERROR] : The port must be greater than 1024\n");
+        ERROR_MSG("The port must be greater than 1024\n");
     }
     else if(port > 65536) {
-        printf("[ERROR] : The port must be lower than 65536\n");
+        ERROR_MSG("The port must be lower than 65536\n");
     }
-    else {
-        return TRUE;
-    }
-    return FALSE;
+
+    return TRUE;
 }
 
 bool verifVolSize(int size){
     if(size < 8){
-        printf("[ERROR] : The volumes' size must be greater than 8ko\n");
+        ERROR_MSG("The volumes' size must be greater than 8ko\n");
     }
     else if(size > 64) {
-        printf("[ERROR] : The volumes' size must be lower than 64ko\n");
+        ERROR_MSG("The volumes' size must be lower than 64ko\n");
     }
-    else {
-        return TRUE;
+
+    return TRUE;
+}
+
+bool verifFileExist(char* filename) {
+    struct stat s;
+    if ( stat(filename, &s) == -1 ) {
+        ERROR_MSG("'%s' does not exist\n", filename);
+    } else if ( s.st_mode & S_IFDIR ) {
+        ERROR_MSG("'%s' is a directory\n", filename);
     }
-    return FALSE;
+
+    return TRUE;
 }
