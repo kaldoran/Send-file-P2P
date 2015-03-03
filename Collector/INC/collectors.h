@@ -27,13 +27,6 @@ Collector* newCollect(int nb_vol);
  */
 void freeCollect(Collector *coll);
 
-/** Asks the liste of volume that a collector has.
- * 
- *  %param collect: Collector whose to ask the volumes.
- *  %param nb_vol: Number of volume composing the file.
- */
-void askVolList(Collector* collect, int nb_vol);
-
 /** The execution loop of the Collector.
  * 
  * %param index_name: Path of the Index to load.

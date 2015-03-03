@@ -11,6 +11,7 @@
 #include "tcp.h"
 #include "error.h"
 #include "client.h"
+#include "volume.h"
 #include "message.h"
 #include "collectors.h"
 #include "collectors_list.h"
@@ -41,34 +42,38 @@ Collector** fillCollectorsList(Server* s, Index* index){
     #ifdef linux
         usleep(1);
     #endif //linux
+    
+    printf("\n[INFO] Ask for other collectors\n");
     tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
         
     do {
         memset(in_buf, '\0', COLLECTOR_READER_SIZE);
                 
-        tcpAction(index->c, in_buf, COLLECTOR_READER_SIZE, RECEIVED);
+        if ( tcpActionDelay(index->c, in_buf, COLLECTOR_READER_SIZE, S_DELAY, MS_DELAY) < 0 ) {
+            printf("[ERROR] Client %d does not send information in time\n", index->c.id_socket);
+            return collectors_list;
+        }
         removeEndCarac(in_buf);
-        
-        printf("Received : %s\n", in_buf);
-        
+                
         if ( strcmp(in_buf, ALONE_COLLECTOR_MSG) == 0 ) {
+            printf("[INFO] We are alone for the moment\n");
             return collectors_list;
         }
         
         token = strtok(in_buf, "|");
-        printf("Num of collector : %s\n", token);
+        printf("[INFO] Num of collector : %s\n", token);
         
         if(collectors_list == NULL){
             collectors_list = newCollectorsList( atoi(token) + 1);
         }
         
         token = strtok(NULL, "|");
-        printf("Ip of Collector : %s\n", token);
+        printf("\t - Ip of Collector : %s\n", token);
         if( (h = gethostbyname(token)) != NULL ) {
             memcpy(&tmp.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
         
             token = strtok(NULL, "|");
-            printf("Port du collector : %s\n", token);
+            printf("\t - Port du collector : %s\n", token);
             tmp.sock_info.sin_port = htons(atoi(token));
                 
             if(tcpStart(tmp) == FALSE){

@@ -42,22 +42,6 @@ void freeCollect(Collector *coll) {
     free(coll);
 }
 
-void askVolList(Collector* collect, int nb_vol) {
-    char data[nb_vol];
-    tcpAction(collect->c, LIST_OF_VOLUMES_MSG, sizeof(LIST_OF_VOLUMES_MSG), SEND);
-    
-    tcpAction(collect->c, data, nb_vol, RECEIVED);
-    removeEndCarac(data);
-    
-    switch(*data){
-        case 'f': memset(collect->volumes, '1', nb_vol);
-                  break;
-        case 'n': memset(collect->volumes, '0', nb_vol);
-                  break;
-        default: strcpy(collect->volumes, data);
-    }
-}
-
 void startCollector(char *index_name, const int port){
     int timer;
     fd_set rdfs;
@@ -75,6 +59,11 @@ void startCollector(char *index_name, const int port){
     initIndex(index, index_name);
     s->full_file = initFile(index);
     
+    /* Check if we need to update max socket */
+    if ( s->max_socket < index->c.id_socket ) { 
+        s->max_socket = index->c.id_socket; 
+    }
+    
     s->file = fopen(index->file, "r+");
     
     sendFileName(index, port); 
@@ -89,7 +78,7 @@ void startCollector(char *index_name, const int port){
         if(!s->full_file && s->nb_seed != 0) {          
             s->full_file = getVolume(index, collectors_list, s);
         }        
-        
+
         if( (timer = select(s->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
         }
@@ -100,7 +89,7 @@ void startCollector(char *index_name, const int port){
                 collectors_list = fillCollectorsList(s, index);
                 tval.tv_sec  = 60;
             }
-        }
+        } 
         
         #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
@@ -117,12 +106,12 @@ void startCollector(char *index_name, const int port){
         else {
             manageClient(s, index, &rdfs);
         }
+        
     }
     
-
+    printf("[BYE] Collector stop\n"); 
     freeIndex(index);
-    free(index_name);
-    
+    free(index_name); 
     freeServer(s);
     
     return;
@@ -147,15 +136,15 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
     char in_buf[READER_SIZE];
     char *token;
     int i;
-    
+    int tmpVal; 
     for(i = 0; i < s->nb_leach; i++) {
         if ( FD_ISSET(s->client[i].id_socket, rdfs) ) {
             memset(in_buf, '\0', READER_SIZE);
-
-            printf("Client ask for something\n");
-
-            if ( tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED) == 0 ) {
-                printf("Client disconnect\n");
+            
+            tmpVal = tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED);
+            printf("\n[INFO] (%d) message recu '%s' [Client : %d]\n", tmpVal, in_buf, s->client[i].id_socket);
+            
+            if ( tmpVal == 0 ) {
                 removeClient(s, i);
                 --i; /* When we remove a client we need to apply this to i */
             } else {
@@ -167,32 +156,33 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
                 else if( strcmp(in_buf, LIST_OF_VOLUMES_MSG) == 0 ) {
                     sendListVolumes(s->client[i], index);
                 }
-                else {
-                    printf("Oh Mama he send something stupid '%s'", in_buf);
-                }
             }
         }
     }
 }
 
 void pong(Index *index){
-        char in_buf[FILENAME_MAX];
+    char in_buf[FILENAME_MAX];
+
+    printf("[INFO] Received ping from Boss\n");
+    memset(in_buf, '\0', FILENAME_MAX);
+        
+    tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED);
+    removeEndCarac(in_buf);
+
+    if(strcmp(in_buf, index->file) == 0 && fileExist(in_buf)){
+        tcpAction(index->c, FILE_EXIST_MSG, sizeof(FILE_EXIST_MSG), SEND);
+    }
+    else {
+        tcpAction(index->c, FILE_NOT_EXIST_MSG, sizeof(FILE_NOT_EXIST_MSG), SEND);
+    }
     
-        memset(in_buf, '\0', FILENAME_MAX);
-            
-        tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED);
-        removeEndCarac(in_buf);
-    
-        if(strcmp(in_buf, index->file) == 0 && fileExist(in_buf)){
-            tcpAction(index->c, FILE_EXIST_MSG, sizeof(FILE_EXIST_MSG), SEND);
-        }
-        else{
-            tcpAction(index->c, FILE_NOT_EXIST_MSG, sizeof(FILE_NOT_EXIST_MSG), SEND);
-        }
+    return;
 }
 
 void sendFileName(Index *index, int port) {
     char out_buf[sizeof(index->file) + 6] = "";
+    
     sprintf(out_buf, "%s|%d", index->file, port);
 
     tcpAction(index->c, out_buf, sizeof(out_buf), SEND);

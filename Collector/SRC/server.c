@@ -20,6 +20,7 @@ Server* newServer(const int port) {
 
     s->seed_socket = initServer(port);
     s->max_socket = s->seed_socket;
+    
     s->client = newClientArray(MAX_CONNEXION);
     
     s->file = NULL;
@@ -43,6 +44,7 @@ void freeServer(Server *s) {
 }
 
 int initServer(const int port) {
+    int optionVal = 1;
     int struct_size, serveur_socket;
     SOCKADDR_IN s_serveur;
     struct_size = sizeof(SOCKADDR_IN);
@@ -55,6 +57,10 @@ int initServer(const int port) {
         QUIT_MSG("Can't create the socket : ");
     }
 
+    if ( setsockopt(serveur_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&optionVal, sizeof(optionVal)) == SOCKET_ERROR ) {
+        QUIT_MSG("Can't set socket option : ");
+    }
+    
     if ( bind(serveur_socket, (struct sockaddr *)&s_serveur, struct_size) == -1){
         QUIT_MSG("Can't bind the socket : ");
     }

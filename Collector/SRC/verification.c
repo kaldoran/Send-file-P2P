@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 #include "verification.h"
 
@@ -47,9 +48,7 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
 
     hexToString(outbuf, outsha);
     
-    if ( strcmp(outsha, index->sha[id_vol]) == 0 ) {
-        printf("Volume %i is the same.\n", id_vol);
-        
+    if ( strcmp(outsha, index->sha[id_vol]) == 0 ) {        
         index->local_vols[id_vol] = '1';
         return TRUE;
     }
@@ -58,9 +57,32 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
     return FALSE;
 }
 
-bool fileExist(const char *filename) {
-    return access( filename, R_OK|W_OK ) != -1;
+bool fileExist(const char* filename) {
+    struct stat s;
+    if ( stat(filename, &s) == -1 ) {
+        printf("[ERROR] '%s' does not exist\n", filename);
+        return FALSE;
+    } else if ( s.st_mode & S_IFDIR ) {
+        printf("[ERROR] '%s' is a directory\n", filename);
+        return FALSE;
+    }
+
+    return TRUE;
 }
+
+bool verifPort(int port) {
+    if(port <= 1024){
+        printf("[ERROR] The port must be greater than 1024\n");
+        return FALSE;
+    }
+    else if(port > 65536) {
+        printf("[ERROR] The port must be lower than 65536\n");
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
 
 bool isComplet(const char* vol) {
 

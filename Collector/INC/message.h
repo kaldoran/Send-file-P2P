@@ -10,6 +10,8 @@
 #define READER_SIZE 50
 #define COLLECTOR_READER_SIZE 30
 
+#define FULL_VOLUME_MSG "fullVolume"
+#define NONE_VOLUME_MSG "nullVolume"
 #define ALONE_COLLECTOR_MSG "aloneCollector"
 #define FILE_EXIST_MSG "exist"
 #define FILE_NOT_EXIST_MSG "notExist"

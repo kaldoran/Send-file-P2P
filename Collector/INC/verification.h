@@ -44,11 +44,17 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol);
 /** Verifies that a file exists or not.
  * 
  *  %param filename: Path of the file to verify.
- * 
  *  %return: TRUE if the file exist,
  *           FALSE otherwise.
  */
 bool fileExist(const char *filename);
+
+/** Funtion to verify the user imput for the boss' port.
+ *  %param port : Port to verify.
+ *  %return : If valid port then TRUE,
+ *            else FALSE.
+ */
+bool verifPort(int port);
 
 /** Check if the file is complet according to is list of volume 
  *  %param vol : List of volum

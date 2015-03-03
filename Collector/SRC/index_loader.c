@@ -115,7 +115,7 @@ bool loadIndex(const char *file, Index *index) {
                 index->c.sock_info.sin_port = htons(atoi(ret));
             }
             else {
-                QUIT_MSG("[Error] Incorrect Index.");
+                QUIT_MSG("Incorrect Index.");
             }
         } 
         else {
@@ -141,6 +141,7 @@ bool initFile(Index* index){
     bool full_file = FALSE;
     int i;
     
+    printf("[INFO] Check if we've got the file to download\n");
     if( fileExist(index->file) ) {
         file = fopen(index->file, "r");
         
@@ -167,5 +168,7 @@ void initIndex(Index* index, char const *index_name){
     if ( tcpStart(index->c) == FALSE ) {
         QUIT_MSG("Can't connect to boss : ");
     }
+    
+    return;
 }
 
