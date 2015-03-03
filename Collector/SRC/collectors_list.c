@@ -43,25 +43,27 @@ Collector** fillCollectorsList(Server* s, Index* index){
         usleep(1);
     #endif //linux
     
-    printf("\n[INFO] Ask for other collectors\n");
+    printf("\n[INFO] Ask for other collectors.\n");
     tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
         
     do {
         memset(in_buf, '\0', COLLECTOR_READER_SIZE);
                 
         if ( tcpActionDelay(index->c, in_buf, COLLECTOR_READER_SIZE, S_DELAY, MS_DELAY) < 0 ) {
-            printf("[ERROR] Client %d does not send information in time\n", index->c.id_socket);
+            printf("[ERROR] Client %d does not send information in time.\n", index->c.id_socket);
+            
             return collectors_list;
         }
         removeEndCarac(in_buf);
                 
         if ( strcmp(in_buf, ALONE_COLLECTOR_MSG) == 0 ) {
-            printf("[INFO] We are alone for the moment\n");
+            printf("[INFO] We are alone for the moment.\n");
+            
             return collectors_list;
         }
         
         token = strtok(in_buf, "|");
-        printf("[INFO] Num of collector : %s\n", token);
+        printf("[INFO] Num of collector : %s.\n", token);
         
         if(collectors_list == NULL){
             collectors_list = newCollectorsList( atoi(token) + 1);
@@ -69,21 +71,24 @@ Collector** fillCollectorsList(Server* s, Index* index){
         
         token = strtok(NULL, "|");
         printf("\t - Ip of Collector : %s\n", token);
+        
         if( (h = gethostbyname(token)) != NULL ) {
             memcpy(&tmp.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
         
             token = strtok(NULL, "|");
             printf("\t - Port du collector : %s\n", token);
+            
             tmp.sock_info.sin_port = htons(atoi(token));
                 
             if(tcpStart(tmp) == FALSE){
-                printf("[ERROR] Can't connect to collector n°%d\n", s->nb_seed);
+                printf("[ERROR] Can't connect to collector n°%d.\n", s->nb_seed);
             }
             else{
                 collectors_list[s->nb_seed] = newCollect(index->nb_package);
                 collectors_list[s->nb_seed]->c = tmp;
                 
                 askVolList(collectors_list[s->nb_seed], index->nb_package);
+                
                 ++(s->nb_seed);
             }
         }

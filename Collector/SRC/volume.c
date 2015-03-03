@@ -95,25 +95,25 @@ int findCollVol(Index* index, Collector* coll){
 void askVolList(Collector* collect, int nb_vol) {
     char data[nb_vol];
     
-    printf("[INFO] Ask the list of volume to %d\n", collect->c.id_socket);
+    printf("[INFO] Ask the list of volume to %d.\n", collect->c.id_socket);
     tcpAction(collect->c, LIST_OF_VOLUMES_MSG, sizeof(LIST_OF_VOLUMES_MSG), SEND);
     
     if ( tcpActionDelay(collect->c, data, nb_vol, S_DELAY, MS_DELAY) < 0 ) {
-        printf("[ERROR] Client %d does not send information in time\n", collect->c.id_socket);
+        printf("[ERROR] Client %d does not send information in time.\n", collect->c.id_socket);
         
         memset(collect->volumes, '0', nb_vol);
     } else {
         removeEndCarac(data);
-        DEBUG_MSG("Received : %s\n", data);
+        DEBUG_MSG("Received : %s", data);
         
         if ( *data == *FULL_VOLUME_MSG) {
-            printf("[INFO] %d got them all\n", collect->c.id_socket);
+            printf("[INFO] %d got them all.\n", collect->c.id_socket);
             memset(collect->volumes, '1', nb_vol);
         } else if ( *data == *NONE_VOLUME_MSG ) {
-            printf("[INFO] %d got no volume\n", collect->c.id_socket);
+            printf("[INFO] %d got no volume.\n", collect->c.id_socket);
             memset(collect->volumes, '0', nb_vol);
         } else {
-            printf("[INFO] %d got partial volume\n", collect->c.id_socket);
+            printf("[INFO] %d got partial volume.\n", collect->c.id_socket);
             strcpy(collect->volumes, data);
         }
     }

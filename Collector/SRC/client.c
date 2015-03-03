@@ -23,7 +23,7 @@ Client *newClientArray(int const number) {
     
     for ( i = 0; i < number; i++ ) {
         client[i] = initClient();
-    }   
+    }
     
     return client;
 }
@@ -35,7 +35,7 @@ void closeClientArray(Client *client,int const total) {
     }
 }
 
-void freeClientArray(Client *client,int const  total) {
+void freeClientArray(Client *client, int const total) {
     closeClientArray(client, total);
     
     free(client);
@@ -44,7 +44,7 @@ void freeClientArray(Client *client,int const  total) {
 Client initClient() {
     Client c;
     
-    memset(&c.sock_info, 0, sizeof(c.sock_info) );
+    memset(&c.sock_info, 0, sizeof(c.sock_info));
       
     c.id_socket = socket(AF_INET,SOCK_STREAM,0); 
   
@@ -86,7 +86,7 @@ int addClient(Server* s){
         return 1;
     }
     
-    printf("Max number of client reached");
+    printf("[INFO] Max number of client reached.\n");
     closesocket(tmp.id_socket);
     
     return 0;
@@ -94,7 +94,8 @@ int addClient(Server* s){
 
 void removeClient(Server* s, int const pos) {
     int i, new_max_socket;
-    printf("Close : %d\n", s->client[pos].id_socket);
+    
+    printf("[INFO] Close client %d.\n", s->client[pos].id_socket);
     
     new_max_socket = -1;
     

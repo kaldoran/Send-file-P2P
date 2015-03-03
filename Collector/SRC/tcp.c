@@ -4,9 +4,9 @@
 // DATE : 01/02/15                                          |
 //----------------------------------------------------------
 
-#include "socket.h"
 #include "tcp.h"
 #include "error.h"
+#include "socket.h"
 
 bool tcpStart(Client c) {
 

@@ -85,15 +85,15 @@ void startCollector(char *index_name, const int port){
         if( (timer = select(s->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
         }
-        
+
         if ( timer == 0 ) {
             if ( s->nb_seed == 0 ) {
                 /* If we are here, then the pointer, had not been allocated */
                 collectors_list = fillCollectorsList(s, index);
                 tval.tv_sec  = 60;
             }
-        } 
-        
+        }
+
         #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
             break;
@@ -109,28 +109,28 @@ void startCollector(char *index_name, const int port){
         else {
             manageClient(s, index, &rdfs);
         }
-        
     }
-    
-    printf("[BYE] Collector stop\n"); 
+
+    printf("[BYE] Collector stop.\n");
+
     freeIndex(index);
     free(index_name); 
     freeServer(s);
-    
+
     return;
 }
 
 void initFd(Index* index, Server* s, fd_set* rdfs){
     int i;
-    
+
     FD_ZERO(rdfs);
-    
+
     #ifdef linux
     FD_SET(STDIN_FILENO, rdfs);
     #endif
     FD_SET(index->c.id_socket, rdfs);
     FD_SET(s->seed_socket, rdfs);
-    
+
     for(i = 0; i < s->nb_leach; i++) {
         FD_SET(s->client[i].id_socket, rdfs);
     }
@@ -140,21 +140,23 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
     char in_buf[READER_SIZE];
     char *token;
     int i;
-    int tmpVal; 
+    int tmpVal;
+
     for(i = 0; i < s->nb_leach; i++) {
         if ( FD_ISSET(s->client[i].id_socket, rdfs) ) {
             memset(in_buf, '\0', READER_SIZE);
-            
+
             tmpVal = tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED);
             removeEndCarac(in_buf);
-            printf("\n[INFO] (%d) message recu '%s' [Client : %d]\n", tmpVal, in_buf, s->client[i].id_socket);
+
+            printf("\n[INFO] (%d) message recu '%s' [Client : %d].\n", tmpVal, in_buf, s->client[i].id_socket);
             
             if ( tmpVal == 0 ) {
                 removeClient(s, i);
                 --i; /* When we remove a client we need to apply this to i */
             } else {
                 removeEndCarac(in_buf);
-                
+
                 if ( (token = startWith(PREFIX_OF_VOLUME_MSG, in_buf)) != NULL ) {
                     sendVolume(s->client[i], atoi(token), index->pack_size, s->file);
                 }
@@ -170,11 +172,11 @@ void pong(Index *index){
     char in_buf[FILENAME_MAX] = "";
         
     if ( tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED) == 0 ) {
-        QUIT_MSG("[ERROR] Boss disconnect us\n");
+        QUIT_MSG("Boss disconnect us\n");
     }
     removeEndCarac(in_buf);
     
-    printf("[INFO] Received ping from Boss\n");
+    printf("[INFO] Received ping from Boss.\n");
     
     if(strcmp(in_buf, index->file) == 0 && fileExist(in_buf)){
         tcpAction(index->c, FILE_EXIST_MSG, sizeof(FILE_EXIST_MSG), SEND);
