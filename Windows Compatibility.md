@@ -7,22 +7,36 @@
 
 Please install openSSL in the default directory. 
 
-** Note :** if your hard drive don't have C: as name, please referred to the end of this tutorial.
+## Code::Blocks version (Easy)
+** Note :** if your hard drive don't have C: as name, please refered to the end of this tutorial.
 
-# Prepare for Code::Blocks
-After that, unzip our project, then copy all the SRC/* and INC/* into the directory that contains the *cbp
+### Prepare for Code::Blocks
+After that, unzip our project, then copy all the SRC/* and INC/* into the directory that contains the *.cbp.
 
-# Start with Code::Blocks
+### Start with Code::Blocks
 You can now open the *.cbp file.
 You need then to click on the gears in the code::blocks toolbar.
 
+** Note :** Be carefull, by default, you are in DEBUG version, so change into if you don't want to see all our debug message.
+
 Wait a bit, then if it's good you are going to see a "bin" directory in your unzipped project.
 Open it and go in "Release" you should see a ".exe" file.
+
+** Note :** If You do not have change the version (Debug to Released then the directory going to be "Debug".
 
 Congrate you can now start your program by double click on it :D
 Have fun.
 
 
-## My hard drive don't have the C: name.
+### My hard drive don't have the C: name.
 You are in the good part, if this is the case, then you need to reconfigure the *.cpb file.
 Let's see how.
+
+## CMake version
+
+If You want to use CMake you could, on linux just use our MakeFile. 
+On windows you need to install CMake and run it.
+Then you should need to compile.
+
+Congrate you can now start your program by double click on it :D
+Have fun.
