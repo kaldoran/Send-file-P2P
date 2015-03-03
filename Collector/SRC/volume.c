@@ -45,8 +45,6 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
             if(nb_useless_coll > lim_useless_coll) {
                 freeCollectorsList(collectors_list, s->nb_seed);
                 collectors_list = fillCollectorsList(s, index);
-                
-                return isComplet(index->local_vols);
             }
         } else {
             char vol[sizeof(PREFIX_OF_VOLUME_MSG) + 5] = "";
@@ -63,13 +61,10 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
                 if(nb_useless_coll > lim_useless_coll) {
                     freeCollectorsList(collectors_list, s->nb_seed);
                     collectors_list = fillCollectorsList(s, index);
-                    
-                    return isComplet(index->local_vols);
+                    return FALSE;
                 }
             } else {
                 if(checkVol(index, read, num_vol)) {
-                
-                    index->local_vols[num_vol] = 1;
                     
                     fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);
                     rewind(s->file);
@@ -109,7 +104,7 @@ void askVolList(Collector* collect, int nb_vol) {
         memset(collect->volumes, '0', nb_vol);
     } else {
         removeEndCarac(data);
-        printf("Received : %s\n", data);
+        DEBUG_MSG("Received : %s\n", data);
         
         if ( *data == *FULL_VOLUME_MSG) {
             printf("[INFO] %d got them all\n", collect->c.id_socket);
