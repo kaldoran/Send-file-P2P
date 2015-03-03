@@ -28,8 +28,9 @@ void closeClientArray(Client *client,int const total);
 /** Free an array of client.
  * 
  *  %param client : array that you want to free.
+ *  %param total : total number of client.
  */
-void freeClientArray(Client *client);
+void freeClientArray(Client *client,int const  total);
 
 /** init a Client
  * 

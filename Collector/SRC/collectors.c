@@ -36,9 +36,12 @@ Collector* newCollect(int nb_vol) {
 }
 
 void freeCollect(Collector *coll) {
+    closesocket((coll->c).id_socket);
+    
     if ( coll->volumes != NULL ) {
         free(coll->volumes);
     }
+    
     free(coll);
 }
 

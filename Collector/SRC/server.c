@@ -37,7 +37,7 @@ void freeServer(Server *s) {
         fclose(s->file);
     }
     
-    freeClientArray(s->client);
+    freeClientArray(s->client, s->nb_leach);
     free(s);
 
     return;

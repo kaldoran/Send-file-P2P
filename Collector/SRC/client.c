@@ -35,7 +35,9 @@ void closeClientArray(Client *client,int const total) {
     }
 }
 
-void freeClientArray(Client *client) {
+void freeClientArray(Client *client,int const  total) {
+    closeClientArray(client, total);
+    
     free(client);
 }
 

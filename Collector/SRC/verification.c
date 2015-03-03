@@ -57,10 +57,13 @@ bool checkVol(Index* index, unsigned char* vol, int id_vol) {
 
 bool fileExist(const char* filename) {
     struct stat s;
+    
     if ( stat(filename, &s) == -1 ) {
         printf("[ERROR] '%s' does not exist\n", filename);
         return FALSE;
-    } else if ( s.st_mode & S_IFDIR ) {
+    }
+    
+    if ( s.st_mode & S_IFDIR ) {
         printf("[ERROR] '%s' is a directory\n", filename);
         return FALSE;
     }
@@ -69,11 +72,13 @@ bool fileExist(const char* filename) {
 }
 
 bool verifPort(int port) {
+
     if(port <= 1024){
         printf("[ERROR] The port must be greater than 1024\n");
         return FALSE;
     }
-    else if(port > 65536) {
+
+    if(port > 65536) {
         printf("[ERROR] The port must be lower than 65536\n");
         return FALSE;
     }
