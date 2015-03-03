@@ -4,7 +4,6 @@
 // DATE : 08/02/15                                          |
 //----------------------------------------------------------
 
-
 #ifndef COLLECTORS_H
 #define COLLECTORS_H
 
@@ -18,7 +17,6 @@
 /** Allocates a new collector.
  * 
  *  %param nb_vol: Number of volume composing the file.
- * 
  *  %return : Pointer to the new Collector allocated.
  */
 Collector* newCollect(int nb_vol);

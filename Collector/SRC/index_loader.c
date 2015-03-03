@@ -75,11 +75,11 @@ bool loadIndex(const char *file, Index *index) {
     char *ret;
         
     struct hostent *h;
-    char ligne_lue[TAILLE_LIGNE];
+    char ligne_lue[TAILLE_LINE];
 
     FILE* fichier = fopen(file, "r");
     
-    while(fgets(ligne_lue, TAILLE_LIGNE, fichier) != NULL){
+    while(fgets(ligne_lue, TAILLE_LINE, fichier) != NULL){
         
         /* Remove /r and /n */
         if((ret = strchr(ligne_lue, '\r')) != NULL) *ret = '\0'; 

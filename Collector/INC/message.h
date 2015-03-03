@@ -17,7 +17,6 @@
 #define LIST_OF_VOLUMES_MSG "ListOfVolumes"
 #define LIST_OF_COLLECTOR_MSG "ListOfCollectors"
 
-
 /** Remove the end caractere of a string 
  *  Remove : \n and \r
  *  %param input : string where you need to remove caractere 

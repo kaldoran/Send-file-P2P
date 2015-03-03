@@ -9,8 +9,14 @@
 
 #include "struct_server.h"
 
+/** Create a new server and allocate it/ initialize it according to a port
+ *  %param port : port of the new server
+ */
 Server* newServer(const int port);
 
+/** free the server Structure
+ *  %param s : Structure which them we want to free
+ */
 void freeServer(Server *s);
 
 /** init a socket for a server

@@ -4,25 +4,31 @@
 // DATE : 15/02/15                                          |
 //----------------------------------------------------------
 
+#ifndef SERVER_H
+#define SERVER_H
 
-/* If We are on windows */
-#if defined (WIN32)
-    #include <winsock2.h>
-#elif defined (linux)
+#include <unistd.h>
 
-    #include <sys/types.h>
-    #include <sys/socket.h>
-    #include <netinet/in.h>
-    #include <arpa/inet.h>
-    #include <unistd.h>
-    #include <netdb.h>
+    /* If We are on windows */
+    #if defined (WIN32)
+        #include <winsock2.h>
+    #elif defined (linux)
 
-    #define INVALID_SOCKET -1
-    #define SOCKET_ERROR -1
-    #define closesocket(s) close (s)
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        #include <netinet/in.h>
+        #include <arpa/inet.h>
+        
+        #include <netdb.h>
 
-    typedef int SOCKET;
-    typedef struct sockaddr_in SOCKADDR_IN;
-    typedef struct sockaddr SOCKADDR;
+        #define INVALID_SOCKET -1
+        #define SOCKET_ERROR -1
+        #define closesocket(s) close (s)
 
-#endif
+        typedef int SOCKET;
+        typedef struct sockaddr_in SOCKADDR_IN;
+        typedef struct sockaddr SOCKADDR;
+
+    #endif
+
+#endif /* SERVER_H included */

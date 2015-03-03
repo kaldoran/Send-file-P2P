@@ -14,7 +14,6 @@
 /** Allocate pointeur for an array of client.
  * 
  *  %param number : number of client.
- * 
  *  %retun : pointeur on an array of client.
  */
 Client *newClientArray(int const number);
@@ -41,23 +40,22 @@ Client initClient();
 /** Accept a client from the 'server_socket' socket.
  * 
  *  %param server_socket : socket of the server, which on you want to accept a client.
- * 
  *  %return : the information about the client.
  */
 Client acceptClient( int const server_socket );
 
-
-/** Adds a new Client in the list of connected clients if the limit of connexions is not reached.
+/** Add a new Client in the list of connected clients if the limit of connexions is not reached.
  * 
- *  %param s: The instance of the local Server.
- * 
- *  %return 1 if a Client is added, 0 otherwise.
+ *  %param s : The instance of the local Server.
+ *  %return : 1 if a Client is added, 
+ *            0 otherwise.
+ *  We do not use bool here cause we use this value to increment or not number of leacher
  */
 int addClient(Server* s);
 
 /** Remove a client frop the array of client.
  * 
- *  %param s: The instance of the local Server.
+ *  %param s : The instance of the local Server.
  *  %param pos : position of the client in the array.
  */
 void removeClient(Server* s, int const pos);

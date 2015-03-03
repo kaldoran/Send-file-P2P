@@ -4,7 +4,6 @@
 // DATE : 26/02/15                                          |
 //----------------------------------------------------------
 
-
 #ifndef COLLECTORSLIST_H
 #define COLLECTORSLIST_H
 
@@ -13,9 +12,8 @@
 #include "struct_collect.h"
 
 /** Allocates a list of Collectors
- * 
+ *
  *  %param nb_coll: Number of Collectors in the list.
- * 
  *  %return: Allocated instance of a list of Collector.
  */
 Collector** newCollectorsList(int nb_coll);
@@ -31,7 +29,6 @@ void freeCollectorsList(Collector** coll, int nb_seed);
  *  
  *  %param s: The instance of the local Server.
  *  %param index: Pointer to the loaded Index.
- * 
  *  %return : number of collectors given by the boss.
  */
 Collector** fillCollectorsList(Server* s, Index* index);

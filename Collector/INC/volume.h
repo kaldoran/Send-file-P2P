@@ -35,7 +35,6 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s);
  */
 int findCollVol(Index* index, Collector* coll);
 
-
 /** Sends a volume.
  * 
  *  %param c: Client who asks the volume.

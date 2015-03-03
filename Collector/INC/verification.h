@@ -30,7 +30,6 @@ void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]);
  */
 bool checkFile(FILE* file, Index* index);
 
-
 /** Verifies the checksum of a volume comprared to the index.
  * 
  *  %param index: Pointer to the loaded Index.
@@ -41,7 +40,6 @@ bool checkFile(FILE* file, Index* index);
  *           FALSE otherwise.
  */
 bool checkVol(Index* index, unsigned char* vol, int id_vol);
-
 
 /** Verifies that a file exists or not.
  * 
