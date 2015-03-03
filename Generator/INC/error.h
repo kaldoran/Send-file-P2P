@@ -14,6 +14,19 @@
 #include <stdlib.h>
 #include <errno.h>
 
+/** If we are on windows, as far as consol return directly after quit i had a user input 
+ *  With that he can see message before quit
+ */
+#ifdef WIN32
+    #define END()                                                                                               \
+        do {                                                                                                    \
+            printf("[INFO] Press enter to continue\n");                                                         \
+            getchar();                                                                                          \
+        } while(0);
+#else
+    #define END()
+#endif
+
 /** If Debug Flag is on, create a maccro to print debug information
  *  %param MSG : String to print 
  *  %param ... : List of param [ for example if want to print variable value ]
