@@ -7,8 +7,8 @@
 #include <unistd.h>
 
 #include "error.h"
-#include "client.h"
 #include "server.h"
+#include "client.h"
 #include "boolean.h"
 
 Server* newServer(const int port) {

@@ -6,7 +6,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "tcp.h"
 #include "error.h"
@@ -20,9 +19,7 @@
 #include "collectors.h"
 #include "index_loader.h"
 #include "verification.h"
-#include "struct_index.h"
 #include "collectors_list.h"
-
 
 Collector* newCollect(int nb_vol) {
     Collector* collect;

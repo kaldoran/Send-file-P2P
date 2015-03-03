@@ -23,7 +23,7 @@ void freeServer(Server *s);
  * 
  *  %return : the initialized socket for the server
  */ 
-int initServer();
+int initServer(const int port);
 
 /** close a server
  * 
@@ -32,3 +32,4 @@ int initServer();
 void closeServer(int server_socket);
 
 #endif /* SERVER_H included */
+
