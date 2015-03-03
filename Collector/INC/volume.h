@@ -37,7 +37,8 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s);
  * 
  *  %param index: Pointer to the loaded Index.
  *  %param coll: Pointer of the Collector at which we search a volume.
- *  %return: Id of a volume available at a Collector and that the local Collector doesn't have.
+ *  %return: Id of a volume available at a Collector and that the local Collector doesn't have,
+ *           -1 if there is no such volume.
  */
 int findCollVol(Index* index, Collector* coll);
 

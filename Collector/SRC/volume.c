@@ -36,12 +36,13 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
     int num_vol = -1;
     int i;
     
-    for(i = 0; i < s->nb_seed; ++i){
+    for(i = 0; i < s->nb_seed; ++i) {
         num_vol = findCollVol(index, collectors_list[i]);
         
         if ( num_vol == -1 ) {
-            nb_useless_coll ++;
-            if(nb_useless_coll > lim_useless_coll){
+            nb_useless_coll++;
+            
+            if(nb_useless_coll > lim_useless_coll) {
                 freeCollectorsList(collectors_list, s->nb_seed);
                 collectors_list = fillCollectorsList(s, index);
                 
@@ -57,22 +58,30 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
 
             if ( tcpActionDelay(collectors_list[i]->c, read, index->pack_size, S_DELAY, MS_DELAY) < 0 ) {
                 printf("[ERROR] Client %d does not send information in time\n", collectors_list[i]->c.id_socket);
-                return FALSE;
-            }
-
-            if(checkVol(index, read, num_vol)) {
-            
-                index->local_vols[num_vol] = 1;
+                nb_useless_coll++;
                 
-                fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);
-                rewind(s->file);
-                
-                fprintf(s->file, "%s", read);
+                if(nb_useless_coll > lim_useless_coll) {
+                    freeCollectorsList(collectors_list, s->nb_seed);
+                    collectors_list = fillCollectorsList(s, index);
+                    
+                    return isComplet(index->local_vols);
+                }
             } else {
-                printf("[ERROR] Wrong volume %d received\n", num_vol);
+                if(checkVol(index, read, num_vol)) {
+                
+                    index->local_vols[num_vol] = 1;
+                    
+                    fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);
+                    rewind(s->file);
+                    
+                    fprintf(s->file, "%s", read);
+                } else {
+                    printf("[ERROR] Wrong volume %d received\n", num_vol);
+                }
             }
         }
     }
+    
     return isComplet(index->local_vols);
 }
 
@@ -90,23 +99,28 @@ int findCollVol(Index* index, Collector* coll){
 
 void askVolList(Collector* collect, int nb_vol) {
     char data[nb_vol];
+    
     printf("[INFO] Ask the list of volume to %d\n", collect->c.id_socket);
     tcpAction(collect->c, LIST_OF_VOLUMES_MSG, sizeof(LIST_OF_VOLUMES_MSG), SEND);
     
     if ( tcpActionDelay(collect->c, data, nb_vol, S_DELAY, MS_DELAY) < 0 ) {
         printf("[ERROR] Client %d does not send information in time\n", collect->c.id_socket);
-    }
-    removeEndCarac(data);
-    printf("Received : %s\n", data);
-    if ( *data == *FULL_VOLUME_MSG) {
-        printf("[INFO] %d got them all\n", collect->c.id_socket);
-        memset(collect->volumes, '1', nb_vol);
-    } else if ( *data == *NONE_VOLUME_MSG ) {
-        printf("[INFO] %d got no volume\n", collect->c.id_socket);
+        
         memset(collect->volumes, '0', nb_vol);
     } else {
-        printf("[INFO] %d got partial volume\n", collect->c.id_socket);
-        strcpy(collect->volumes, data);
+        removeEndCarac(data);
+        printf("Received : %s\n", data);
+        
+        if ( *data == *FULL_VOLUME_MSG) {
+            printf("[INFO] %d got them all\n", collect->c.id_socket);
+            memset(collect->volumes, '1', nb_vol);
+        } else if ( *data == *NONE_VOLUME_MSG ) {
+            printf("[INFO] %d got no volume\n", collect->c.id_socket);
+            memset(collect->volumes, '0', nb_vol);
+        } else {
+            printf("[INFO] %d got partial volume\n", collect->c.id_socket);
+            strcpy(collect->volumes, data);
+        }
     }
 
     return;
