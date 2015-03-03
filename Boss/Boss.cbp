@@ -71,6 +71,10 @@
 		<Unit filename="struct_block_group.h" />
 		<Unit filename="struct_client.h" />
 		<Unit filename="struct_group.h" />
+		<Unit filename="tcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tcp.h" />
 		<Unit filename="windows.c">
 			<Option compilerVar="CC" />
 		</Unit>
