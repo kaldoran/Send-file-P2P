@@ -29,7 +29,7 @@ int initServer() {
         QUIT_MSG("Can't create the socket : ");
     }
 
-    if ( setsockopt(serveur_socket, SOL_SOCKET, SO_REUSEADDR, &optionVal, sizeof(optionVal)) == SOCKET_ERROR ) {
+    if ( setsockopt(serveur_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&optionVal, sizeof(optionVal)) == SOCKET_ERROR ) {
         QUIT_MSG("Can't set socket option : ");
     }
     
