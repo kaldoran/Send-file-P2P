@@ -16,8 +16,15 @@
  */ 
 int initServer();
 
+/** Start the server
+ *  Infinit loop that stop on user input 
+ */
 void startServer();
 
+/** Create the handler on all socket and STDIN
+ *  %param block_group : block group which contains all socket whre you need to set the fd_set
+ *  %param rdfs : pointer on the fd_set to complexe
+ */
 void setHandler(blockGroup *block_group, fd_set *rdfs);
 
 /** close a server
