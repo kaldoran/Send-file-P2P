@@ -45,8 +45,6 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
             if(nb_useless_coll > lim_useless_coll) {
                 freeCollectorsList(collectors_list, s->nb_seed);
                 collectors_list = fillCollectorsList(s, index);
-                
-                return isComplet(index->local_vols);
             }
         } else {
             char vol[sizeof(PREFIX_OF_VOLUME_MSG) + 5] = "";
