@@ -16,6 +16,7 @@
 #define PORT 42000
 
 int initServer() {
+    int optionVal = 1;
     int struct_size, serveur_socket;
     SOCKADDR_IN s_serveur = { 0 };
     struct_size = sizeof(SOCKADDR_IN);
@@ -28,6 +29,10 @@ int initServer() {
         QUIT_MSG("Can't create the socket : ");
     }
 
+    if ( setsockopt(serveur_socket, SOL_SOCKET, SO_REUSEADDR, &optionVal, sizeof(optionVal)) == SOCKET_ERROR ) {
+        QUIT_MSG("Can't set socket option : ");
+    }
+    
     if ( bind(serveur_socket, (struct sockaddr *)&s_serveur, struct_size) == SOCKET_ERROR ){
         QUIT_MSG("Can't bind the socket : ");
     }
@@ -65,7 +70,6 @@ void startServer() {
         }
         
         if ( timer == 0 ) {
-            printf("\n[PING] Timer Reach\n");
             tval.tv_sec = handlerPresence(block_group);  
         }
 
@@ -115,9 +119,8 @@ void closeServer(blockGroup *block_group) {
     for(i = 0; i < block_group->total; i++) {
         closeClientArray(block_group->groups[i]->client, block_group->groups[i]->total);
     }
-    freeBlockGroup(block_group);
-    
     closesocket(block_group->server_socket);
-    
+    freeBlockGroup(block_group);
+
     return;
 }

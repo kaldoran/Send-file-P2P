@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "tcp.h"
 #include "socket.h"
 #include "error.h"
 #include "client.h"
@@ -19,7 +20,6 @@
 
 
 Client *newClientArray(int const number) {
-
     int i;
     Client *client;
     
@@ -42,9 +42,11 @@ void handleNewClient(blockGroup* block_group) {
     char inBuf[FILENAME_MAX] = "";
     
     tmp = acceptClient(block_group->server_socket );
-    
+
     /* Received a new message */
-    recv(tmp.id_socket, inBuf, FILENAME_MAX, 0);
+    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 0, 300) <= 0 ) {
+        printf("[ERROR] Client %d does not send information in time\n", tmp.id_socket);
+    }
     removeEndCarac(inBuf);
     
     DEBUG_MSG("Received First message : %s", inBuf);
@@ -96,6 +98,7 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
             if(FD_ISSET(group->client[j].id_socket, rdfs)) { 
 
                 tmpVal = recv(group->client[j].id_socket, inBuf, READER_SIZE, 0);
+                DEBUG_MSG("Message avant suppression : %s", inBuf);
                 removeEndCarac(inBuf);
                 
                 if ( tmpVal != 0 ) {
@@ -125,6 +128,7 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
 void closeClientArray(Client *client,int const total) {
     int i;
     for(i = 0; i < total; i++) {
+        printf("[INFO] Stop socket of client %d\n", client[i].id_socket);
         closesocket(client[i].id_socket);
     }
     

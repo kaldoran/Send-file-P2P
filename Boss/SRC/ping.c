@@ -12,7 +12,7 @@ int handlerPresence(blockGroup *block_group) {
 
     for(i = 0; i < block_group->total; i++) {
         
-        if ( block_group->flag == TRUE ) {
+        if ( block_group->flag == FALSE ) {
             askPresence(block_group->groups[i]);
         } else {
             checkPresence(block_group->groups[i], block_group->server_socket, &block_group->max_socket);
@@ -38,7 +38,7 @@ void askPresence(Group *group) {
 
 void checkPresence(Group *group, int server_socket, int* max_socket) {
     int i;
-    
+    printf("[INFO] Let check the pong result \n");
     for ( i = 0; i < group->total; i++ ) {
         /* if the ckerckers flag if at 0 then i didn't respond in time */
         if ( group->checker[i] == 0 ) {

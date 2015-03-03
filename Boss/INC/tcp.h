@@ -14,15 +14,6 @@
 #include "boolean.h"
 #include "struct_client.h"
 
-/** Connects to a Client.
- * 
- *  %param c: Client to connect to.
- * 
- *  %return: TRUE if the connection succeded,
- *           FALSE otherwise.
- */
-bool tcpStart(Client c);
-
 /** Sends/Receives data to/from a Client.
  * 
  *  %param c: Client considered.
