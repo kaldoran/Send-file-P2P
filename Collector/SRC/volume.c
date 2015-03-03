@@ -104,7 +104,7 @@ void askVolList(Collector* collect, int nb_vol) {
         memset(collect->volumes, '0', nb_vol);
     } else {
         removeEndCarac(data);
-        printf("Received : %s\n", data);
+        DEBUG_MSG("Received : %s\n", data);
         
         if ( *data == *FULL_VOLUME_MSG) {
             printf("[INFO] %d got them all\n", collect->c.id_socket);
