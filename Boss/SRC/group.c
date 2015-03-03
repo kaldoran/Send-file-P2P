@@ -50,7 +50,7 @@ int addGroup( blockGroup* block_group, char* const filename ) {
         DEBUG_MSG("Add another group for '%s'", filename);
         
         pos = block_group->total;
-        block_group->groups[block_group->total] = newGroup(filename);
+        block_group->groups[pos] = newGroup(filename);
         ++block_group->total;
     }
 
