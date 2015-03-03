@@ -49,5 +49,6 @@ int main() {
     free(ip);
     free(file);
    
+    END();
     exit(EXIT_SUCCESS);
 }
