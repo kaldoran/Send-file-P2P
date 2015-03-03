@@ -51,6 +51,7 @@
         fprintf(stderr, "[FATAL ERROR] ");                                                                                  \
         fprintf(stderr, MSG, ## __VA_ARGS__);                                                                               \
         perror(NULL);                                                                                                       \
+        END();                                                                                                              \
         exit(EXIT_FAILURE);                                                                                                 \
     }while(0); 
 
