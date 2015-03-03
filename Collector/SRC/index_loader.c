@@ -130,6 +130,7 @@ bool loadIndex(const char *file, Index *index) {
     if ((index->local_vols = calloc(index->nb_package + 1, sizeof(char))) == NULL) {
         QUIT_MSG("Can't Allocate index");
     }
+    memset(index->local_vols, '1', index->nb_package + 1); /* We considered that we've got all te file by default because we check it juste after this function*/
     index->local_vols[index->nb_package] = '\0';
     
     fclose(fichier);

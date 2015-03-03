@@ -18,6 +18,7 @@
 
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
     char buf[vol_size];
+    memset(buf, '\0', vol_size);
     
     fseek(file, ( vol_size * vol_num ), SEEK_SET);
     
@@ -96,7 +97,7 @@ void askVolList(Collector* collect, int nb_vol) {
         printf("[ERROR] Client %d does not send information in time\n", collect->c.id_socket);
     }
     removeEndCarac(data);
-    
+    printf("Received : %s\n", data);
     if ( *data == *FULL_VOLUME_MSG) {
         printf("[INFO] %d got them all\n", collect->c.id_socket);
         memset(collect->volumes, '1', nb_vol);

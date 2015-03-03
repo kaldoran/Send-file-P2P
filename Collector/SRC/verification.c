@@ -28,11 +28,9 @@ bool checkFile(FILE* file, Index* index) {
     for ( i = 0; i < index->nb_package; i++ ) {
         memset(inbuf, '\0', index->pack_size); 
         
-        if(fread ((char*)inbuf, index->pack_size, 1, file) == 0){
-            full = FALSE;
-            index->local_vols[i] = '0';
-        }
-        else if(!checkVol(index, inbuf, i)){
+        if(fread ((char*)inbuf, index->pack_size, 1, file) == 0 
+           || !checkVol(index, inbuf, i)) {
+           
             full = FALSE;
         }
     }

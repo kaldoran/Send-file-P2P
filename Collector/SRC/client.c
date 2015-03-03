@@ -64,9 +64,8 @@ Client acceptClient( int const server_socket ) {
     
     new_client.id_socket = accept(server_socket, (struct sockaddr*) &new_client.sock_info, (__socklen_t *)&struct_size);
 
-    printf("New client [%d]\n\n", new_client.id_socket);
-    printf("IP address is: %s\n", inet_ntoa(new_client.sock_info.sin_addr));
-    printf("port is: %d\n", (int) ntohs(new_client.sock_info.sin_port));
+    printf("\n[INFO] New client [%d]\n", new_client.id_socket);
+    printf("\t - Ip of client : %s\n", inet_ntoa(new_client.sock_info.sin_addr));
 
     return new_client;
 }

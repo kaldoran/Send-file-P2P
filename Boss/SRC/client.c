@@ -44,7 +44,7 @@ void handleNewClient(blockGroup* block_group) {
     tmp = acceptClient(block_group->server_socket );
 
     /* Received a new message */
-    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 0, 300) < 0 ) {
+    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 0, 500) < 0 ) {
         printf("[ERROR] Client %d does not send information in time\n", tmp.id_socket);
     }
     removeEndCarac(inBuf);
@@ -98,7 +98,6 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
             if(FD_ISSET(group->client[j].id_socket, rdfs)) { 
 
                 tmpVal = recv(group->client[j].id_socket, inBuf, READER_SIZE, 0);
-                DEBUG_MSG("Message avant suppression : %s", inBuf);
                 removeEndCarac(inBuf);
                 
                 if ( tmpVal != 0 ) {

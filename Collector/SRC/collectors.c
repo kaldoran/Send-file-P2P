@@ -101,7 +101,7 @@ void startCollector(char *index_name, const int port){
             pong(index);
         }
         else if( FD_ISSET(s->seed_socket, &rdfs) ) {
-            s->nb_leach = s->nb_leach + addClient(s);
+            s->nb_leach += addClient(s);
         }
         else {
             manageClient(s, index, &rdfs);
@@ -126,6 +126,7 @@ void initFd(Index* index, Server* s, fd_set* rdfs){
     FD_SET(STDIN_FILENO, rdfs);
     #endif
     FD_SET(index->c.id_socket, rdfs);
+    FD_SET(s->seed_socket, rdfs);
     
     for(i = 0; i < s->nb_leach; i++) {
         FD_SET(s->client[i].id_socket, rdfs);
@@ -142,6 +143,7 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
             memset(in_buf, '\0', READER_SIZE);
             
             tmpVal = tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED);
+            removeEndCarac(in_buf);
             printf("\n[INFO] (%d) message recu '%s' [Client : %d]\n", tmpVal, in_buf, s->client[i].id_socket);
             
             if ( tmpVal == 0 ) {
@@ -150,7 +152,7 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
             } else {
                 removeEndCarac(in_buf);
                 
-                if ( (token = startWith(in_buf, PREFIX_OF_VOLUME_MSG)) != NULL ) {
+                if ( (token = startWith(PREFIX_OF_VOLUME_MSG, in_buf)) != NULL ) {
                     sendVolume(s->client[i], atoi(token), index->pack_size, s->file);
                 }
                 else if( strcmp(in_buf, LIST_OF_VOLUMES_MSG) == 0 ) {
@@ -162,14 +164,15 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
 }
 
 void pong(Index *index){
-    char in_buf[FILENAME_MAX];
-
-    printf("[INFO] Received ping from Boss\n");
-    memset(in_buf, '\0', FILENAME_MAX);
+    char in_buf[FILENAME_MAX] = "";
         
-    tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED);
+    if ( tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED) == 0 ) {
+        QUIT_MSG("[ERROR] Boss disconnect us\n");
+    }
     removeEndCarac(in_buf);
-
+    
+    printf("[INFO] Received ping from Boss\n");
+    
     if(strcmp(in_buf, index->file) == 0 && fileExist(in_buf)){
         tcpAction(index->c, FILE_EXIST_MSG, sizeof(FILE_EXIST_MSG), SEND);
     }
