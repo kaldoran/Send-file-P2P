@@ -4,10 +4,10 @@
 // DATE : 27/01/15                                          |
 //----------------------------------------------------------
 
-#include <stdio.h>
-#include <stdlib.h>
+
 #include <time.h>
 
+#include "error.h"
 #include "server.h"
 #include "windows.h"
 
@@ -19,5 +19,6 @@ int main() {
     startServer();  /* infinit loop into startServer() */
     endWindows();
     
+    END();
     exit(EXIT_SUCCESS);
 }
