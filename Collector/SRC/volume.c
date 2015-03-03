@@ -65,8 +65,6 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
                 }
             } else {
                 if(checkVol(index, read, num_vol)) {
-                
-                    index->local_vols[num_vol] = 1;
                     
                     fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);
                     rewind(s->file);
