@@ -125,7 +125,7 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
     return;
 }
 
-void closeClientArray(Client *client,int const total) {
+void closeClientArray(Client *client, int const total) {
     int i;
     for(i = 0; i < total; i++) {
         printf("[INFO] Stop socket of client %d\n", client[i].id_socket);
@@ -210,7 +210,7 @@ bool addClient(Client *client, Client new, int *total) {
         return TRUE;
     }
     
-    printf("I'm So full !\n");
+    printf("[ERROR] No more client can connect !\n");
     return FALSE;
 }
 

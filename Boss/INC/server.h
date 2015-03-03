@@ -10,6 +10,7 @@
 #include "struct_client.h"
 #include "struct_block_group.h"
 
+#define PORT 42000 /* Listing port for server */
 
 /** init a socket for a server
  *  %return : the initialized socket for the server

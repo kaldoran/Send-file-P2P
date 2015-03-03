@@ -60,7 +60,7 @@ int addGroup( blockGroup* block_group, char* const filename ) {
 void removeGroup( blockGroup* block_group, int pos ) {
     
     DEBUG_MSG("Remove group for '%s'", block_group->groups[pos]->name);
-    
+
     freeGroup(block_group->groups[pos]);
     
     memmove(block_group->groups + pos, block_group->groups + pos + 1, (block_group->total - pos - 1) * sizeof(*block_group->groups));  

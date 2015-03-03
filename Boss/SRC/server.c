@@ -13,8 +13,6 @@
 #include "client.h"
 #include "block_group.h"
 
-#define PORT 42000
-
 int initServer() {
     int optionVal = 1;
     int struct_size, serveur_socket;

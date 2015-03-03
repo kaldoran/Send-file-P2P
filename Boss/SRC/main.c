@@ -11,10 +11,7 @@
 #include "server.h"
 #include "windows.h"
 
-int main(int argc, char const *argv[]) {
-    (void)(argc);
-    (void)(argv);
-
+int main() {
     srand(time(NULL));
     
     initWindows();  

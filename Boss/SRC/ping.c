@@ -10,8 +10,7 @@
 int handlerPresence(blockGroup *block_group) {
     int i;
 
-    for(i = 0; i < block_group->total; i++) {
-        
+    for(i = 0; i < block_group->total; i++) {   
         if ( block_group->flag == FALSE ) {
             askPresence(block_group->groups[i]);
         } else {
