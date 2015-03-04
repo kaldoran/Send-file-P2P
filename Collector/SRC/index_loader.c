@@ -28,6 +28,7 @@ char *startWith(char *s1, char *s2) {
 
 Index *newIndex() {
     Index *index;
+
     if ((index = calloc(1, sizeof *index)) == NULL) {
         QUIT_MSG("Can't Allocate index");
     }
@@ -51,6 +52,7 @@ char **newSha(int nb_package) {
         if ( (sha[i] = calloc(41, sizeof(char))) == NULL ) {
             QUIT_MSG("Can't Allocate index->sha[%d]", i);
         }
+
         memset(sha[i], '\0', 41);
     }
    
@@ -62,9 +64,11 @@ void freeIndex(Index *index) {
     int i;
     
     free(index->local_vols);
+    
     for ( i = 0; i < index->nb_package; i++ ) {
         free(index->sha[i]);
     }
+    
     free(index->sha);
     free(index);
 }
@@ -130,6 +134,7 @@ bool loadIndex(const char *file, Index *index) {
     if ((index->local_vols = calloc(index->nb_package + 1, sizeof(char))) == NULL) {
         QUIT_MSG("Can't Allocate index");
     }
+    
     memset(index->local_vols, '1', index->nb_package + 1); /* We considered that we've got all te file by default because we check it juste after this function*/
     index->local_vols[index->nb_package] = '\0';
     
@@ -142,13 +147,15 @@ bool initFile(Index* index){
     bool full_file = FALSE;
     int i;
     
-    printf("[INFO] Check if we've got the file to download\n");
+    printf("[INFO] Check if we've got the file to download.\n");
+
     if( fileExist(index->file) ) {
         file = fopen(index->file, "r");
         
         full_file = checkFile(file, index);
     } else {
         file = fopen(index->file, "a+");
+        
         for ( i = 0; i < index->file_size; i++ ) {
             fprintf(file, "#");
         }
@@ -163,7 +170,7 @@ bool initFile(Index* index){
 
 void initIndex(Index* index, char const *index_name){
     if ( loadIndex(index_name, index) == FALSE ) {
-        printf("[ERROR] : Can't reach the boss serveur\n" );
+        printf("[ERROR] : Can't reach the boss serveur.\n" );
     }
     
     if ( tcpStart(index->c) == FALSE ) {

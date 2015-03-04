@@ -15,7 +15,7 @@ Server* newServer(const int port) {
     Server* s; 
 
     if ( (s = calloc(1, sizeof(*s))) == NULL ) {
-        QUIT_MSG("Can't allocate new server");
+        QUIT_MSG("Can't allocate new server.");
     }
 
     s->seed_socket = initServer(port);
@@ -37,7 +37,7 @@ void freeServer(Server *s) {
         fclose(s->file);
     }
     
-    freeClientArray(s->client);
+    freeClientArray(s->client, s->nb_leach);
     free(s);
 
     return;

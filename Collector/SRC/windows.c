@@ -12,7 +12,7 @@ void initWindows(void) {
     #ifdef WIN32
        WSADATA wsa;
        if(WSAStartup(MAKEWORD(2, 2), &wsa) < 0) {
-          QUIT_MSG("Can't start socket on Windaube : ");
+          QUIT_MSG("Can't start socket on Windows : ");
        }
     #endif
 }
