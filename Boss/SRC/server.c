@@ -11,6 +11,7 @@
 #include "ping.h"
 #include "server.h"
 #include "client.h"
+#include "message.h"
 #include "block_group.h"
 
 int initServer() {
@@ -73,6 +74,7 @@ void startServer() {
 
         #ifdef linux
         if( FD_ISSET(STDIN_FILENO, &rdfs) ) {
+            handlerUserInput(block_group);
             break;            
         }
         else

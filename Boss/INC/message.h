@@ -22,4 +22,6 @@
  */
 void removeEndCarac(char *input);
 
+bool handlerUserInput(blockGroup* block_group);
+
 #endif /* MESSAGE_H included */
