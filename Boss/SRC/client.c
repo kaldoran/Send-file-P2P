@@ -18,6 +18,7 @@
 #include "boolean.h"
 #include "message.h"
 
+#define SEND_CLIENT_BUFFER 30
 
 Client *newClientArray(int const number) {
     int i;
@@ -44,7 +45,7 @@ void handleNewClient(blockGroup* block_group) {
     tmp = acceptClient(block_group->server_socket );
 
     /* Received a new message */
-    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 0, 0) < 0 ) {
+    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 1, 50000) < 0 ) {
         printf("[ERROR] Client %d does not send information in time\n", tmp.id_socket);
     }
     removeEndCarac(inBuf);
@@ -168,8 +169,8 @@ Client acceptClient( int const server_socket ) {
 
 void sendClient(Client *client, int total, int to) {
     
-    int i, pourcent, number;
-    char outBuf[30];
+    int i = 0, pourcent = 100, number = (total > 10) ? MAX_COLLECTOR_SEND : total - 1; /* We send all list -1 ( cause of it self ) */
+    char outBuf[SEND_CLIENT_BUFFER];
 
     if ( total == 1 ) {
         printf("[INFO] Client %d is alone\n", client[to].id_socket);
@@ -177,21 +178,22 @@ void sendClient(Client *client, int total, int to) {
         return;
     }
     
-    i = 0;
-    number = (rand() % (total - 1)) + 1;
     printf("[INFO] List Of Collector Send : \n");
-    pourcent = (int)((float)number / (float)(total - 1) * 100.);
-    DEBUG_MSG("Random : %d - Val : %d\n", number, pourcent);
+    pourcent = (int)( ((float) MAX_COLLECTOR_SEND / total) * 100.);
+    if ( pourcent <= 0 ) {
+        pourcent = 1; /* At least 1 pourcent chance for each collector */
+    }
+    DEBUG_MSG("Send %d collectors - Pourcent : %d\n", number, pourcent);
     
     while( number > 0) {
         if ( rand() % 100 <= pourcent 
             && client[i].id_socket != client[to].id_socket) {
             
             --number;
-            memset(outBuf, '\0', 30);
+            memset(outBuf, '\0', SEND_CLIENT_BUFFER);
             sprintf(outBuf, "%d|%s|%s", number, client[i].ip, client[i].port);
             printf("\t - Client %d [%s:%s]\n", client[i].id_socket, client[i].ip, client[i].port);
-            send(client[to].id_socket, outBuf, 30, 0);
+            send(client[to].id_socket, outBuf, SEND_CLIENT_BUFFER, 0);
         }
 
         if ( ++i >= total ) { i = 0; }        

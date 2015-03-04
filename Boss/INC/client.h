@@ -12,6 +12,8 @@
 #include "struct_client.h"
 #include "struct_block_group.h"
 
+#define MAX_COLLECTOR_SEND 10
+
 /** Allocate pointeur for an array of client 
  *  %param number : number of client
  *  %retun : pointeur on an array of client
