@@ -44,7 +44,7 @@ void handleNewClient(blockGroup* block_group) {
     tmp = acceptClient(block_group->server_socket );
 
     /* Received a new message */
-    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 0, 500) < 0 ) {
+    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 0, 0) < 0 ) {
         printf("[ERROR] Client %d does not send information in time\n", tmp.id_socket);
     }
     removeEndCarac(inBuf);
@@ -62,8 +62,8 @@ void handleNewClient(blockGroup* block_group) {
         return; 
     }
     
-    printf("[INFO] File : %s\n", file);
-    printf("[INFO] Port : %s\n", port);
+    printf("\t - File : %s\n", file);
+    printf("\t - Port : %s\n", port);
     strcpy(tmp.port, port);
 
     if ( ( tmpVal = addGroup( block_group, file )) == -1 
@@ -127,7 +127,7 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
 void closeClientArray(Client *client, int const total) {
     int i;
     for(i = 0; i < total; i++) {
-        printf("[INFO] Stop socket of client %d\n", client[i].id_socket);
+        printf("[KICK] Stop socket of client %d\n", client[i].id_socket);
         closesocket(client[i].id_socket);
     }
     
@@ -159,7 +159,7 @@ Client acceptClient( int const server_socket ) {
     
     new_client.id_socket = accept(server_socket, (struct sockaddr*) &s_client, (__socklen_t *)&struct_size);
 
-    printf("\n[INFO] New client [%d] Ip : %s\n", new_client.id_socket, inet_ntoa(s_client.sin_addr));
+    printf("\n[INFO] New client [%d]\n\t - Ip : %s\n", new_client.id_socket, inet_ntoa(s_client.sin_addr));
 
     strcpy(new_client.ip, inet_ntoa(s_client.sin_addr));
 

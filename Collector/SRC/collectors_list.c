@@ -38,18 +38,17 @@ Collector** fillCollectorsList(Server* s, Index* index){
 
     char *token;
     struct hostent *h;
-    Client tmp = initClient();
-    #ifdef linux
+    Client tmp = initClient(); 
+    #ifdef linux 
         usleep(1);
-    #endif //linux
-    
+    #endif
     printf("\n[INFO] Ask for other collectors\n");
     tcpAction(index->c, LIST_OF_COLLECTOR_MSG, sizeof(LIST_OF_COLLECTOR_MSG), SEND);
         
     do {
         memset(in_buf, '\0', COLLECTOR_READER_SIZE);
                 
-        if ( tcpActionDelay(index->c, in_buf, COLLECTOR_READER_SIZE, S_DELAY, MS_DELAY) < 0 ) {
+        if ( tcpActionDelay(index->c, in_buf, COLLECTOR_READER_SIZE, S_DELAY, US_DELAY) < 0 ) {
             printf("[ERROR] Client %d does not send information in time\n", index->c.id_socket);
             return collectors_list;
         }

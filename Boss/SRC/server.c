@@ -85,7 +85,7 @@ void startServer() {
         }
     }
     
-    printf("[BYE] Server stop\n");
+    printf("[BYE] Server stop\n\n");
     closeServer(block_group);
     
     return;

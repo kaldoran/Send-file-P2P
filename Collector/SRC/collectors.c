@@ -167,7 +167,7 @@ void pong(Index *index){
     char in_buf[FILENAME_MAX] = "";
         
     if ( tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED) == 0 ) {
-        QUIT_MSG("[ERROR] Boss disconnect us\n");
+        QUIT_MSG("Boss disconnect us\n");
     }
     removeEndCarac(in_buf);
     

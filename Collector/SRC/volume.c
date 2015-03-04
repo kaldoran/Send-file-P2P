@@ -54,7 +54,7 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
             
             tcpAction(collectors_list[i]->c, vol, sizeof(vol), SEND);
 
-            if ( tcpActionDelay(collectors_list[i]->c, read, index->pack_size, S_DELAY, MS_DELAY) < 0 ) {
+            if ( tcpActionDelay(collectors_list[i]->c, read, index->pack_size, S_DELAY, US_DELAY) < 0 ) {
                 printf("[ERROR] Client %d does not send information in time\n", collectors_list[i]->c.id_socket);
                 nb_useless_coll++;
                 
@@ -98,13 +98,12 @@ void askVolList(Collector* collect, int nb_vol) {
     printf("[INFO] Ask the list of volume to %d\n", collect->c.id_socket);
     tcpAction(collect->c, LIST_OF_VOLUMES_MSG, sizeof(LIST_OF_VOLUMES_MSG), SEND);
     
-    if ( tcpActionDelay(collect->c, data, nb_vol, S_DELAY, MS_DELAY) < 0 ) {
+    if ( tcpActionDelay(collect->c, data, nb_vol, S_DELAY, US_DELAY) < 0 ) {
         printf("[ERROR] Client %d does not send information in time\n", collect->c.id_socket);
-        
         memset(collect->volumes, '0', nb_vol);
     } else {
         removeEndCarac(data);
-        DEBUG_MSG("Received : %s\n", data);
+        DEBUG_MSG("Received : %s - %c - %c\n", data, data[1], data[2]);
         
         if ( *data == *FULL_VOLUME_MSG) {
             printf("[INFO] %d got them all\n", collect->c.id_socket);
