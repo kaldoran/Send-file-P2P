@@ -29,12 +29,14 @@ bool checkFile(FILE* file, Index* index) {
         memset(inbuf, '\0', index->pack_size); 
         
         if(fread ((char*)inbuf, index->pack_size, 1, file) == 0 
-           || !checkVol(index, inbuf, i)) {
-           
+           && !checkVol(index, inbuf, i)) {
+            printf("\t - Some volume is missing\n");
             full = FALSE;
         }
     }
-
+    if ( full ) {
+        printf("\t - we've got all volume\n");
+    }
     return full;
 }
 

@@ -148,13 +148,12 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
 
             tmpVal = tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED);
             removeEndCarac(in_buf);
-
-            printf("\n[INFO] (%d) message recu '%s' [Client : %d].\n", tmpVal, in_buf, s->client[i].id_socket);
             
             if ( tmpVal == 0 ) {
                 removeClient(s, i);
                 --i; /* When we remove a client we need to apply this to i */
             } else {
+                printf("\n[INFO] (%d) message recu '%s' [Client : %d].\n", tmpVal, in_buf, s->client[i].id_socket);
                 removeEndCarac(in_buf);
 
                 if ( (token = startWith(PREFIX_OF_VOLUME_MSG, in_buf)) != NULL ) {
@@ -175,7 +174,7 @@ void pong(Index *index){
         QUIT_MSG("Boss disconnect us\n");
     }
     removeEndCarac(in_buf);
-    
+    DEBUG_MSG("Received : %s", in_buf); 
     printf("[INFO] Received ping from Boss.\n");
     
     if(strcmp(in_buf, index->file) == 0 && fileExist(in_buf)){
