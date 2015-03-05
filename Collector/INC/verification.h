@@ -34,12 +34,13 @@ bool checkFile(FILE* file, Index* index);
  * 
  *  %param index: Pointer to the loaded Index.
  *  %param vol: Volume to check.
+ *  %param vol_size : Size of the volume to check
  *  %param id_vol: Number of the volume in the Index.
  * 
  *  %return: TRUE if the volume corresponds to the checksum,
  *           FALSE otherwise.
  */
-bool checkVol(Index* index, unsigned char* vol, int id_vol);
+bool checkVol(Index* index, unsigned char* vol, int vol_size, int id_vol);
 
 /** Verifies that a file exists or not.
  * 

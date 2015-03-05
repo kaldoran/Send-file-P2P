@@ -29,22 +29,22 @@ bool checkFile(FILE* file, Index* index) {
         memset(inbuf, '\0', index->pack_size); 
         
         if(fread ((char*)inbuf, index->pack_size, 1, file) == 0 
-           && !checkVol(index, inbuf, i)) {
+           && !checkVol(index, inbuf, sizeof(inbuf), i)) {
             printf("\t - Some volume is missing\n");
             full = FALSE;
         }
     }
+
     if ( full ) {
         printf("\t - we've got all volume\n");
     }
     return full;
 }
 
-bool checkVol(Index* index, unsigned char* vol, int id_vol) {
+bool checkVol(Index* index, unsigned char* vol, int vol_size, int id_vol) {
     char outsha[40];
     unsigned char outbuf[SHA_DIGEST_LENGTH];
-
-    SHA1(vol, sizeof(vol), outbuf);
+    SHA1(vol, vol_size, outbuf);
 
     hexToString(outbuf, outsha);
     

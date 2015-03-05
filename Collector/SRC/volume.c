@@ -53,7 +53,7 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
                 printf("[ERROR] Client %d does not send information in time\n", collectors_list[i]->c.id_socket);
                 nb_useless_coll++;       
             } else {
-                if(checkVol(index, read, num_vol)) {
+                if(checkVol(index, read, sizeof(read), num_vol)) {
                     
                     fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);
                     rewind(s->file);
