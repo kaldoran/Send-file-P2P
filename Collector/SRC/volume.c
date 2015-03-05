@@ -25,6 +25,7 @@ void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
     if(fread ((char*)buf, vol_size, 1, file) == 0){
         DEBUG_MSG("[ERROR] sending empty volume.");
     }
+    printf("\t - Send volume %d to %d", vol_num, c.id_socket);
        
     tcpAction(c, buf, vol_size, SEND);
 }
@@ -55,10 +56,9 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
             } else {
                 if(checkVol(index, read, sizeof(read), num_vol)) {
                     
-                    fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);
-                    rewind(s->file);
-                    
+                    fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);                    
                     fprintf(s->file, "%s", read);
+                    fflush(s->file);
                 } else {
                     printf("[ERROR] Wrong volume %d received\n", num_vol);
                 }
@@ -80,7 +80,7 @@ int findCollVol(Index* index, Collector* coll){
     int num_vol;
     
     for(num_vol = 0; num_vol < index->nb_package; ++num_vol){
-        if(coll->volumes[num_vol] == 1 && index->local_vols[num_vol] == 0) {
+        if(coll->volumes[num_vol] == '1' && index->local_vols[num_vol] == '0') {
             return num_vol;
         }
     }
