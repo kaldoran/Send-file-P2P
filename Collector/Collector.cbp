@@ -56,6 +56,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="index_loader.h" />
+		<Unit filename="inout.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="inout.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -71,6 +75,7 @@
 		<Unit filename="struct_client.h" />
 		<Unit filename="struct_collect.h" />
 		<Unit filename="struct_index.h" />
+		<Unit filename="struct_server.h" />
 		<Unit filename="tcp.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -95,4 +100,3 @@
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
-Collector.cbp
