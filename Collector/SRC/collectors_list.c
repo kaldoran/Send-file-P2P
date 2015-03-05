@@ -62,20 +62,19 @@ Collector** fillCollectorsList(Server* s, Index* index){
         }
         
         token = strtok(in_buf, "|");
-        printf("[INFO] Num of collector : %s.\n", token);
+        printf("\t - Collector : %s", token);
         
         if(collectors_list == NULL){
             collectors_list = newCollectorsList( atoi(token) + 1);
         }
         
         token = strtok(NULL, "|");
-        printf("\t - Ip of Collector : %s\n", token);
-        
+        printf(" [%s:", token);
         if( (h = gethostbyname(token)) != NULL ) {
             memcpy(&tmp.sock_info.sin_addr.s_addr, h->h_addr, h->h_length);
         
             token = strtok(NULL, "|");
-            printf("\t - Port du collector : %s\n", token);
+            printf("%s]\n", token);
             
             tmp.sock_info.sin_port = htons(atoi(token));
                 
