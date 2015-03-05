@@ -113,6 +113,7 @@ void startCollector(char *index_name, const int port){
 
     printf("[BYE] Collector stop.\n");
 
+    close(index->c.id_socket);
     freeIndex(index);
     free(index_name); 
     freeServer(s);
