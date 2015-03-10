@@ -150,7 +150,7 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
             tmpVal = tcpAction(s->client[i], in_buf, COLLECTOR_READER_SIZE, RECEIVED);
             removeEndCarac(in_buf);
             
-            if ( tmpVal == 0 ) {
+            if ( tmpVal <= 0 ) {
                 removeClient(s, i);
                 --i; /* When we remove a client we need to apply this to i */
             } else {
@@ -171,7 +171,7 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
 void pong(Index *index){
     char in_buf[FILENAME_MAX] = "";
         
-    if ( tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED) == 0 ) {
+    if ( tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED) <= 0 ) {
         QUIT_MSG("Boss disconnect us\n");
     }
     removeEndCarac(in_buf);

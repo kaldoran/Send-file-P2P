@@ -101,11 +101,11 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
                 tmpVal = recv(group->client[j].id_socket, inBuf, READER_SIZE, 0);
                 removeEndCarac(inBuf);
                 
-                if ( tmpVal != 0 ) {
+                if ( tmpVal > 0 ) {
                     printf("\n[INFO] (%d) message recu '%s' [Client : %d]\n", tmpVal, inBuf, group->client[j].id_socket);
                 } 
                 
-                if ( tmpVal == 0 || strcmp(inBuf, FILE_NOT_EXIST_MSG) == 0  ) {                    
+                if ( tmpVal <= 0 || strcmp(inBuf, FILE_NOT_EXIST_MSG) == 0  ) {                    
                     block_group->max_socket = removeClient(group, j, block_group->server_socket );
                     --j; /* We remove a client, so group->total - 1, then we apply it to j */
                     if ( group->total == 0 ) { removeGroup( block_group, i );  --i; } /* If needed remove the group */

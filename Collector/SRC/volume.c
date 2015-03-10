@@ -92,11 +92,11 @@ void askVolList(Collector* collect, int nb_vol) {
     int array_size = (nb_vol >= (int)sizeof(FULL_VOLUME_MSG)) ? nb_vol : (int)sizeof(FULL_VOLUME_MSG);
     char data[array_size];
 
-    printf("[INFO] Ask the list of volume [Socket : %d].\n", collect->c.id_socket);
+    printf("\t[INFO] Ask the list of volume [Socket : %d].\n", collect->c.id_socket);
     tcpAction(collect->c, LIST_OF_VOLUMES_MSG, sizeof(LIST_OF_VOLUMES_MSG), SEND);
     
     if ( tcpActionDelay(collect->c, data, sizeof(data), S_DELAY, US_DELAY) < 0 ) {
-        printf("[ERROR] Client %d does not send information in time.\n", collect->c.id_socket);
+        printf("\t[ERROR] Client %d does not send information in time.\n", collect->c.id_socket);
         
         memset(collect->volumes, '0', nb_vol);
     } else {
@@ -104,13 +104,13 @@ void askVolList(Collector* collect, int nb_vol) {
         DEBUG_MSG("Received : %s", data);
         
         if ( *data == *FULL_VOLUME_MSG) {
-            printf("\t - %d got them all.\n", collect->c.id_socket);
+            printf("\t\t - %d got them all.\n", collect->c.id_socket);
             memset(collect->volumes, '1', nb_vol);
         } else if ( *data == *NONE_VOLUME_MSG ) {
-            printf("\t - %d got no volume.\n", collect->c.id_socket);
+            printf("\t\t - %d got no volume.\n", collect->c.id_socket);
             memset(collect->volumes, '0', nb_vol);
         } else {
-            printf("\t - %d got partial volume.\n", collect->c.id_socket);
+            printf("\t\t - %d got partial volume.\n", collect->c.id_socket);
             strcpy(collect->volumes, data);
         }
     }
