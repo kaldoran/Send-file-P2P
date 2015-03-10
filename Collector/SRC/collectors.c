@@ -138,16 +138,16 @@ void initFd(Index* index, Server* s, fd_set* rdfs){
 }
 
 void manageClient(Server* s, Index *index, fd_set* rdfs){
-    char in_buf[READER_SIZE];
+    char in_buf[COLLECTOR_READER_SIZE];
     char *token;
     int i;
     int tmpVal;
 
     for(i = 0; i < s->nb_leach; i++) {
         if ( FD_ISSET(s->client[i].id_socket, rdfs) ) {
-            memset(in_buf, '\0', READER_SIZE);
+            memset(in_buf, '\0', COLLECTOR_READER_SIZE);
 
-            tmpVal = tcpAction(s->client[i], in_buf, READER_SIZE, RECEIVED);
+            tmpVal = tcpAction(s->client[i], in_buf, COLLECTOR_READER_SIZE, RECEIVED);
             removeEndCarac(in_buf);
             
             if ( tmpVal == 0 ) {

@@ -7,7 +7,6 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#define READER_SIZE 50
 #define COLLECTOR_READER_SIZE 30
 
 #define FULL_VOLUME_MSG "fullVolume"

@@ -79,7 +79,7 @@ Collector** fillCollectorsList(Server* s, Index* index){
             tmp.sock_info.sin_port = htons(atoi(token));
                 
             if(tcpStart(tmp) == FALSE){
-                printf("[ERROR] Can't connect to collector n°%d.\n", s->nb_seed);
+                printf("[ERROR] Can't connect to collector.\n");
             }
             else{
                 collectors_list[s->nb_seed] = newCollect(index->nb_package);
