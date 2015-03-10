@@ -12,6 +12,9 @@ Please install openSSL in the default directory.
 
 ### Prepare for Code::Blocks
 After that, unzip our project, then copy all the SRC/* and INC/* into the directory that contains the *.cbp.
+To do that you could use the "moveFile.bat" script
+
+** Note :** You could also revert this action with "revertMoveFile.bat" script.
 
 ### Start with Code::Blocks
 You can now open the *.cbp file.
