@@ -1,5 +1,4 @@
-# p2p-a
-
+# NetWork (Fr : Réseau ) Project - P2P Team a.
 
 #### How to use it ?
 
