@@ -75,13 +75,22 @@ If you don't understand a message, please refere here for the boss.
 ```
 Here a new client came on the Boss.
 We can see is Ip, for which file he came, and on which port Others Collector need to connect to.
+
 As you may see the number of the client does not start at "1", 6 is the socket number.
 Please refere to that for all message.
+
+If the client does not respond in time we've got this message : 
+```
+[INFO] New client [21]
+	 - Ip : 127.0.0.1
+[ERROR] Client 21 does not send information in time
+```
+By default, the client need to send information in less that 500 ms.
+
 
 ```
 [INFO] (18) message recu 'ListOfCollectors' [Client : 6]
 ```
-
 Here the Client 6 ask for "ListOfCollectors" according to convention we need to send him back a message.
 ```
 [INFO] Client 6 is alone
@@ -98,7 +107,7 @@ After 1 minute we check if Collectors respond.
 ```
 [PONG] Let check the pong result 
 ```
-
+If all client respond in time, nothing should be print under the [PONG] message. (  We do not print something to avoid flood )
 ```
 [INFO] Client 6 do not respond to ping in time.
 [INFO] Client 6 disconnect
