@@ -65,6 +65,8 @@ If you don't understand a message, please refere here for the boss.
 
 **/!\ Here we are not going to cover the debug mode.**
 
+###### New Client 
+
 ```
 [INFO] New client [6]
  - Ip : 127.0.0.1
@@ -85,6 +87,9 @@ If the client does not respond in time we've got this message :
 ```
 By default, the client need to send information in less that 500 ms.
 
+----------------
+
+###### List Of Collector
 
 ```
 [INFO] (18) message recu 'ListOfCollectors' [Client : 6]
@@ -95,7 +100,9 @@ Here the Client 6 ask for "ListOfCollectors" according to convention we need to 
 ```
 Here as he is alone we send him "aloneCollector". We can know that thanks to the previous message.
 
+----------------
 
+###### PING / PONG
 
 Every 5 minutes, we send a "ping" message ( which is not ping but we identify it by "ping" )
 ```
@@ -112,6 +119,9 @@ If all client respond in time, nothing should be print under the [PONG] message.
 ```
 Here our dear Client 6 does not respond in time, we kick him.
 
+----------------
+
+###### Server Stop
 When you hit "Enter" the Boss will stop, you should get this message : 
 ```
 [BYE] Server stop
@@ -123,6 +133,8 @@ These message look like that :
 [KICK] Stop socket of client 22
 ```
 Here we kick the client with the 22th socket.
+
+----------------
 
 #### Collector
 
