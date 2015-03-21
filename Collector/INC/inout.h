@@ -7,18 +7,28 @@
 #ifndef INOUT_H
 #define INOUT_H
 
-/** Ask the user which ndex to use
+/** Asks the user which ndex to use
  *  %return : name of the ndex file
  */
 char* askNDex();
 
-/** Ask the user the port
+/** Asks the user the port
  *  %return : Which port to use
  */
 int askPort();
 
+/** Asks and creates the repository that the user use to share.
+ *  %return: Path of the repository.
+ */
+char* askShareRepo();
+
 /** Function to empty the stdin buffer.
  */
 void emptyBuffer();
+
+/** Creates all subdirectories in the given path.
+ *  %param dir: Repository to create.
+ */
+void mkdirRec(char *dir);
 
 #endif /* INOUT_H included */

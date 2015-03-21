@@ -12,6 +12,8 @@
 int main() {
 
     initWindows();
+    
+    askShareRepo();
 
     startCollector(askNDex(), askPort());
 

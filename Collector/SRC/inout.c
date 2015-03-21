@@ -4,8 +4,14 @@
 // DATE : 03/03/15                                          |
 //----------------------------------------------------------
 
+
 #include "error.h"
 #include "inout.h"
+#include "stdio.h"
+#include "libgen.h"
+#include "stdlib.h"
+#include "unistd.h"
+#include "string.h"
 #include "verification.h"
 
 char* askNDex() {
@@ -45,10 +51,44 @@ int askPort() {
     return port;
 }
 
+char* askShareRepo() {
+    char* repo;
+    
+    if ( (repo = calloc(FILENAME_MAX, sizeof(char))) == NULL ) {
+        QUIT_MSG("Can't allocate file");
+    }
+    
+    printf("\nWhat is your sharing repository ?\n");
+    while(scanf("%s", repo) != 1) {
+        DEBUG_MSG("Nothing read when asking sharing repository.");
+    }
+
+    emptyBuffer();
+    mkdirRec(repo);
+    
+    return repo;
+}
+
 void emptyBuffer() {
     int c = 0;
     while (c != '\n' && c != EOF) {
         c = getchar();
+    }
+    
+    return;
+}
+
+void mkdirRec(char *dir) {
+    char *token;
+    token = strtok(dir, "/");
+    while ( token != NULL ) {
+        #ifdef linux
+            mkdir(token, 0777);
+        #else
+            __mkdir(token);
+        #endif
+        chdir(token);
+        token = strtok(NULL, "/");
     }
     
     return;
