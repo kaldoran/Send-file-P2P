@@ -70,14 +70,21 @@
 
 #### "Vous écrivez un logiciel, donc"
 
- * Testez souvent et beaucoup,
+ * Testez souvent et beaucoup.
 
- * Automatisez vos tests qui peuvent l’être,
+    *De nombreux tests ont été effectués pendant la programmation, que ce soit dans notre team ou avec la team b.*
 
- * Documenter comment utiliser, compiler, tester et lancer votre projet
+ * Automatisez vos tests qui peuvent l’être.
 
- * Documenter comment comprendre et reprendre votre projet
+    *Nous ne disposons d'aucun test automatique.*
 
+ * Documenter comment utiliser, compiler, tester et lancer votre projet.
+
+    *Toutes les informations sur l'utilisation de notre projet sont disponibles dans "README.md" et "Windows Compatibility.md".*
+
+ * Documenter comment comprendre et reprendre votre projet.
+
+    *Toutes ces informations sont disponibles dans les documents précédents et dans "Convention.md".*
 
 
 
