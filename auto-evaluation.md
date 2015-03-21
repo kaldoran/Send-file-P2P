@@ -13,7 +13,9 @@
 
 
 -------------------------------------------------------------------------------------
+
 ### Bonnes pratiques
+
 
 #### "Au sujet de git"
  * Committez/pushez souvent, pour ne pas avoir peur de faire des modifications.
@@ -41,18 +43,27 @@
    *Toutes nos documentations sont bien disponibles en marckdown et dans le repository.*
 
 
-
 ####"Au sujet du code"
 
+ * Ecrivez votre code en anglais.
 
- * Ecrivez votre code en anglais,
+   *La totalité du code (variables, fonctions, commentaires, ...) est rédigée en anglais.*
 
- * Indentez votre code correctement,
+ * Indentez votre code correctement.
 
- * Ne mélangez pas les tabulations et les espaces (idéalement, ne pas utilisez de tabulations),
+   *La totalité de notre code est correctement indentée à l'aide uniquement d'espaces.*
+
+ * Ne mélangez pas les tabulations et les espaces (idéalement, ne pas utilisez de tabulations).
+ 
+   *cf ci-dessus.*
 
  * Veillez à la propreté de votre code : pas de variables globales/statiques, noms bien choisis (packages,classes, etc), convention (e.g.,convention java), constantes pour les constantes, ...
 
+   *Nous avons essayé de veiller à ce que les noms des variables et des fonctions soient logiques par rapport à leurs utilité.*
+   
+   *Nous n'avons pas de constantes globales, et la plupart des messages ou valeurs provenant de la convention sont en constantes.*
+
+   *En ce qui concerne la convention de nommage, nous utilisons "_" pour séparrer les mots dans les variables et les objets des structures, et pour les fonctions et les types nous les séparrons en mettant la 1ere lettre de chaque mot en majuscule. La grande majorité de notre code correspond à cette convention de nommage.*
 
 
 #### "Vous écrivez un logiciel, donc"
