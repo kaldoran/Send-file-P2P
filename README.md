@@ -51,9 +51,66 @@
   Now you can give the output file to our Collector. We will see how in Collector part.
   
 ##### Boss  
+  First ( after compile that ) a new "Bin" directory appear.
+  You could now start the Generator by writing "./Bin/Boss". 
+  
+  Exemple of use :
+  
+  ```
+  > ./BIN/Server 
+  [IMPORTANT] : Press Enter to Stop the Boss
+  ```
+  
+###### Understand what append :
+
+If you don't understand a message, please refere here for the boss.
+
+**/!\ Here we are not going to cover the debug mode.**
+
+```
+[INFO] New client [6]
+ - Ip : 127.0.0.1
+ - File : moveFile.bat
+ - Port : 42450
+```
+Here a new client came on the Boss.
+We can see is Ip, for which file he came, and on which port Others Collector need to connect to.
+As you may see the number of the client does not start at "1", 6 is the socket number.
+Please refere to that for all message.
+
+```
+[INFO] (18) message recu 'ListOfCollectors' [Client : 6]
+```
+
+Here the Client 6 ask for "ListOfCollectors" according to convention we need to send him back a message.
+```
+[INFO] Client 6 is alone
+```
+Here as he is alone we send him "aloneCollector". We can know that thanks to the previous message.
+
+
+
+Every 5 minutes, we send a "ping" message ( which is not ping but we identify it by "ping" )
+```
+[PING] Let send the ping test !
+```
+After 1 minute we check if Collectors respond.
+```
+[PONG] Let check the pong result 
+```
+
+```
+[INFO] Client 6 do not respond to ping in time.
+[INFO] Client 6 disconnect
+```
+Here our dear Client 6 does not respond in time, we kick him.
+
 
 ##### Collector
 
+###### Understand what append :
+
+If you don't understand a message, please refere here for the boss.
 #### How to change into debug mode ?
 
 /!\ All part are in normal use mode by default.
