@@ -65,7 +65,10 @@ If you don't understand a message, please refere here for the boss.
 
 **/!\ Here we are not going to cover the debug mode.**
 
+----------------
+
 ###### New Client 
+
 
 ```
 [INFO] New client [6]
