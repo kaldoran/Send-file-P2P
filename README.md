@@ -114,12 +114,28 @@ If all client respond in time, nothing should be print under the [PONG] message.
 ```
 Here our dear Client 6 does not respond in time, we kick him.
 
+When you hit "Enter" the Boss will stop, you should get this message : 
+```
+[BYE] Server stop
+```
+
+But if there is still some collector, we kick them, and add a message for each kicked Collectors.
+These message look like that : 
+```
+[KICK] Stop socket of client 22
+```
+Here we kick the client with the 22th socket.
 
 ##### Collector
 
 ###### Understand what append :
 
 If you don't understand a message, please refere here for the boss.
+
+
+#### How to stop programms ? 
+
+To stop the programme, just hit "Enter" on the Boss, same on the Collector.
 #### How to change into debug mode ?
 
 /!\ All part are in normal use mode by default.
