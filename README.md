@@ -1,17 +1,15 @@
 # NetWork (Fr : Réseau ) Project - P2P Team a.
 
-#### How start with it ?
-
-##### Before anything.
+#### Before anything.
   Before starting anything, you could compile our source code.
   If you are on windows please be sure to Read the "Windows compatibility" File.
   Else you could use our makefile, or use CMake.
   
   Please be sure to compile the part which you want to start before tryingto starting it.
   
-#### How to use it / test it ?
+### How to use it / test it ?
 
-##### Generator 
+#### Generator 
   First ( after compile that ) a new "Bin" directory appear.
   You could now start the Generator by writing "./Bin/Generator". 
   
@@ -50,7 +48,7 @@
   
   Now you can give the output file to our Collector. We will see how in Collector part.
   
-##### Boss  
+#### Boss  
   First ( after compile that ) a new "Bin" directory appear.
   You could now start the Generator by writing "./Bin/Boss". 
   
@@ -61,7 +59,7 @@
   [IMPORTANT] : Press Enter to Stop the Boss
   ```
   
-###### Understand what append :
+##### Understand what append :
 
 If you don't understand a message, please refere here for the boss.
 
@@ -126,17 +124,17 @@ These message look like that :
 ```
 Here we kick the client with the 22th socket.
 
-##### Collector
+#### Collector
 
-###### Understand what append :
+##### Understand what append :
 
 If you don't understand a message, please refere here for the boss.
 
 
-#### How to stop programms ? 
+### How to stop programms ? 
 
 To stop the programme, just hit "Enter" on the Boss, same on the Collector.
-#### How to change into debug mode ?
+### How to change into debug mode ?
 
 /!\ All part are in normal use mode by default.
 
