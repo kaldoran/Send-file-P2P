@@ -30,7 +30,7 @@ int handlerPresence(blockGroup *block_group) {
 
 void askPresence(Group *group) {
     int i;
-    printf("[PING] Let send the ping test !\n");
+    printf("\n[PING] Let send the ping test !\n");
     for ( i = 0; i < group->total; i++ ) {
         /* Send the same message to all client from a groups */
         send(group->client[i].id_socket, group->name, sizeof(group->name), 0);

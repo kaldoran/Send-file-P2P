@@ -9,6 +9,9 @@
 
 #include "struct_block_group.h"
 
+#define S_DELAY  0      /* Delay for reception */
+#define US_DELAY 500000
+
 #define READER_SIZE 50
 
 #define ALONE_COLLECTOR_MSG "aloneCollector"

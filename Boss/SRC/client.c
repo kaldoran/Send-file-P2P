@@ -45,7 +45,7 @@ void handleNewClient(blockGroup* block_group) {
     tmp = acceptClient(block_group->server_socket );
 
     /* Received a new message */
-    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, 1, 50000) < 0 ) {
+    if ( tcpActionDelay(tmp, inBuf, FILENAME_MAX, S_DELAY, US_DELAY) < 0 ) {
         printf("[ERROR] Client %d does not send information in time\n", tmp.id_socket);
     }
     removeEndCarac(inBuf);

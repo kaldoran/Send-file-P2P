@@ -40,7 +40,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     printf("\n[INFO] Boss : %s\n", ip);
     printf("[INFO] Port : %d\n", port);
     printf("[INFO] File : %s\n", baseName);
-    printf("[INFO] Size : %ld\n", buf.st_size);
+    printf("[INFO] Size : %ld Octets\n", buf.st_size);
     printf("[INFO] PackSize : %d\n", packSize);
     printf("[INFO] NbVolume : %d\n", nbVolume);
     
@@ -76,7 +76,7 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     fclose(inputFile);
     fclose(outputFile);
     
-    printf("\n[INFO] : File '%s' add been generated\n", outputName);
+    printf("\n[INFO] : File '%s' had been generated\n", outputName);
     
     return;
 }

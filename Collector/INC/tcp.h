@@ -10,9 +10,6 @@
 #define SEND 0
 #define RECEIVED 1
 
-#define S_DELAY  0      /* Delay for reception */
-#define US_DELAY 500000
-
 #include "socket.h"
 #include "boolean.h"
 #include "struct_client.h"

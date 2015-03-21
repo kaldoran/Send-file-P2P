@@ -7,6 +7,9 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#define S_DELAY  0      /* Delay for reception */
+#define US_DELAY 500000
+
 #define COLLECTOR_READER_SIZE 30
 
 #define FULL_VOLUME_MSG "fullVolume"
