@@ -40,7 +40,7 @@
 
  * Idéalement, la documentation est en markdown (.md) dans un dépôt git.
 
-   *Toutes nos documentations sont bien disponibles en marckdown et dans le repository.*
+   *Toutes nos documentations sont bien disponibles en markdown et dans le repository.*
 
 
 ####"Au sujet du code"
@@ -51,11 +51,13 @@
 
  * Indentez votre code correctement.
 
-   *La totalité de notre code est correctement indentée à l'aide uniquement d'espaces.*
+   *La totalité de notre code est correctement indentée à l'aide uniquement d'espaces.
+   Pour vous en assurer vous pouvez utiliser la fonction : 
+   		find . -type f \( -name "*.c" -o -name "*.h" \) -exec /bin/grep -P '\t' {} \;*
 
  * Ne mélangez pas les tabulations et les espaces (idéalement, ne pas utilisez de tabulations).
  
-   *cf ci-dessus.*
+   *cf ci-dessus. Cependant les tabulations ont été utilisé dans le makefile et dans les fichiers généré par Code::Blocks*
 
  * Veillez à la propreté de votre code : pas de variables globales/statiques, noms bien choisis (packages,classes, etc), convention (e.g.,convention java), constantes pour les constantes, ...
 
