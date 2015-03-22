@@ -253,7 +253,7 @@ When the program recieve a request for its list of volumes it notify by
 
 If a connected client doesn't ask anything then the program disconnect it, and notify the closing of the connection by:
 ```
-[INFO] Close client 28.
+[INFO] Client 28 disconnect.
 ```
 
 
@@ -264,6 +264,11 @@ If a connected client doesn't ask anything then the program disconnect it, and n
 After the program has filled the collectors list it start to ask volumes.
 ```
 [INFO] Ask volume 0 to Client 21
+```
+
+if it respond with succes we've got 
+```
+[INFO] Volume 0 well received 
 ```
 
 If the collector is not reachable, the program says:
