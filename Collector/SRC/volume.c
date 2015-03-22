@@ -25,7 +25,7 @@ void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
     if(fread ((char*)buf, vol_size, 1, file) <= 0){
         DEBUG_MSG("[ERROR] sending empty volume.");
     }
-    printf("\t - Send volume %d to %d", vol_num, c.id_socket);
+    printf("\t - Send volume %d to %d\n", vol_num, c.id_socket);
        
     tcpAction(c, buf, vol_size, SEND);
 }
@@ -55,7 +55,7 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
                 nb_useless_coll++;       
             } else {
                 if(checkVol(index, read, sizeof(read), num_vol)) {
-                    
+                    printf("[INFO] Volume %d well received \n", num_vol); 
                     fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);                    
                     fprintf(s->file, "%s", read);
                     fflush(s->file);

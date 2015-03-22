@@ -29,7 +29,9 @@ int main(int argc, char * argv[]) {
     
     printf("[INFO] Welcome to this awesome Generator\n\n");
     
-    #ifdef DEBUG
+    #ifndef DEBUG
+        (void) argv;
+    #else 
         if ( argc > 4 ) {
             if ( !verifFileExist(file = argv[1]) 
               || !verifBossIp(ip = argv[2]) 
@@ -44,16 +46,17 @@ int main(int argc, char * argv[]) {
             printf("\t With <port> between 1024 and 65536.\n");
             printf("\t and <volSize> between 16 and 64\n");
         }
-    #else 
-        (void) argv;
+        
+        if ( argc <= 4 ) { 
     #endif
-    
-    if ( argc <= 4 ) {
-        file = askFile();
-        ip = askBossIp();
-        port = askBossPort();
-        volSize = askVolSize();  
-    } 
+
+            file = askFile();
+            ip = askBossIp();
+            port = askBossPort();
+            volSize = askVolSize();  
+    #ifdef DEBUG
+        } 
+    #endif
     
     volSize *= 1000;
     createNDex(ip, port, volSize, file);

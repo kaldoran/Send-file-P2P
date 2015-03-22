@@ -18,8 +18,10 @@ int main(int argc, char* argv[]) {
    
     initWindows();
     
-    #ifdef DEBUG
-        if ( argc > 2 ) {
+    #ifndef DEBUG
+        (void) argv;
+    #else
+        if ( argc > 3 ) {
             if ( !fileExist(nDex = argv[1]) 
               || !verifPort(port = atoi(argv[2])) ) {
               
@@ -31,15 +33,15 @@ int main(int argc, char* argv[]) {
             printf("\t %s <path_to_ndex> <port> <share_directory>\n", argv[0]);
             printf("\t With <port> between 1024 and 65536.\n");
         }
-    #else
-        (void) argv;
+        
+        if ( argc <= 3 ) {
     #endif
-    
-    if ( argc < 3 ) {
-        nDex = askNDex();
-        port = askPort();
-        sharing_path = askShareRepo(); /* These ask, and move to the repository */
-    }
+            nDex = askNDex();
+            port = askPort();
+            sharing_path = askShareRepo(); /* These ask, and move to the repository */
+    #ifdef DEBUG
+        }
+    #endif
     
     startCollector(nDex, port, sharing_path);
     
