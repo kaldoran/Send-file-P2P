@@ -8,8 +8,8 @@
     * Nombre d'heures: 90 heures ( voir plus ) 
 
  * Kevin Bascol
-    * Parties:
-    * Nombre d'heures:
+    * Parties: Collector.
+    * Nombre d'heures: 20 heures.
 
 
 -------------------------------------------------------------------------------------
