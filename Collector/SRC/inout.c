@@ -4,12 +4,14 @@
 // DATE : 03/03/15                                          |
 //----------------------------------------------------------
 
+#include <sys/stat.h>
 
 #include "error.h"
 #include "inout.h"
 #include "string.h"
 #include <sys/stat.h>
 #include "verification.h"
+#include "configuration.h"
 
 char* askNDex() {
     char* file;
@@ -48,22 +50,27 @@ int askPort() {
     return port;
 }
 
-char* askShareRepo() {
-    char* repo;
-    
-    if ( (repo = calloc(FILENAME_MAX, sizeof(char))) == NULL ) {
-        QUIT_MSG("Can't allocate file");
-    }
-    
-    printf("\nWhat is your sharing repository ?\n");
-    while(scanf("%s", repo) != 1) {
-        DEBUG_MSG("Nothing read when asking sharing repository.");
-    }
+void askShareRepo() {
+    #ifndef SHARING_PATH
+        char* repo;
+        
+        if ( (repo = calloc(FILENAME_MAX, sizeof(char))) == NULL ) {
+            QUIT_MSG("Can't allocate file");
+        }
+        
+        printf("\n[Q] What is your sharing repository ? [Be carefull, if it doesn't exists we'll create it !]\n");
+        while(scanf("%s", repo) != 1) {
+            DEBUG_MSG("Nothing read when asking sharing repository.");
+        }
 
-    emptyBuffer();
-    mkdirRec(repo);
+        emptyBuffer();
+        mkdirRec(repo);
+    #else 
+        mkdirRec(SHARING_PATH);
+    #endif 
     
-    return repo;
+    
+    return;
 }
 
 void emptyBuffer() {
@@ -75,9 +82,12 @@ void emptyBuffer() {
     return;
 }
 
-void mkdirRec(char *dir) {
+void mkdirRec(const char *dir) {
+    char cpy_dir[sizeof(dir) + 1 ] = "";
     char *token;
-    token = strtok(dir, "/");
+    
+    strcpy(cpy_dir, dir);
+    token = strtok(cpy_dir, "/");
     while ( token != NULL ) {
         #ifdef linux
             mkdir(token, 0777);

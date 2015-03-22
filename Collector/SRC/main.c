@@ -13,7 +13,7 @@ int main() {
 
     initWindows();
     
-    askShareRepo();
+    askShareRepo(); /* These as, and move to the repository */
 
     startCollector(askNDex(), askPort());
 
