@@ -12,8 +12,7 @@
  *  %param port : Port of the boss
  *  %param packSize : Size of the package / volume
  *  %param filename : Name of the file which on why generate the ndex
- *  %param buf : Stats of the file
  */
-void createNDex(char* ip, int port, int packSize, char* fileName, struct stat buf);
+void createNDex(char* ip, int port, int packSize, char* fileName);
 
 #endif /* FILE_H included */

@@ -12,6 +12,7 @@
 #include "error.h"
 #include "inout.h"
 #include "file.h"
+#include "verification.h"
 
 void usage(const char *name) {
     
@@ -20,35 +21,48 @@ void usage(const char *name) {
     return;
 }
 
-int main() {
-    char* ip;
-    char* file;
-    int port;
-    int volSize;
-    struct stat buf;
-     
+int main(int argc, char * argv[]) {
+    char* ip = NULL;
+    char* file = NULL;
+    int port = 0;
+    int volSize = 0;
+    
     printf("[INFO] Welcome to this awesome Generator\n\n");
-        
-    file = askFile();
     
-    if ( stat(file, &buf) == -1 ) {
-        QUIT_MSG("Can't stats '%s' : ", file);
-    }
+    #ifdef DEBUG
+        if ( argc > 4 ) {
+            if ( !verifFileExist(file = argv[1]) 
+              || !verifBossIp(ip = argv[2]) 
+              || !verifBossPort(port = atoi(argv[3]))
+              || !verifVolSize(volSize = atoi(argv[4])) ) {
+              
+                QUIT_MSG("Reading program argument, please refere to previous error(s)\n"); 
+            }
+        } else {
+            printf("[INFO] Remember, you could use program argument in debug mode. \n");
+            printf("\t %s <file> <ip> <port> <volSize>\n", argv[0]);
+            printf("\t With <port> between 1024 and 65536.\n");
+            printf("\t and <volSize> between 16 and 64\n");
+        }
+    #else 
+        (void) argv;
+    #endif
     
-    if ( buf.st_size == 0 ) {
-        printf("[WARNING] '%s' is an empty file.\n\n", file);
-    }
+    if ( argc <= 4 ) {
+        file = askFile();
+        ip = askBossIp();
+        port = askBossPort();
+        volSize = askVolSize();  
+    } 
     
-
-    ip = askBossIp();
-    port = askBossPort();
-    volSize = askVolSize();
     volSize *= 1000;
-    createNDex(ip, port, volSize, file, buf);
+    createNDex(ip, port, volSize, file);
     
-    free(ip);
-    free(file);
-   
+    if ( argc <= 4 ) {
+        free(ip);
+        free(file);
+    } 
+    
     END();
     exit(EXIT_SUCCESS);
 }

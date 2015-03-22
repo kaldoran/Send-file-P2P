@@ -15,8 +15,8 @@
 #include "error.h"
 
 
-void createNDex(char* ip, int port, int packSize, char* fileName, struct stat buf) {
-
+void createNDex(char* ip, int port, int packSize, char* fileName) {
+        
     int i, j;
     int nbVolume;
     FILE *inputFile = NULL;
@@ -25,7 +25,16 @@ void createNDex(char* ip, int port, int packSize, char* fileName, struct stat bu
     unsigned char outbuf[SHA_DIGEST_LENGTH];
     char *baseName = basename(fileName);
     char outputName[FILENAME_MAX] = "";
+    struct stat buf;
     
+    if ( stat(fileName, &buf) == -1 ) {
+        QUIT_MSG("Can't stats '%s' : ", fileName);
+    }
+        
+    if ( buf.st_size == 0 ) {
+        printf("[WARNING] '%s' is an empty file.\n\n", fileName);
+    }
+     
     if ( (inputFile = fopen(fileName, "r")) == NULL) {
         QUIT_MSG("Opening file '%s'", fileName);
     }
