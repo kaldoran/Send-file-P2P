@@ -93,7 +93,7 @@ void startCollector(char *index_name, const int port, char* sharing_rep){
         }
 
         if ( timer == 0 ) {
-            if ( s->nb_seed == 0 ) {
+            if ( !s->full_file && s->nb_seed == 0) {
                 /* If we are here, then the pointer, had not been allocated */
                 collectors_list = fillCollectorsList(s, index);
                 tval.tv_sec  = S_NEW_LIST;

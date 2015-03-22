@@ -106,7 +106,7 @@ void handlerClient(blockGroup* block_group, fd_set* rdfs) {
                 } 
                 
                 if ( tmpVal <= 0 || strcmp(inBuf, FILE_NOT_EXIST_MSG) == 0  ) {                    
-                    block_group->max_socket = removeClient(group, j, block_group->server_socket );
+                    removeClient(block_group, j, i);
                     --j; /* We remove a client, so group->total - 1, then we apply it to j */
                     if ( group->total == 0 ) { removeGroup( block_group, i );  --i; } /* If needed remove the group */
                 }
@@ -215,33 +215,44 @@ bool addClient(Client *client, Client new, int *total) {
     return FALSE;
 }
 
-int removeClient(Group *group, int const pos, int const max_socket ) {
-    int i, new_max_socket;
-    printf("[INFO] Client %d disconnect\n", group->client[pos].id_socket);
+void removeClient( blockGroup* block_group, int const client_pos, int const group_pos) {
+    int i, j, new_max_socket;
+    Group* group = block_group->groups[group_pos];
+    
+    printf("[INFO] Client %d disconnect\n", group->client[client_pos].id_socket);
    
-    new_max_socket = -1;
+    new_max_socket = block_group->max_socket ;
     /* Seek new socket max */
-    if ( max_socket == group->client[pos].id_socket ) {
-        for ( i = 0; i < group->total; i++) {
-            if ( i != pos 
-                && group->client[i].id_socket > new_max_socket ) {
-                
-                new_max_socket = group->client[i].id_socket;
+    
+    if ( block_group->max_socket == group->client[client_pos].id_socket ) {
+        new_max_socket = -1;
+        for(i = 0; i < block_group->total; i++) {       /* We looking for max socket look into each group */
+        
+            group = block_group->groups[i];
+            for ( j = 0; j < group->total; j++) {
+                if ( j != client_pos 
+                    && group->client[j].id_socket > new_max_socket ) {
+                    
+                    new_max_socket = group->client[j].id_socket;
+                }
             }
+        }
+        
+        if ( new_max_socket == -1 ) { /* We do not found max the we need to reuse server_socket */
+            new_max_socket = block_group->server_socket;
         }
     }
 
-    closesocket(group->client[pos].id_socket);
-    
+    group = block_group->groups[group_pos];
+    closesocket(group->client[client_pos].id_socket);
+
     /* Move memory to avoid blank into array */
-    memmove((group->client) + pos, (group->client) + pos + 1, (group->total - pos - 1) * sizeof(*group->client));  
-    memmove((group->checker) + pos, (group->checker) + pos + 1, (group->total - pos - 1) * sizeof(*group->checker));  
+    memmove((group->client) + client_pos, (group->client) + client_pos + 1, (group->total - client_pos - 1) * sizeof(*group->client));  
+    memmove((group->checker) + client_pos, (group->checker) + client_pos + 1, (group->total - client_pos - 1) * sizeof(*group->checker));  
     
     --(group->total);
-
-    if ( new_max_socket == -1 ) {
-        return max_socket;
-    }
     
-    return new_max_socket;
+    block_group->max_socket = new_max_socket;
+    
+    return;
 }

@@ -70,11 +70,10 @@ void sendClient(Client *client, int total, int to);
 bool addClient(Client *client, Client new, int *total);
 
 /** Remove a client frop the array of client
- *  %param groupe : pointer on the group where you need to remove a client
- *  %param pos : position of the client in the array
- *  %param max_socket : max id of the socket
- *  %return : return the new max_socket value
+ *  %param groupe : Block group where you need to remove a client
+ *  %param client_pos : position of the client in the array group array
+ *  %param group_pos : position of the group in the block_group
  */
-int removeClient(Group *group, int const pos, int const max_socket );
+void removeClient( blockGroup* block_group, int const client_pos, int const group_pos);
 
 #endif /* CLIENT_H included */

@@ -26,9 +26,9 @@ int handlerPresence(blockGroup *block_group);
 void askPresence(Group *group);
 
 /** Check if all client had respond
- *  %param group : group to check
- *  %param max_socket : pointeur on the max_socket number
+ *  %param block_group : Block group to check presence
+ *  %param group_pos : position of the group in the block group structure
  */ 
-void checkPresence(Group *group, int server_socket, int *max_socket);
+void checkPresence(blockGroup *block_group, int const group_pos );
 
 #endif /* PING_H included */
