@@ -5,7 +5,7 @@
 # This script start from 1 to $1 collector
 
 if [ ! -n "$1" ]; then 
-    echo -e "Start from 1 to N collector\nTo start N collector use : ./flood_boss.sh N\nWith N > 1";
+    echo -e "Start from 1 to N collector\nTo start N collector use : ./flood_boss.sh N\nWith N > 1\n BE CAREFULL, you need yo recompile program in debug mode";
 else 
     for i in $(seq 1 $1); do
         ../Collector/BIN/Collector moveFile.bat.ndex $(( 42777 + $i )) sharing &

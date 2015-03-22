@@ -7,6 +7,25 @@
   
   Please be sure to compile the part which you want to start before tryingto starting it.
   
+  If you are a bit lazy, and you are on windows,
+  you could use the ./Scripts_Automatisation/make_all.sh" script.
+  
+  You juste need to write : "./make_all.sh".
+  
+  Ps : you could use every compilation option by adding it at end of "./make_all.sh".
+  Ex : ./make_all.sh rebuild
+  	That's going to rebuild each program.
+
+### Compile option 
+
+Here is the list of all compile option which you can use with our makefile.
+ - make ( Create an executable program )
+ - make all ( same as make )
+ - make clean ( Clean the project )
+ - make rebuild (Same as make clean followed by make )
+ - make dir ( Create OBJ and BIn dir , this on is included in make / make all / make rebuild )
+ 
+
 ### How to use it / test it ?
 
 #### Generator 
@@ -50,7 +69,7 @@
   
 #### Boss  
   First ( after compile that ) a new "Bin" directory appear.
-  You could now start the Generator by writing "./Bin/Boss". 
+  You could now start the Generator by writing "./Bin/Server". 
   
   Exemple of use :
   
@@ -140,7 +159,12 @@ Here we kick the client with the 22th socket.
 ----------------
 
 #### Collector
-
+  First ( after compile that ) a new "Bin" directory appear.
+  You could now start the Generator by writing "./Bin/Collector". 
+  
+  Then you just need to answer to Question. 
+  
+  Exemple of use : 
 In the following section we will use the example of the file "Makefile" correponding to the index "Makefile.ndex".
 
 ```
@@ -155,6 +179,12 @@ Share
 
 [IMPORTANT] : Press Enter to Stop the Collector
 ```
+##### A bit of configuration :
+We are aware that's this is boring to always fill the "Saring path" so you could configure it by using
+"./Collector/INC/configuration.h"
+
+You just need to read the content of this file.
+Don't forget to "make rebuild" at the end.
 
 ##### Understand what append :
 
@@ -203,8 +233,6 @@ Else :
 ```
 	 - Collector : 1 [127.0.0.1:47788]
 	[INFO] Ask the list of volume [Socket : 21].
-
-	[DEBUG] File : SRC/volume.c - Line : 104 - Function : askVolList() : Received : fullVolume
 		 - 21 got them all.
 	 - Collector : 0 [127.0.0.1:47789]
 [ERROR] Can't connect to collector.
@@ -292,7 +320,7 @@ To start the debug mode, you just need to change ( each ) makefile, switch the
 
 When debug mode is on, you could use each program with argument of the program.
 That's avoid to get all questions !
+
 /!\ If You want to try / use script that test automatically things you need to use debug mode !
-    Be carefull, path to ndex need to be absolute in debug mode ( when you use arguments) in collector !
 
 If you want the debug mode on windows, please refere to "Windows Compatibility" file.

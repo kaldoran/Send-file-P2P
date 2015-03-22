@@ -86,6 +86,10 @@ void startCollector(char *index_name, const int port, char* sharing_rep){
         
         if(!s->full_file && s->nb_seed != 0) {          
             s->full_file = getVolume(index, collectors_list, s);
+            if ( s->full_file ) {
+                printf("\n[INFO] End of downloading file. You can find it here : %s/%s\n", sharing_rep, index->file);
+                break;
+            }
         }        
 
         if( (timer = select(s->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
@@ -93,7 +97,7 @@ void startCollector(char *index_name, const int port, char* sharing_rep){
         }
 
         if ( timer == 0 ) {
-            if ( s->nb_seed == 0 ) {
+            if ( !s->full_file && s->nb_seed == 0) {
                 /* If we are here, then the pointer, had not been allocated */
                 collectors_list = fillCollectorsList(s, index);
                 tval.tv_sec  = S_NEW_LIST;
@@ -117,7 +121,7 @@ void startCollector(char *index_name, const int port, char* sharing_rep){
         }
     }
 
-    printf("[BYE] Collector stop.\n");
+    printf("\n[BYE] Collector stop.\n");
 
     close(index->c.id_socket);
     freeIndex(index);

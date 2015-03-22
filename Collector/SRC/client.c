@@ -94,8 +94,7 @@ int addClient(Server* s){
 
 void removeClient(Server* s, int const pos) {
     int i, new_max_socket;
-    
-    printf("[INFO] Close client %d.\n", s->client[pos].id_socket);
+    printf("[INFO] Client %d disconnect\n", s->client[pos].id_socket);
     
     new_max_socket = -1;
     

@@ -82,7 +82,7 @@ bool loadIndex(const char *file, Index *index) {
     char ligne_lue[TAILLE_LINE];
 
     FILE* fichier = fopen(file, "r");
-    
+
     while(fgets(ligne_lue, TAILLE_LINE, fichier) != NULL){
         
         /* Remove /r and /n */

@@ -36,7 +36,7 @@
 
  * Ne committez jamais les fichiers générés (utilisez un fichier.gitignore).
 
-   *Le gitignore est bien présent et exclue tous les fichiers générés, mais aussi les fichiers de code::blocks et ceux de cmake.*
+   *Le gitignore est bien présent et exclue tous les fichiers générés, mais aussi les fichiers de code::blocks et ceux de cmake. et Nos fichier ndex*
 
  * Idéalement, la documentation est en markdown (.md) dans un dépôt git.
 

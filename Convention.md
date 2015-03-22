@@ -99,7 +99,4 @@ NbVolume:1
     ( Envoi / reception du volume 1 )  
 - ( Collecteur 1 au collecteur local )  
     - Vol2  
-    ( Envoi / reception du volume 2 )  
-
-## A CHANGER
-- Forme de la convention pas clair pour quelqu'un d'exterieur au projet
+    ( Envoi / reception du volume 2 ) 

@@ -62,7 +62,7 @@ void startServer() {
     
         FD_ZERO(&rdfs);
         setHandler(block_group, &rdfs);
-
+    
         if( (timer = select(block_group->max_socket + 1, &rdfs, NULL, NULL, &tval)) == -1) {
             QUIT_MSG("Can't select : ");
         }
