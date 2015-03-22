@@ -214,6 +214,12 @@ When the program recieve a request for tis list of volumes it notify by
 [INFO] (14) message recu 'ListOfVolumes' [Client : 24].
 ```
 
+If a connected client doesn't ask anything then the program disconnect it, and notify the closing of the connection by:
+```
+[INFO] Close client 28.
+```
+
+
 ----------------------------------------------------------------------------------------------------------------
 
 ###### Asking volumes
@@ -249,6 +255,19 @@ The program notify the reception of the ping request by:
 [INFO] Received ping from Boss.
 ```
 
+
+-------------------------------------------------------------------------------------------------------------
+
+###### Stop the Collector
+
+When you press "Enter" the collector stop, and notify it by:
+```
+[BYE] Collector stop.
+```
+
+
+
+----------------------------------------------------------------------------------------------------------------------
 
 ### How to stop programms ? 
 
