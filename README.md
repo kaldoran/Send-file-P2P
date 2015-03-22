@@ -180,7 +180,7 @@ Share
 [IMPORTANT] : Press Enter to Stop the Collector
 ```
 ##### A bit of configuration :
-We are aware that's this is boring to always fill the "Saring path" so you could configure it by using
+We are aware that's this is boring to always fill the "Sharing path" so you could configure it by using
 "./Collector/INC/configuration.h"
 
 You just need to read the content of this file.
