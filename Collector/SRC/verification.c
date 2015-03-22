@@ -30,7 +30,7 @@ bool checkFile(FILE* file, Index* index) {
         
         if(fread ((char*)inbuf, index->pack_size, 1, file) == 0 
            && !checkVol(index, inbuf, sizeof(inbuf), i)) {
-            printf("\t - Some volume is missing\n");
+            printf("\t - Some volumes are missing\n");
             full = FALSE;
         }
     }
