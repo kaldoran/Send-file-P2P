@@ -50,7 +50,7 @@
   
 #### Boss  
   First ( after compile that ) a new "Bin" directory appear.
-  You could now start the Generator by writing "./Bin/Boss". 
+  You could now start the Generator by writing "./Bin/Server". 
   
   Exemple of use :
   
@@ -140,7 +140,12 @@ Here we kick the client with the 22th socket.
 ----------------
 
 #### Collector
-
+  First ( after compile that ) a new "Bin" directory appear.
+  You could now start the Generator by writing "./Bin/Collector". 
+  
+  Then you just need to answer to Question. 
+  
+  Exemple of use : 
 ```
 Which .ndex do you want to use ?
 ../Generator/Makefile.ndex
@@ -262,7 +267,7 @@ To start the debug mode, you just need to change ( each ) makefile, switch the
 
 When debug mode is on, you could use each program with argument of the program.
 That's avoid to get all questions !
+
 /!\ If You want to try / use script that test automatically things you need to use debug mode !
-    Be carefull, path to ndex need to be absolute in debug mode ( when you use arguments) in collector !
 
 If you want the debug mode on windows, please refere to "Windows Compatibility" file.
