@@ -4,13 +4,10 @@
 // DATE : 03/03/15                                          |
 //----------------------------------------------------------
 
+#include <sys/stat.h>
 
 #include "error.h"
 #include "inout.h"
-#include "stdio.h"
-#include "libgen.h"
-#include "stdlib.h"
-#include "unistd.h"
 #include "string.h"
 #include "verification.h"
 
