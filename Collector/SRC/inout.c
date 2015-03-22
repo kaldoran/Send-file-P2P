@@ -7,11 +7,8 @@
 
 #include "error.h"
 #include "inout.h"
-#include "stdio.h"
-#include "libgen.h"
-#include "stdlib.h"
-#include "unistd.h"
 #include "string.h"
+#include <sys/stat.h>
 #include "verification.h"
 
 char* askNDex() {
@@ -87,7 +84,11 @@ void mkdirRec(char *dir) {
         #else
             __mkdir(token);
         #endif
-        chdir(token);
+
+        if (chdir(token) != 0){
+            DEBUG_MSG("Can't change the working directory.");
+        }
+
         token = strtok(NULL, "/");
     }
     

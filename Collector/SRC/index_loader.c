@@ -77,7 +77,7 @@ bool loadIndex(const char *file, Index *index) {
     char i[3] = "0:";
     int j = 0;
     char *ret;
-        
+
     struct hostent *h;
     char ligne_lue[TAILLE_LINE];
 
