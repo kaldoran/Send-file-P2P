@@ -310,6 +310,19 @@ When you press "Enter" the collector stop, and notify it by:
 
 To stop the programme, just hit "Enter" on the Boss, same on the Collector.
 
+#### How to use Script
+
+There is only one script, which them is usefull to test spam on the boss.
+With that you could see that the boss could handle a spam of connexion.
+
+To use it go into the "Scripts_Automatisation" directory and use the 
+"./flood_boss.sh" script.
+
+To use it just tel how many collector you want to start "./flood_boss.sh 15".
+This command will start 15 collectors.
+
+Each collector connect to the boss, ask list of collector and kill themself.
+
 
 ### How to change into debug mode ?
 
