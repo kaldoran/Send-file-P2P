@@ -141,6 +141,8 @@ Here we kick the client with the 22th socket.
 
 #### Collector
 
+In the following section we will use the example of the file "Makefile" correponding to the index "Makefile.ndex".
+
 ```
 Which .ndex do you want to use ?
 ../Generator/Makefile.ndex
