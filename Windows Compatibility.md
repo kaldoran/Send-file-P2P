@@ -33,7 +33,9 @@ Have fun.
 
 ### My hard drive don't have the C: name.
 You are in the good part, if this is the case, then you need to reconfigure the *.cpb file.
-Let's see how.
+
+This part is really complicated to explains so if you need an explanation for that, please contact us.
+By an issue or a commentary.
 
 ## CMake version
 
