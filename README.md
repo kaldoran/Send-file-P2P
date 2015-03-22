@@ -7,6 +7,25 @@
   
   Please be sure to compile the part which you want to start before tryingto starting it.
   
+  If you are a bit lazy, and you are on windows,
+  you could use the ./Scripts_Automatisation/make_all.sh" script.
+  
+  You juste need to write : "./make_all.sh".
+  
+  Ps : you could use every compilation option by adding it at end of "./make_all.sh".
+  Ex : ./make_all.sh rebuild
+  	That's going to rebuild each program.
+
+### Compile option 
+
+Here is the list of all compile option which you can use with our makefile.
+ - make ( Create an executable program )
+ - make all ( same as make )
+ - make clean ( Clean the project )
+ - make rebuild (Same as make clean followed by make )
+ - make dir ( Create OBJ and BIn dir , this on is included in make / make all / make rebuild )
+ 
+
 ### How to use it / test it ?
 
 #### Generator 
@@ -158,6 +177,12 @@ Share
 
 [IMPORTANT] : Press Enter to Stop the Collector
 ```
+##### A bit of configuration :
+We are aware that's this is boring to always fill the "Saring path" so you could configure it by using
+"./Collector/INC/configuration.h"
+
+You just need to read the content of this file.
+Don't forget to "make rebuild" at the end.
 
 ##### Understand what append :
 
