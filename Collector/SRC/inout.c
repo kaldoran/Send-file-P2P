@@ -9,7 +9,6 @@
 #include "error.h"
 #include "inout.h"
 #include "string.h"
-#include <sys/stat.h>
 #include "verification.h"
 #include "configuration.h"
 
@@ -50,10 +49,12 @@ int askPort() {
     return port;
 }
 
-void askShareRepo() {
+char *askShareRepo() {
+    char* repo;
+    
     #ifndef SHARING_PATH
-        char* repo;
         
+   
         if ( (repo = calloc(FILENAME_MAX, sizeof(char))) == NULL ) {
             QUIT_MSG("Can't allocate file");
         }
@@ -64,13 +65,15 @@ void askShareRepo() {
         }
 
         emptyBuffer();
-        mkdirRec(repo);
     #else 
-        mkdirRec(SHARING_PATH);
-    #endif 
+        if ( (repo = calloc(sizeof(SHARING_PATH), sizeof(char))) == NULL ) {
+            QUIT_MSG("Can't allocate file");
+        }
+        
+        strcpy(repo, SHARING_PATH);
+    #endif
     
-    
-    return;
+    return repo;
 }
 
 void emptyBuffer() {

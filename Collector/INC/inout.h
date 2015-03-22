@@ -18,8 +18,9 @@ char* askNDex();
 int askPort();
 
 /** Asks and creates the repository that the user use to share.
+ *  %return : the sharing path to create
  */
-void askShareRepo();
+char* askShareRepo();
 
 /** Function to empty the stdin buffer.
  */

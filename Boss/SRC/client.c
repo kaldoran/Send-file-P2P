@@ -217,7 +217,7 @@ bool addClient(Client *client, Client new, int *total) {
 
 int removeClient(Group *group, int const pos, int const max_socket ) {
     int i, new_max_socket;
-    printf("[INFO] Client %d disconnect\n\n", group->client[pos].id_socket);
+    printf("[INFO] Client %d disconnect\n", group->client[pos].id_socket);
    
     new_max_socket = -1;
     /* Seek new socket max */

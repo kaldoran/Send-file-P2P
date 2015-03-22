@@ -13,6 +13,7 @@
 int main(int argc, char* argv[]) {
 
     char *nDex = NULL;
+    char *sharing_path = NULL;
     int port = 0;
    
     initWindows();
@@ -24,10 +25,10 @@ int main(int argc, char* argv[]) {
               
                 QUIT_MSG("An error occur, please refere to previous error(s)\n");
             }
-            mkdirRec(argv[3]);
+            sharing_path = argv[3];
         } else {
             printf("[INFO] Remember, you could use program argument in debug mode. \n");
-            printf("\t %s <ndex> <port> <share_directory>\n", argv[0]);
+            printf("\t %s <path_to_ndex> <port> <share_directory>\n", argv[0]);
             printf("\t With <port> between 1024 and 65536.\n");
         }
     #else
@@ -37,13 +38,14 @@ int main(int argc, char* argv[]) {
     if ( argc < 3 ) {
         nDex = askNDex();
         port = askPort();
-        askShareRepo(); /* These ask, and move to the repository */
+        sharing_path = askShareRepo(); /* These ask, and move to the repository */
     }
     
-    startCollector(nDex, port);
+    startCollector(nDex, port, sharing_path);
     
     if (  argc < 3 ) {
         free(nDex);
+        free(sharing_path);
     }
     
     endWindows();

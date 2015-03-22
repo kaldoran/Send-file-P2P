@@ -154,6 +154,7 @@ bool initFile(Index* index){
         
         full_file = checkFile(file, index);
     } else {
+        printf("\t Then we create it\n");
         file = fopen(index->file, "a+");
         
         for ( i = 0; i < index->file_size; i++ ) {

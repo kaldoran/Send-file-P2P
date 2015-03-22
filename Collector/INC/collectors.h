@@ -14,6 +14,8 @@
 #define COLLECT_PORT 47777
 #define LIST_COLL_SIZE_MAX 10
 
+#define S_NEW_LIST 60 /* time in second before asking new list to Boss if our is empty */
+
 /** Allocates a new collector.
  * 
  *  %param nb_vol: Number of volume composing the file.
@@ -31,8 +33,9 @@ void freeCollect(Collector *coll);
  * 
  * %param index_name: Path of the Index to load.
  * %param port : port on which you want to start the collector
+ * %param sharing_rep : Path to sharing directory 
  */
-void startCollector(char *index_name, const int port);
+void startCollector(char *index_name, const int port, char* sharing_rep);
 
 /** Initialazes the Collector's execution loop
  * 

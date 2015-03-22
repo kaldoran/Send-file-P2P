@@ -9,6 +9,7 @@
 
 #include "tcp.h"
 #include "error.h"
+#include "inout.h"
 #include "socket.h"
 #include "volume.h"
 #include "client.h"
@@ -45,7 +46,7 @@ void freeCollect(Collector *coll) {
     free(coll);
 }
 
-void startCollector(char *index_name, const int port){
+void startCollector(char *index_name, const int port, char* sharing_rep){
     int timer;
     fd_set rdfs;
     Index *index = NULL;
@@ -54,19 +55,24 @@ void startCollector(char *index_name, const int port){
 
     Server *s = newServer(port);
     
-    tval.tv_sec  = 60;
+    tval.tv_sec  = S_NEW_LIST;
     tval.tv_usec = 0; 
     
+    printf("\n[IMPORTANT] : Press Enter to Stop the Collector\n\n");  
+        
     index = newIndex();
     
     initIndex(index, index_name);
+    
+    mkdirRec(sharing_rep);
+        
     s->full_file = initFile(index);
     
     /* Check if we need to update max socket */
     if ( s->max_socket < index->c.id_socket ) { 
         s->max_socket = index->c.id_socket; 
     }
-    
+
     s->file = fopen(index->file, "r+");
     
     sendFileName(index, port); 
@@ -90,7 +96,7 @@ void startCollector(char *index_name, const int port){
             if ( s->nb_seed == 0 ) {
                 /* If we are here, then the pointer, had not been allocated */
                 collectors_list = fillCollectorsList(s, index);
-                tval.tv_sec  = 60;
+                tval.tv_sec  = S_NEW_LIST;
             }
         }
 
@@ -171,7 +177,8 @@ void pong(Index *index){
     char in_buf[FILENAME_MAX] = "";
         
     if ( tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED) <= 0 ) {
-        QUIT_MSG("Boss disconnect us\n");
+        errno = ECONNRESET;
+        QUIT_MSG("Boss disconnect us : ");
     }
     removeEndCarac(in_buf);
     DEBUG_MSG("Received : %s", in_buf); 
