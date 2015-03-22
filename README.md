@@ -156,6 +156,8 @@ Share
 
 ##### Understand what append :
 
+---------------------------------------------------------
+
 ###### Start an index
 ```
 [INFO] Check if we've got the file to download.
@@ -181,7 +183,11 @@ If the file exists, but is not complete, the program says:
 [INFO] Ask for other collectors.
 ```
 
-###### List Of Volumes
+--------------------------------------------------------------------------------
+
+###### List of Volumes and List of Collectors
+
+The program notify its request for a list of Collector by:
 ```
 [INFO] Ask for other collectors.
 ```
@@ -208,6 +214,8 @@ When the program recieve a request for tis list of volumes it notify by
 [INFO] (14) message recu 'ListOfVolumes' [Client : 24].
 ```
 
+----------------------------------------------------------------------------------------------------------------
+
 ###### Asking volumes
 
 After the program has filled the collectors list it start to ask volumes.
@@ -225,11 +233,28 @@ Then if there is too much collectors unreachable, the program asks a new colecto
 [ERROR] To much people are useless.We're going to change the list.
 ```
 
+When the program recieve a volume request it notify it by:
+```
+[INFO] (9) message recu 'Vol0' [Client : 22].
+	 - Send volume 0 to 22
+```
+
+----------------------------------------------------------------------------------------------------------------
+
+###### PING/PONG
+
+Every 5 minutes the boss asks if the collector is still connected and has the file.
+The program notify the reception of the ping request by:
+```
+[INFO] Received ping from Boss.
+```
 
 
 ### How to stop programms ? 
 
 To stop the programme, just hit "Enter" on the Boss, same on the Collector.
+
+
 ### How to change into debug mode ?
 
 /!\ All part are in normal use mode by default.
