@@ -178,7 +178,7 @@ If we have the file complete, the program says:
 If the file exists, but is not complete, the program says:
 ```
 [INFO] Check if we've got the file to download.
-	 - Some volume is missing
+	 - Some volumes are missing
 
 [INFO] Ask for other collectors.
 ```
