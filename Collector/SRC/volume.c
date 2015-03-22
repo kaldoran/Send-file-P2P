@@ -22,7 +22,7 @@ void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
     
     fseek(file, ( vol_size * vol_num ), SEEK_SET);
     
-    if(fread ((char*)buf, vol_size, 1, file) < 0){
+    if(fread ((char*)buf, vol_size, 1, file) <= 0){
         DEBUG_MSG("[ERROR] sending empty volume.");
     }
     printf("\t - Send volume %d to %d", vol_num, c.id_socket);
