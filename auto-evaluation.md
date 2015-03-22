@@ -4,8 +4,8 @@
 ### Organisation
 
  * Nicolas Reynaud
-    * Parties:
-    * Nombre d'heures:
+    * Parties: Générateur, Boss & Collector.
+    * Nombre d'heures: 90 heures ( voir plus ) 
 
  * Kevin Bascol
     * Parties:
