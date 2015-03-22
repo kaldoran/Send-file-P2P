@@ -115,7 +115,6 @@ void startCollector(char *index_name, const int port){
 
     close(index->c.id_socket);
     freeIndex(index);
-    free(index_name); 
     freeServer(s);
 
     return;
