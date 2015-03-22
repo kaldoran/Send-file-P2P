@@ -201,8 +201,6 @@ Else :
 ```
 	 - Collector : 1 [127.0.0.1:47788]
 	[INFO] Ask the list of volume [Socket : 21].
-
-	[DEBUG] File : SRC/volume.c - Line : 104 - Function : askVolList() : Received : fullVolume
 		 - 21 got them all.
 	 - Collector : 0 [127.0.0.1:47789]
 [ERROR] Can't connect to collector.
