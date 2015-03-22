@@ -211,7 +211,14 @@ Else :
 ```
 Here, two Collectors have the file, one has the complete file, the other is not reachable (maybe disconnected).
 
-When the program recieve a request for tis list of volumes it notify by
+
+When the collector recieve a connection request of a new collector, it notify it by:
+```
+[INFO] New client [27]
+	 - Ip of client : 127.0.0.1
+```
+
+When the program recieve a request for its list of volumes it notify by
 ```
 [INFO] (14) message recu 'ListOfVolumes' [Client : 24].
 ```
