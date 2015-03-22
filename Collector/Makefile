@@ -1,5 +1,5 @@
 # Release/Debug
-DEBUG=no
+DEBUG=yes
 
 # Directories
 SRC_DIR = SRC
@@ -10,7 +10,7 @@ BIN_DIR = BIN
 CC = gcc
 # add -lws2_32 for Windows.
 CFLAGS = -W -Wall -Wextra -O2 -lm -lrt -lssl -lcrypto
-BIN = Client
+BIN = Collector
 
 ifeq ($(DEBUG), yes) 
 	CFLAGS += -g -DDEBUG
