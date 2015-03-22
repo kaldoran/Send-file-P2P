@@ -95,7 +95,7 @@ void mkdirRec(const char *dir) {
         #ifdef linux
             mkdir(token, 0777);
         #else
-            __mkdir(token);
+            _mkdir(token);
         #endif
 
         if (chdir(token) != 0){

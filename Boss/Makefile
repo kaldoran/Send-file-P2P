@@ -19,7 +19,7 @@ SRC = $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.c))
 OBJ = $(addsuffix .o, $(basename $(subst ${SRC_DIR}, ${OBJ_DIR}, ${SRC})))
 
 
-.PHONY: clear dir
+.PHONY: dir
 .SUFFIXES:
 
 all: clear dir $(BIN_DIR)/$(BIN)
