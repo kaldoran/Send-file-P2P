@@ -36,7 +36,7 @@
 
  * Ne committez jamais les fichiers générés (utilisez un fichier.gitignore).
 
-   *Le gitignore est bien présent et exclue tous les fichiers générés, mais aussi les fichiers de code::blocks et ceux de cmake. et Nos fichier ndex*
+   *Le gitignore est bien présent et exclue tous les fichiers générés, mais aussi les fichiers de code::blocks et ceux de cmake. et nos fichier ndex*
 
  * Idéalement, la documentation est en markdown (.md) dans un dépôt git.
 
@@ -76,7 +76,7 @@
 
  * Automatisez vos tests qui peuvent l’être.
 
-    *Nous ne disposons d'aucun test automatique.*
+    *Nous ne dispons d'un seul test automatique ( c.f. readme ).*
 
  * Documenter comment utiliser, compiler, tester et lancer votre projet.
 
