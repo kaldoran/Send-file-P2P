@@ -156,6 +156,9 @@ To stop the programme, just hit "Enter" on the Boss, same on the Collector.
 To start the debug mode, you just need to change ( each ) makefile, switch the 
 "DEBUG=no" line 2 by "DEBUG=yes", then recompile it and then you can see Debug message.
 
-( Debug mode doesn't change how to use each part ).
+When debug mode is on, you could use each program with argument of the program.
+That's avoid to get all questions !
+/!\ If You want to try / use script that test automatically things you need to use debug mode !
+    Be carefull, path to ndex need to be absolute in debug mode ( when you use arguments) in collector !
 
 If you want the debug mode on windows, please refere to "Windows Compatibility" file.
