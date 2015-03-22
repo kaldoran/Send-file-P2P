@@ -18,9 +18,8 @@ char* askNDex();
 int askPort();
 
 /** Asks and creates the repository that the user use to share.
- *  %return: Path of the repository.
  */
-char* askShareRepo();
+void askShareRepo();
 
 /** Function to empty the stdin buffer.
  */
@@ -29,6 +28,6 @@ void emptyBuffer();
 /** Creates all subdirectories in the given path.
  *  %param dir: Repository to create.
  */
-void mkdirRec(char *dir);
+void mkdirRec(const char *dir);
 
 #endif /* INOUT_H included */
