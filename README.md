@@ -7,7 +7,7 @@
   
   Please be sure to compile the part which you want to start before tryingto starting it.
   
-  If you are a bit lazy, and you are on windows,
+  If you are a bit lazy, and you are on linux,
   you could use the ./Scripts_Automatisation/make_all.sh" script.
   
   You juste need to write : "./make_all.sh".
