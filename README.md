@@ -141,9 +141,90 @@ Here we kick the client with the 22th socket.
 
 #### Collector
 
+```
+Which .ndex do you want to use ?
+../Generator/Makefile.ndex
+
+[Q] On which port do you want to start the collector ?
+47777
+
+[Q] What is your sharing repository ? [Be carefull, if it doesn't exists we'll create it !]
+Share
+
+[IMPORTANT] : Press Enter to Stop the Collector
+```
+
 ##### Understand what append :
 
-If you don't understand a message, please refere here for the boss.
+###### Start an index
+```
+[INFO] Check if we've got the file to download.
+[ERROR] 'Makefile' does not exist.
+	 Then we create it
+
+[INFO] Ask for other collectors.
+[INFO] We are alone for the moment.
+```
+Here we haven't the file in the sharing repository. So the program creates a file temporary filled by '#' characters in the waiting of the real volumes.
+
+If we have the file complete, the program says:
+```
+[INFO] Check if we've got the file to download.
+	 - we've got all volume
+```
+
+If the file exists, but is not complete, the program says:
+```
+[INFO] Check if we've got the file to download.
+	 - Some volume is missing
+
+[INFO] Ask for other collectors.
+```
+
+###### List Of Volumes
+```
+[INFO] Ask for other collectors.
+```
+
+If there is no Collector which has the file:
+```
+[INFO] We are alone for the moment.
+```
+
+Else :
+```
+	 - Collector : 1 [127.0.0.1:47788]
+	[INFO] Ask the list of volume [Socket : 21].
+
+	[DEBUG] File : SRC/volume.c - Line : 104 - Function : askVolList() : Received : fullVolume
+		 - 21 got them all.
+	 - Collector : 0 [127.0.0.1:47789]
+[ERROR] Can't connect to collector.
+```
+Here, two Collectors have the file, one has the complete file, the other is not reachable (maybe disconnected).
+
+When the program recieve a request for tis list of volumes it notify by
+```
+[INFO] (14) message recu 'ListOfVolumes' [Client : 24].
+```
+
+###### Asking volumes
+
+After the program has filled the collectors list it start to ask volumes.
+```
+[INFO] Ask volume 0 to Client 21
+```
+
+If the collector is not reachable, the program says:
+```
+[ERROR] Client 21 does not send information in time
+```
+
+Then if there is too much collectors unreachable, the program asks a new colectors list to the boss:
+```
+[ERROR] To much people are useless.We're going to change the list.
+```
+
 
 
 ### How to stop programms ? 
