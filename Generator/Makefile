@@ -20,10 +20,10 @@ SRC = $(foreach dir, $(SRC_DIR), $(wildcard $(dir)/*.c))
 OBJ = $(addsuffix .o, $(basename $(subst ${SRC_DIR}, ${OBJ_DIR}, ${SRC})))
 
 
-.PHONY: dir
+.PHONY: clear dir
 .SUFFIXES:
 
-all: clear dir $(BIN_DIR)/$(BIN)
+all: dir $(BIN_DIR)/$(BIN)
 
 #
 # BIN creation.
