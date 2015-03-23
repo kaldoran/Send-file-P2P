@@ -28,7 +28,7 @@
  * This one will download / use your desktop as sharing path
  * Be carefull to replace "MyName" by your windows username 
  */
-// #define SHARING_PATH "C:\\Users\MyName\Desktop"
+// #define SHARING_PATH "C://Users/MyName/Desktop"
 
 /* Exemple 3 - Relative */
 
