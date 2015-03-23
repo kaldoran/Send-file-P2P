@@ -56,8 +56,8 @@ bool getVolume(Index* index, Collector** collectors_list, Server* s) {
             } else {
                 if(checkVol(index, read, sizeof(read), num_vol)) {
                     printf("[INFO] Volume %d well received \n", num_vol); 
-                    fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);                    
-                    fprintf(s->file, "%s", read);
+                    fseek(s->file, (index->pack_size * num_vol ), SEEK_SET);                 
+                    fwrite(read , 1 , sizeof(read) , s->file );
                     fflush(s->file);
                 } else {
                     printf("[ERROR] Wrong volume %d received\n", num_vol);
