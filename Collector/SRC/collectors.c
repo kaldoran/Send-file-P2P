@@ -89,6 +89,8 @@ void startCollector(char *index_name, const int port, char* sharing_rep){
             if ( s->full_file ) {
                 printf("\n[INFO] End of downloading file. You can find it here : %s/%s\n", sharing_rep, index->file);
                 break;
+            } else {
+                tval.tv_sec  = 0;
             }
         }        
 

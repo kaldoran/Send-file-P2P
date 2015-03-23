@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#include "error.h"
 #include "verification.h"
 
 void hexToString(unsigned char outbuf[SHA_DIGEST_LENGTH], char outsha[40]) {
@@ -30,13 +31,15 @@ bool checkFile(FILE* file, Index* index) {
         fread ((char*)inbuf, index->pack_size, 1, file);
 
         if( !checkVol(index, inbuf, sizeof(inbuf), i)) {
-            printf("\t - Some volumes are missing\n");
+            DEBUG_MSG("\t - Volume %d missing\n", i);
             full = FALSE;
         }
     }
 
     if ( full ) {
         printf("\t - we've got all volume\n");
+    } else {
+        printf("\t - Some volume is missing\n");
     }
     return full;
 }
@@ -91,7 +94,7 @@ bool verifPort(int port) {
 bool isComplet(const char* vol) {
 
     for ( ; *vol != '\0'; vol++ ) {
-        if ( *vol == 0 ) {
+        if ( *vol == '0' ) {
             return FALSE;
         }
     }
