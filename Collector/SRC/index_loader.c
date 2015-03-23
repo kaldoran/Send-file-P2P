@@ -74,7 +74,8 @@ void freeIndex(Index *index) {
 }
 
 bool loadIndex(const char *file, Index *index) {
-    char i[3] = "0:";
+
+    char i[6] = "";
     int j = 0;
     char *ret;
 
@@ -123,10 +124,12 @@ bool loadIndex(const char *file, Index *index) {
             }
         } 
         else {
+            memset(i, '\0', sizeof(i));
+            sprintf(i, "%d:", j);
+            
             if ( (ret = startWith(i, ligne_lue)) != NULL) {
-                j = i[0] - '0';
                 memcpy(index->sha[j], ret, 41);
-                i[0]++;
+                ++j;
             }
         }
     }

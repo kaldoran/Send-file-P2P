@@ -86,11 +86,12 @@ void emptyBuffer() {
 }
 
 void mkdirRec(const char *dir) {
-    char cpy_dir[sizeof(dir) + 1 ] = "";
+    char cpy_dir[(int)sizeof(dir) + 1 ] = "";
     char *token;
     
     strcpy(cpy_dir, dir);
     token = strtok(cpy_dir, "/");
+
     while ( token != NULL ) {
         #ifdef linux
             mkdir(token, 0777);

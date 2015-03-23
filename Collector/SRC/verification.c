@@ -27,9 +27,9 @@ bool checkFile(FILE* file, Index* index) {
     
     for ( i = 0; i < index->nb_package; i++ ) {
         memset(inbuf, '\0', index->pack_size); 
-        
-        if(fread ((char*)inbuf, index->pack_size, 1, file) == 0 
-           && !checkVol(index, inbuf, sizeof(inbuf), i)) {
+        fread ((char*)inbuf, index->pack_size, 1, file);
+
+        if( !checkVol(index, inbuf, sizeof(inbuf), i)) {
             printf("\t - Some volumes are missing\n");
             full = FALSE;
         }
@@ -47,7 +47,6 @@ bool checkVol(Index* index, unsigned char* vol, int vol_size, int id_vol) {
     SHA1(vol, vol_size, outbuf);
 
     hexToString(outbuf, outsha);
-    
     if ( strcmp(outsha, index->sha[id_vol]) == 0 ) {        
         index->local_vols[id_vol] = '1';
         return TRUE;
