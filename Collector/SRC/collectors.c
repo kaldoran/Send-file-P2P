@@ -14,7 +14,6 @@
 #include "volume.h"
 #include "client.h"
 #include "server.h"
-#include "boolean.h"
 #include "windows.h"
 #include "message.h"
 #include "collectors.h"
@@ -67,7 +66,7 @@ void startCollector(char *index_name, const int port, char* sharing_rep){
     mkdirRec(sharing_rep);
         
     s->full_file = initFile(index);
-    
+
     /* Check if we need to update max socket */
     if ( s->max_socket < index->c.id_socket ) { 
         s->max_socket = index->c.id_socket; 
@@ -114,7 +113,10 @@ void startCollector(char *index_name, const int port, char* sharing_rep){
         else
         #endif
         if( FD_ISSET(index->c.id_socket, &rdfs) ) {
-            pong(index);
+            if ( ! pong(index, s) ) {
+                close(index->c.id_socket);
+                index->c.id_socket = 0;
+            }
         }
         else if( FD_ISSET(s->seed_socket, &rdfs) ) {
             s->nb_leach += addClient(s);
@@ -141,7 +143,11 @@ void initFd(Index* index, Server* s, fd_set* rdfs){
     #ifdef linux
     FD_SET(STDIN_FILENO, rdfs);
     #endif
-    FD_SET(index->c.id_socket, rdfs);
+
+    if ( index->c.id_socket ) {
+        FD_SET(index->c.id_socket, rdfs);
+    }
+
     FD_SET(s->seed_socket, rdfs);
 
     for(i = 0; i < s->nb_leach; i++) {
@@ -180,15 +186,27 @@ void manageClient(Server* s, Index *index, fd_set* rdfs){
     }
 }
 
-void pong(Index *index){
+bool pong(Index *index, Server* s){
     char in_buf[FILENAME_MAX] = "";
         
     if ( tcpAction(index->c, in_buf, FILENAME_MAX, RECEIVED) <= 0 ) {
         #ifdef linux
 			errno = ECONNRESET;
 		#endif
-        QUIT_MSG("Boss disconnect us : ");
+
+		if ( s->nb_leach > 0) {
+		    printf("\n[INFO] Boss disconnect us but we've got %d leacher.\n", s->nb_leach);
+		}
+		else if (s->nb_seed > 0) {
+		    printf("\n[INFO] Boss disconnect us but we've got %d seeders.\n", s->nb_seed);
+		}
+		else {
+		    QUIT_MSG("Boss disconnect us : ");
+		}
+
+		return FALSE;
     }
+
     removeEndCarac(in_buf);
     DEBUG_MSG("Received : %s", in_buf); 
     printf("[INFO] Received ping from Boss.\n");
@@ -200,7 +218,7 @@ void pong(Index *index){
         tcpAction(index->c, FILE_NOT_EXIST_MSG, sizeof(FILE_NOT_EXIST_MSG), SEND);
     }
     
-    return;
+    return TRUE;
 }
 
 void sendFileName(Index *index, int port) {

@@ -7,6 +7,7 @@
 #ifndef COLLECTORS_H
 #define COLLECTORS_H
 
+#include "boolean.h"
 #include "struct_index.h"
 #include "struct_server.h"
 #include "struct_collect.h"
@@ -56,8 +57,12 @@ void manageClient(Server* s, Index *index, fd_set* rdfs);
 /** Receive from the boss a name of file and respond "Exist" if the file is available on the local machine, "NotExist" otherwise.
  * 
  *  %param index: Pointer to the loaded Index.
+ *  %param s    : Pointer to the server struck (to check if we need to quit)
+ *
+ *  %return : false if pong failed, true otherwise.
+ *            pong may fail if boss disconect us
  */
-void pong(Index *index);
+bool pong(Index *index, Server* s);
 
 /** Send the file name and the port to the server 
  *  

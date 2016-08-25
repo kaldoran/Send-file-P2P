@@ -75,7 +75,7 @@ void freeIndex(Index *index) {
 
 bool loadIndex(const char *file, Index *index) {
 
-    char i[6] = "";
+    char i[10] = "";
     int j = 0;
     char *ret;
 
@@ -157,7 +157,7 @@ bool initFile(Index* index){
         
         full_file = checkFile(file, index);
     } else {
-        printf("\t Then we create it\n");
+        printf("\t Then we create it [That could take a while for large file]\n");
         file = fopen(index->file, "a+");
         
         for ( i = 0; i < index->file_size; i++ ) {
@@ -168,7 +168,11 @@ bool initFile(Index* index){
     }
     
     fclose(file);
-    
+
+    if ( tcpStart(index->c) == FALSE ) {
+        QUIT_MSG("Can't connect to boss : ");
+    }
+
     return full_file;
 }
 
@@ -176,11 +180,7 @@ void initIndex(Index* index, char const *index_name){
     if ( loadIndex(index_name, index) == FALSE ) {
         printf("[ERROR] : Can't reach the boss serveur.\n" );
     }
-    
-    if ( tcpStart(index->c) == FALSE ) {
-        QUIT_MSG("Can't connect to boss : ");
-    }
-    
+
     return;
 }
 

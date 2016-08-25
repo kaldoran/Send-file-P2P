@@ -17,14 +17,20 @@
 #include "tcp.h"
 
 void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
-    char buf[vol_size];
+    int i = 0;
+    unsigned char buf[vol_size];
     memset(buf, '\0', vol_size);
-    
-    fseek(file, ( vol_size * vol_num ), SEEK_SET);
-    
+
+    rewind(file);
+
+    for ( i = 0; i < vol_num; i++ ) {
+        fseek(file, vol_size, SEEK_CUR);
+    }
+
     if(fread ((char*)buf, vol_size, 1, file) <= 0){
         DEBUG_MSG("[ERROR] sending empty volume.");
     }
+
     printf("\t - Send volume %d to %d\n", vol_num, c.id_socket);
        
     tcpAction(c, buf, vol_size, SEND);
@@ -33,13 +39,13 @@ void sendVolume(Client c, int vol_num, int vol_size, FILE* file) {
 bool getVolume(Index* index, Collector** collectors_list, Server* s) {
     unsigned char read[index->pack_size];
     int nb_useless_coll = 0;
-    int lim_useless_coll = s->nb_seed/2; /* set minimun at 1 */
+    int lim_useless_coll = s->nb_seed/2 + 1; /* set minimun at 1 */
     int num_vol = -1;
     int i;
     
     for(i = 0; i < s->nb_seed; ++i) {
         num_vol = findCollVol(index, collectors_list[i]);
-        
+
         if ( num_vol == -1 ) {
             nb_useless_coll++;
         } else {
@@ -120,7 +126,9 @@ void askVolList(Collector* collect, int nb_vol) {
 
 void sendListVolumes(Client c, Index* index) {
     int i;
-    
+
+    printf("\t[INFO] Sending list of volume to client %d.\n", collect->c.id_socket);
+
     for ( i = 1; i < index->nb_package; i++ ) {
         if ( index->local_vols[0] != index->local_vols[i] ) {
             tcpAction(c, index->local_vols, index->nb_package, SEND);
