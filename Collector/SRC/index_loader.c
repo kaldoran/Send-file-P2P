@@ -75,7 +75,7 @@ void freeIndex(Index *index) {
 
 bool loadIndex(const char *file, Index *index) {
 
-    char i[6] = "";
+    char i[10] = "";
     int j = 0;
     char *ret;
 
